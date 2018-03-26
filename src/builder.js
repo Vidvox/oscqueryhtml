@@ -3,6 +3,7 @@ const util = require('./util');
 function buildSingleControl(name, details) {
     let html = '';
     html += '<span class="control-name">' + name + '</span>';
+    html += '<span class="full-path">' + details.FULL_PATH + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     if (details.TYPE == 'c') {
         // Char

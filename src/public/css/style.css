@@ -14,6 +14,13 @@ body {
   font-weight: bold;
 }
 
+.full-path {
+  font-size: 80%;
+  padding-left: 10px;
+  color: #666;
+  display: block;
+}
+
 .description {
   font-size: 80%;
   padding-left: 10px;
