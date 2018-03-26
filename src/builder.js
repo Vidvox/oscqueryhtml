@@ -5,44 +5,43 @@ function buildSingleControl(name, details) {
     html += '<span class="control-name">' + name + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     if (details.TYPE == 'c') {
-        html += '<span class="type">char node</span>';
+        html += '<span class="type">TODO: char node</span>';
     } else if (details.TYPE == 'r') {
         // TODO: Third-party color picker.
-        html += '<span class="type">color node</span>';
+        html += '<span class="type">TODO: color node</span>';
     } else if (details.TYPE == 'd') {
-        // TODO: Slider.
-        html += '<span class="type">double node</span>';
+        let min = details.RANGE[0].MIN;
+        let max = details.RANGE[0].MAX;
+        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
     } else if (details.TYPE == 'F') {
-        // TODO: Button.
-        html += '<span class="type">false node</span>';
+        html += '<input type="button" value="Send false"/>';
     } else if (details.TYPE == 'f') {
-        // TODO: Slider.
-        html += '<span class="type">float node</span>';
+        let min = details.RANGE[0].MIN;
+        let max = details.RANGE[0].MAX;
+        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
     } else if (details.TYPE == 'I') {
-        html += '<span class="type">infinity node</span>';
+        html += '<input type="button" value="Send infinity"/>';
     } else if (details.TYPE == 'i') {
         // TODO: Text box.
-        html += '<span class="type">int node</span>';
+        html += '<span class="type">TODO: int node</span>';
     } else if (details.TYPE == 'h') {
-        html += '<span class="type">longlong node</span>';
+        html += '<span class="type">TODO: longlong node</span>';
     } else if (details.TYPE == 'm') {
-        html += '<span class="type">midi node</span>';
+        html += '<span class="type">TODO: midi node</span>';
     } else if (details.TYPE == 'N') {
-        // TODO: Button.
-        html += '<span class="type">null node</span>';
+        html += '<input type="button" value="Send null"/>';
     } else if (details.TYPE == 's') {
         // TODO: Text box.
-        html += '<span class="type">string node</span>';
+        html += '<span class="type">TODO: string node</span>';
     } else if (details.TYPE == 'T') {
-        // TODO: Button.
-        html += '<span class="type">true node</span>';
+        html += '<input type="button" value="Send true"/>';
     } else if (details.TYPE == 't') {
         // TODO: ?????.
-        html += '<span class="type">timetag node</span>';
+        html += '<span class="type">TODO: timetag node</span>';
     } else {
         html += '<span class="type">UNKNOWN (' + details.TYPE + ')</span>';
     }
-    return '<div class="control">' + html + '</div>';
+    return '<div class="control">' + html + '</div>\n';
 }
 
 function buildFromQueryResult(result) {
