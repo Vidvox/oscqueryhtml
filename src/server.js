@@ -14,8 +14,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     const url = process.env['SERVER_URL'];
     retrieve.retrieveJson(url, (result) => {
-        let rawHtml = builder.buildFromQueryResult(result);
-        let context = {rawHtml: rawHtml};
+        let context = {jsonData: JSON.stringify(result)}
         res.render('pages/index', context);
     });
 });
