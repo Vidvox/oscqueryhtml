@@ -87,3 +87,20 @@ function buildSingleControl(name, details) {
     div.innerHTML = html;
     return div;
 }
+
+function controlEvent(e) {
+    console.log('event');
+    // TODO: Dispatch based upon e.target
+}
+
+function addInputEventHandlers() {
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.type == "button") {
+            input.addEventListener('click', controlEvent, false);
+        } else {
+            input.addEventListener('change', controlEvent, false);
+        }
+    }
+}
