@@ -30,10 +30,7 @@ function buildSingleControl(name, details) {
         html += '<input type="text" maxlength="1" size="3"/>';
     } else if (details.TYPE == 'r') {
         // Color
-        // TODO: Third-party color picker.
-        html += '<span class="type">TODO: color node</span>';
-        console.log('========================================');
-        console.log(details);
+        html += '<input type="color" />';
     } else if (details.TYPE == 'd') {
         // Double
         var min = details.RANGE[0].MIN;
