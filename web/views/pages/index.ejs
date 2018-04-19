@@ -6,6 +6,7 @@
     <script>
 document.addEventListener("DOMContentLoaded", function(event) {
   var data = <%- jsonData %>;
+  testSendOSC();
   buildFromQueryResult(data);
   addInputEventHandlers();
 });

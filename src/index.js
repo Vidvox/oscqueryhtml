@@ -1,3 +1,5 @@
+const OSC = require('osc-js');
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -102,8 +104,22 @@ function addInputEventHandlers() {
     }
 }
 
+function testSendOSC() {
+    var osc = new OSC();
+    var plugin = new OSC.WebsocketBrowserPlugin({
+        host: 'localhost',
+        port: 2345,
+    });
+    osc.open({plugin, port: 2345});
+    osc.on('open', function() {
+        const message = new OSC.Message('/test/my_int', 50);
+        osc.send(message);
+    });
+}
+
 module.exports = {
-  buildFromQueryResult: buildFromQueryResult,
-  addInputEventHandlers: addInputEventHandlers,
+    buildFromQueryResult: buildFromQueryResult,
+    addInputEventHandlers: addInputEventHandlers,
+    testSendOSC: testSendOSC,
 };
 
