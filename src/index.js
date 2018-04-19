@@ -1,4 +1,13 @@
-const OSC = require('osc-js');
+//const osc = require('osc');
+//const oscWebsocketClient = require('osc-websocket-client');
+
+//const osc = require('osc');
+
+
+const osc = require('osc');
+const oscWebsocketClient = require('osc-websocket-client');
+
+
 
 function $(selector) {
     return document.querySelector(selector);
@@ -105,6 +114,19 @@ function addInputEventHandlers() {
 }
 
 function testSendOSC() {
+    console.log('Try to work');
+/*
+    var oscPort = new osc.WebSocketPort({
+        url: 'ws://localhost:2345'
+    });
+    console.log('Constructed');
+    oscPort.open();
+    console.log('Opening');
+    oscPort.on('ready', function() {
+        console.log('Ready');
+    });
+*/
+/*
     var osc = new OSC();
     var plugin = new OSC.WebsocketBrowserPlugin({
         host: 'localhost',
@@ -115,6 +137,7 @@ function testSendOSC() {
         const message = new OSC.Message('/test/my_int', 50);
         osc.send(message);
     });
+*/
 }
 
 module.exports = {
