@@ -2,14 +2,19 @@
   "name": "osc-tool",
   "version": "1.0.0",
   "description": "Process OSC query responses",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "author": "Dustin Long <me@dustmop.io>",
   "license": "ISC",
   "dependencies": {
     "ejs": "^2.5.8",
     "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
   }
 }

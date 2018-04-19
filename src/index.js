@@ -101,3 +101,9 @@ function addInputEventHandlers() {
         }
     }
 }
+
+module.exports = {
+  buildFromQueryResult: buildFromQueryResult,
+  addInputEventHandlers: addInputEventHandlers,
+};
+
