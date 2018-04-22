@@ -17,7 +17,8 @@ app.get('/', (req, res) => {
         throw 'SERVER_URL not set, cannot connect to OSC Server'
     }
     retrieve.retrieveJson(url, (result) => {
-        let context = {jsonData: JSON.stringify(result)}
+        let context = {jsonData: JSON.stringify(result),
+                       hostUrl: process.env['SERVER_URL']}
         res.render('pages/index', context);
     });
 });

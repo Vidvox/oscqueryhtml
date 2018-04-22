@@ -7,7 +7,8 @@
     <script>
 document.addEventListener("DOMContentLoaded", function(event) {
   var data = <%- jsonData %>;
-  initWebSocket();
+  var hostUrl = "<%= hostUrl %>";
+  initWebSocket(hostUrl.replace("http", "ws"));
   buildFromQueryResult(data);
   addInputEventHandlers();
 });

@@ -105,16 +105,17 @@ function buildSingleControl(name, details) {
 }
 
 var oscPort;
+var isOscReady = false;
 
-function initWebSocket() {
+function initWebSocket(url) {
     oscPort = new osc.WebSocketPort({
-        // TODO: Don't hardcode path.
-        url: 'ws://localhost:2345',
+        url: url,
         metadata: true
     });
     oscPort.open();
-    // TODO: Handle port being ready.
-    // oscPort.on('ready', function()
+    oscPort.on('ready', function() {
+        isOscReady = true;
+    });
 }
 
 function controlEvent(e) {
@@ -133,7 +134,9 @@ function controlEvent(e) {
         args: [firstArg],
     };
     console.log('***** Sending value: ' + JSON.stringify(message));
-    oscPort.send(message);
+    if (isOscReady) {
+        oscPort.send(message);
+    }
 }
 
 function addInputEventHandlers() {
