@@ -82,15 +82,41 @@ function buildSingleControl(name, details) {
     } else {
         html += '<span class="type">UNKNOWN (' + details.TYPE + ')</span>';
     }
+    html += '<span class="details" ' +
+        'data-full-path="' + details.FULL_PATH + '" ' +
+        'data-type="' + details.TYPE + '" ';
+    // TODO: Add value hook here.
+    html += '/></span>';
     var div = document.createElement('div');
     div.setAttribute('class', 'control');
     div.innerHTML = html;
     return div;
 }
 
+var oscPort;
+
+function initWebSocket() {
+    oscPort = new osc.WebSocketPort({
+        // TODO: Don't hardcode path.
+        url: 'ws://localhost:2345',
+        metadata: true
+    });
+    oscPort.open();
+    // TODO: Handle port being ready.
+    // oscPort.on('ready', function()
+}
+
 function controlEvent(e) {
-    console.log('event');
-    // TODO: Dispatch based upon e.target
+    var controlElem = e.target.parentNode;
+    var detailsElem = controlElem.querySelector('.details');
+    var fullPath = detailsElem.attributes['data-full-path'].value;
+    var dataType = detailsElem.attributes['data-type'].value;
+    var firstArg = {type: dataType};
+    // TODO: Send value if appropriate.
+    oscPort.send({
+        address: fullPath,
+        args: [firstArg],
+    });
 }
 
 function addInputEventHandlers() {
@@ -103,28 +129,6 @@ function addInputEventHandlers() {
             input.addEventListener('change', controlEvent, false);
         }
     }
-}
-
-function testSendOSC() {
-    console.log('Try to work');
-    var oscPort = new osc.WebSocketPort({
-        url: 'ws://localhost:2345',
-        metadata: true
-    });
-    console.log('Constructed');
-    oscPort.open();
-    console.log('Opening');
-    oscPort.on('ready', function() {
-        console.log('Ready');
-        oscPort.send({
-            address: '/test/my_false',
-            args: [
-                {
-                    type: "F",
-                }
-            ]
-        });
-    });
 }
 
 /*
