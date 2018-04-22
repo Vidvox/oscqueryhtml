@@ -1,14 +1,6 @@
 //const osc = require('osc');
 //const oscWebsocketClient = require('osc-websocket-client');
 
-//const osc = require('osc');
-
-
-const osc = require('osc');
-const oscWebsocketClient = require('osc-websocket-client');
-
-
-
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -115,34 +107,30 @@ function addInputEventHandlers() {
 
 function testSendOSC() {
     console.log('Try to work');
-/*
     var oscPort = new osc.WebSocketPort({
-        url: 'ws://localhost:2345'
+        url: 'ws://localhost:2345',
+        metadata: true
     });
     console.log('Constructed');
     oscPort.open();
     console.log('Opening');
     oscPort.on('ready', function() {
         console.log('Ready');
+        oscPort.send({
+            address: '/test/my_false',
+            args: [
+                {
+                    type: "F",
+                }
+            ]
+        });
     });
-*/
-/*
-    var osc = new OSC();
-    var plugin = new OSC.WebsocketBrowserPlugin({
-        host: 'localhost',
-        port: 2345,
-    });
-    osc.open({plugin, port: 2345});
-    osc.on('open', function() {
-        const message = new OSC.Message('/test/my_int', 50);
-        osc.send(message);
-    });
-*/
 }
 
+/*
 module.exports = {
     buildFromQueryResult: buildFromQueryResult,
     addInputEventHandlers: addInputEventHandlers,
     testSendOSC: testSendOSC,
 };
-
+*/

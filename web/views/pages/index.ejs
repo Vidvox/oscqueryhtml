@@ -2,11 +2,12 @@
   <head>
     <title>OSC Tool</title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script src="bundle.js"></script>
+    <script src="osc-browser.js"></script>
+    <script src="index.js"></script>
     <script>
 document.addEventListener("DOMContentLoaded", function(event) {
   var data = <%- jsonData %>;
-//  testSendOSC();
+  testSendOSC();
   buildFromQueryResult(data);
   addInputEventHandlers();
 });
