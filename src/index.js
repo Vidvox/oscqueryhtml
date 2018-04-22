@@ -31,7 +31,8 @@ function buildSingleControl(name, details) {
     var getter = null;
     if (details.TYPE == 'c') {
         // Char
-        html += '<input type="text" maxlength="1" size="3"/>';
+        html += '<input data-event="keydown" type="text" maxlength="1" ' +
+            'size="3"/>';
         getter = 'value';
     } else if (details.TYPE == 'r') {
         // Color
@@ -145,11 +146,25 @@ function controlEvent(e) {
     }
 }
 
+function charKeyDownEvent(e) {
+    e.target.value = e.key;
+    controlEvent(e);
+}
+
+function getDataEvent(element) {
+    if (element.attributes['data-event']) {
+        return element.attributes['data-event'].value;
+    }
+    return null;
+}
+
 function addInputEventHandlers() {
     var inputs = document.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
-        if (input.type == "button") {
+        if (getDataEvent(input) == 'keydown') {
+            input.addEventListener('keydown', charKeyDownEvent, false);
+        } else if (input.type == "button") {
             input.addEventListener('click', controlEvent, false);
         } else {
             input.addEventListener('change', controlEvent, false);
