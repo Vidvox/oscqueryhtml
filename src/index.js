@@ -41,8 +41,9 @@ function buildSingleControl(name, details) {
         // Double
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
-        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
-        getter = 'value';
+        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+            'step="any"/>';
+        getter = 'parseFloat';
     } else if (details.TYPE == 'F') {
         // False
         html += '<input type="button" value="Send false"/>';
@@ -50,8 +51,9 @@ function buildSingleControl(name, details) {
         // Float
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
-        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
-        getter = 'value';
+        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+            'step="any"/>';
+        getter = 'parseFloat';
     } else if (details.TYPE == 'I') {
         // Infinity
         html += '<input type="button" value="Send infinity"/>';
@@ -60,7 +62,7 @@ function buildSingleControl(name, details) {
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
         html += '<input type="range" min="' + min + '" max="' + max + '"/>';
-        getter = 'value';
+        getter = 'parseInt';
     } else if (details.TYPE == 'h') {
         // Longlong
         var min = details.RANGE[0].MIN;
@@ -93,7 +95,7 @@ function buildSingleControl(name, details) {
     html += '<span class="details" ' +
         'data-full-path="' + details.FULL_PATH + '" ' +
         'data-type="' + details.TYPE + '" ';
-    if (getter == 'value') {
+    if (getter) {
         html += 'data-getter="' + getter + '" ';
     }
     // TODO: Add value hook here.
@@ -128,6 +130,10 @@ function controlEvent(e) {
         var firstArg = {type: dataType};
     } else if (getter.value == 'value') {
         var firstArg = {type: dataType, value: e.target.value };
+    } else if (getter.value == 'parseInt') {
+        var firstArg = {type: dataType, value: parseInt(e.target.value) };
+    } else if (getter.value == 'parseFloat') {
+        var firstArg = {type: dataType, value: parseFloat(e.target.value) };
     }
     var message = {
         address: fullPath,
