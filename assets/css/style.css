@@ -27,3 +27,15 @@ body {
   color: #aaa;
   display: block;
 }
+
+.curr-val {
+  color: #888;
+  font-size: 80%;
+  padding-bottom: 8px;
+}
+
+.range-val {
+  color: #888;
+  font-size: 80%;
+  padding-bottom: 8px;
+}

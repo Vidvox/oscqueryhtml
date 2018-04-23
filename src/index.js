@@ -30,6 +30,7 @@ function buildSingleControl(name, details) {
     html += '<span class="full-path">' + details.FULL_PATH + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     var getter = null;
+    var setter = null;
     if (details.TYPE == 'c') {
         // Char
         html += '<input data-event="keydown" type="text" maxlength="1" ' +
@@ -63,8 +64,13 @@ function buildSingleControl(name, details) {
         // Integer
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
-        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
+        var value = 0;
+        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+            ' value="' + value + '"/>';
+        html += '<span class="curr-val">' + value + '</span>';
+        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         getter = 'parseInt';
+        setter = 'int';
     } else if (details.TYPE == 'h') {
         // Longlong
         var min = details.RANGE[0].MIN;
@@ -100,7 +106,9 @@ function buildSingleControl(name, details) {
     if (getter) {
         html += 'data-getter="' + getter + '" ';
     }
-    // TODO: Add value hook here.
+    if (setter) {
+        html += 'data-setter="' + setter + '" ';
+    }
     html += '/></span>';
     var div = document.createElement('div');
     div.setAttribute('class', 'control');
@@ -128,6 +136,7 @@ function controlEvent(e) {
     var fullPath = detailsElem.attributes['data-full-path'].value;
     var dataType = detailsElem.attributes['data-type'].value;
     var getter = detailsElem.attributes['data-getter'];
+    var setter = detailsElem.attributes['data-setter'];
     if (!getter) {
         var firstArg = {type: dataType};
     } else if (getter.value == 'value') {
@@ -142,6 +151,10 @@ function controlEvent(e) {
         var g = parseInt(color.substr(3, 2), 16);
         var b = parseInt(color.substr(5, 2), 16);
         var firstArg = {type: dataType, value: {r:r, g:g, b:b} };
+    }
+    if (setter.value == 'int') {
+        var currValElem = controlElem.querySelector('.curr-val');
+        currValElem.textContent = e.target.value;
     }
     var message = {
         address: fullPath,
