@@ -37,8 +37,8 @@ function buildSingleControl(name, details) {
         getter = 'value';
     } else if (details.TYPE == 'r') {
         // Color
-        html += '<input type="color" />';
-        // TODO: getter
+        html += '<input type="color" value="#4466ff" />';
+        getter = 'color';
     } else if (details.TYPE == 'd') {
         // Double
         var min = details.RANGE[0].MIN;
@@ -136,6 +136,12 @@ function controlEvent(e) {
         var firstArg = {type: dataType, value: parseInt(e.target.value) };
     } else if (getter.value == 'parseFloat') {
         var firstArg = {type: dataType, value: parseFloat(e.target.value) };
+    } else if (getter.value == 'color') {
+        var color = e.target.value;
+        var r = parseInt(color.substr(1, 2), 16);
+        var g = parseInt(color.substr(3, 2), 16);
+        var b = parseInt(color.substr(5, 2), 16);
+        var firstArg = {type: dataType, value: {r:r, g:g, b:b} };
     }
     var message = {
         address: fullPath,
