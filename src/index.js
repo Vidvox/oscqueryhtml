@@ -1,5 +1,6 @@
-//const osc = require('osc');
-//const oscWebsocketClient = require('osc-websocket-client');
+const osc = require('osc');
+const oscTransports = require('osc-transports');
+const oscWebsocketClient = require('osc-websocket-client');
 
 function $(selector) {
     return document.querySelector(selector);
@@ -172,10 +173,8 @@ function addInputEventHandlers() {
     }
 }
 
-/*
 module.exports = {
+    initWebSocket: initWebSocket,
     buildFromQueryResult: buildFromQueryResult,
     addInputEventHandlers: addInputEventHandlers,
-    testSendOSC: testSendOSC,
 };
-*/

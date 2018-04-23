@@ -2,15 +2,14 @@
   <head>
     <title>OSC Tool</title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script src="osc-browser.js"></script>
-    <script src="index.js"></script>
+    <script src="bundle.js"></script>
     <script>
 document.addEventListener("DOMContentLoaded", function(event) {
   var data = <%- jsonData %>;
   var hostUrl = "<%= hostUrl %>";
-  initWebSocket(hostUrl.replace("http", "ws"));
-  buildFromQueryResult(data);
-  addInputEventHandlers();
+  oscQuery.initWebSocket(hostUrl.replace("http", "ws"));
+  oscQuery.buildFromQueryResult(data);
+  oscQuery.addInputEventHandlers();
 });
     </script>
   </head>
