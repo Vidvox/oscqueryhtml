@@ -27,6 +27,7 @@ function buildFromQueryResult(result) {
 function buildSingleControl(name, details) {
     var html = '';
     html += '<span class="control-name">' + name + '</span>';
+    html += '<span class="listen-button"><img src="img/listen.png" width=24 height=24/></span>';
     html += '<span class="full-path">' + details.FULL_PATH + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     var getter = null;
@@ -166,7 +167,7 @@ function controlEvent(e) {
             currValElem.textContent = e.target.value;
         } else if (setter.value == 'float') {
             var currValElem = controlElem.querySelector('.curr-val');
-            currValElem.textContent = Math.round(e.target.value * 1000 / 1000);
+            currValElem.textContent = Math.round(e.target.value * 1000) / 1000;
         }
     }
     var message = {
