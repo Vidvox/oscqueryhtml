@@ -44,9 +44,13 @@ function buildSingleControl(name, details) {
         // Double
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
+        var value = 0;
         html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-            'step="any"/>';
+            ' value="' + value + '" step="any"/>';
+        html += '<span class="curr-val">' + value + '</span>';
+        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         getter = 'parseFloat';
+        setter = 'float';
     } else if (details.TYPE == 'F') {
         // False
         html += '<input type="button" value="Send false"/>';
@@ -54,9 +58,13 @@ function buildSingleControl(name, details) {
         // Float
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
+        var value = 0;
         html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-            'step="any"/>';
+            ' value="' + value + '" step="any"/>';
+        html += '<span class="curr-val">' + value + '</span>';
+        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         getter = 'parseFloat';
+        setter = 'float';
     } else if (details.TYPE == 'I') {
         // Infinity
         html += '<input type="button" value="Send infinity"/>';
@@ -152,9 +160,14 @@ function controlEvent(e) {
         var b = parseInt(color.substr(5, 2), 16);
         var firstArg = {type: dataType, value: {r:r, g:g, b:b} };
     }
-    if (setter.value == 'int') {
-        var currValElem = controlElem.querySelector('.curr-val');
-        currValElem.textContent = e.target.value;
+    if (setter) {
+        if (setter.value == 'int') {
+            var currValElem = controlElem.querySelector('.curr-val');
+            currValElem.textContent = e.target.value;
+        } else if (setter.value == 'float') {
+            var currValElem = controlElem.querySelector('.curr-val');
+            currValElem.textContent = Math.round(e.target.value * 1000 / 1000);
+        }
     }
     var message = {
         address: fullPath,
