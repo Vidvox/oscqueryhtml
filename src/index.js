@@ -4,6 +4,8 @@ const oscWebsocketClient = require('osc-websocket-client');
 
 const retrieve = require('./retrieve.js');
 
+const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -29,7 +31,9 @@ function buildFromQueryResult(result) {
 function buildSingleControl(name, details) {
     var html = '';
     html += '<span class="control-name">' + name + '</span>';
-    html += '<span class="listen-button"><img src="img/listen.png" width=24 height=24/></span>';
+    html += '<span class="listen-button"><img src="';
+    html += listenBase64;
+    html += '" width=24 height=24/></span>';
     html += '<span class="full-path">' + details.FULL_PATH + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     var getter = null;
