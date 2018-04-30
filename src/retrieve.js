@@ -8,6 +8,7 @@ function retrieveJson(url, cb) {
         .then(function(json) {
             cb(json);
         }).catch(function(ex) {
+            document.write('Failed to retrieve JSON, check console for error details');
             throw ex;
         });
 }
