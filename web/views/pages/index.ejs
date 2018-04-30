@@ -5,11 +5,8 @@
     <script src="bundle.js"></script>
     <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-  var data = <%- jsonData %>;
   var hostUrl = "<%= hostUrl %>";
-  oscQuery.initWebSocket(hostUrl.replace("http", "ws"));
-  oscQuery.buildFromQueryResult(data);
-  oscQuery.addInputEventHandlers();
+  oscQuery.createApp(hostUrl);
 });
     </script>
   </head>

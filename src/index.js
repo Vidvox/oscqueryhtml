@@ -2,6 +2,8 @@ const osc = require('osc');
 const oscTransports = require('osc-transports');
 const oscWebsocketClient = require('osc-websocket-client');
 
+const retrieve = require('./retrieve.js');
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -206,8 +208,14 @@ function addInputEventHandlers() {
     }
 }
 
+function createApp(serverUrl) {
+    initWebSocket(serverUrl.replace("http", "ws"));
+    retrieve.retrieveJson(serverUrl, (result) => {
+        buildFromQueryResult(result);
+        addInputEventHandlers();
+    });
+}
+
 module.exports = {
-    initWebSocket: initWebSocket,
-    buildFromQueryResult: buildFromQueryResult,
-    addInputEventHandlers: addInputEventHandlers,
+    createApp: createApp,
 };
