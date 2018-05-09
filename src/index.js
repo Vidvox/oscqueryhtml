@@ -5,6 +5,7 @@ const oscWebsocketClient = require('osc-websocket-client');
 const retrieve = require('./retrieve.js');
 
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
+const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
 
 function $(selector) {
     return document.querySelector(selector);
@@ -198,6 +199,18 @@ function getDataEvent(element) {
     return null;
 }
 
+function listenClick(e) {
+    var imgElem = e.target;
+    var spanElem = imgElem.parentNode;
+    if (spanElem.className.indexOf('pressed') == -1) {
+        imgElem.src = pressedBase64;
+        spanElem.className = 'listen-button pressed';
+    } else {
+        imgElem.src = listenBase64;
+        spanElem.className = 'listen-button';
+    }
+}
+
 function addInputEventHandlers() {
     var inputs = document.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; i++) {
@@ -209,6 +222,12 @@ function addInputEventHandlers() {
         } else {
             input.addEventListener('change', controlEvent, false);
         }
+    }
+    var listenButtons = document.getElementsByClassName("listen-button");
+    //console.log(listenButtons);
+    for (var i = 0; i < listenButtons.length; i++) {
+        var listenBtn = listenButtons[i];
+        listenBtn.addEventListener('click', listenClick, false);
     }
 }
 
