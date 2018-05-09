@@ -53,15 +53,13 @@ function buildSingleControl(name, details) {
         if (details.RANGE) {
             var min = details.RANGE[0].MIN;
             var max = details.RANGE[0].MAX;
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '" step="any"/>';
             html += '<span class="curr-val">' + value + '</span>';
             html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         } else {
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" value="' + value + '" step="any"/>';
             html += '<span class="curr-val">' + value + '</span>';
         }
@@ -75,15 +73,13 @@ function buildSingleControl(name, details) {
         if (details.RANGE) {
             var min = details.RANGE[0].MIN;
             var max = details.RANGE[0].MAX;
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '" step="any"/>';
             html += '<span class="curr-val">' + value + '</span>';
             html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         } else {
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" value="' + value + '" step="any"/>';
             html += '<span class="curr-val">' + value + '</span>';
         }
@@ -97,15 +93,13 @@ function buildSingleControl(name, details) {
         if (details.RANGE) {
             var min = details.RANGE[0].MIN;
             var max = details.RANGE[0].MAX;
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '"/>';
             html += '<span class="curr-val">' + value + '</span>';
             html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
         } else {
-            // TODO: Starting value.
-            var value = 0;
+            var value = details.VALUE || 0;
             html += '<input type="range" value="' + value + '"/>';
             html += '<span class="curr-val">' + value + '</span>';
         }
