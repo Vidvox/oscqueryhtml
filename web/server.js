@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const retrieve = require('./retrieve');
 
 const PORT = 5050;
 
