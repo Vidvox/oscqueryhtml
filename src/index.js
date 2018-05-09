@@ -243,9 +243,13 @@ function addInputEventHandlers() {
 
 function createApp(serverUrl) {
     initWebSocket(serverUrl.replace("http", "ws"));
-    retrieve.retrieveJson(serverUrl, (result) => {
-        buildFromQueryResult(result);
-        addInputEventHandlers();
+    retrieve.retrieveHostInfo(serverUrl, (hostInfo) => {
+        // TODO: Parse the hostInfo, act based upon what extensions are allowed.
+        console.log(hostInfo);
+        retrieve.retrieveJson(serverUrl, (result) => {
+            buildFromQueryResult(result);
+            addInputEventHandlers();
+        });
     });
 }
 
