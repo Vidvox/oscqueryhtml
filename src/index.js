@@ -205,6 +205,17 @@ function listenClick(e) {
     if (spanElem.className.indexOf('pressed') == -1) {
         imgElem.src = pressedBase64;
         spanElem.className = 'listen-button pressed';
+        var fullPathElem = spanElem.parentNode.querySelector('.full-path');
+        var path = fullPathElem.textContent;
+        if (isOscReady) {
+            oscPort.socket.send(
+{
+    'COMMAND': 'LISTEN',
+    'DATA': path
+}
+            );
+        }
+
     } else {
         imgElem.src = listenBase64;
         spanElem.className = 'listen-button';
@@ -224,7 +235,6 @@ function addInputEventHandlers() {
         }
     }
     var listenButtons = document.getElementsByClassName("listen-button");
-    //console.log(listenButtons);
     for (var i = 0; i < listenButtons.length; i++) {
         var listenBtn = listenButtons[i];
         listenBtn.addEventListener('click', listenClick, false);
