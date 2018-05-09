@@ -165,6 +165,15 @@ function initWebSocket(url) {
     oscPort.open();
     oscPort.on('ready', function() {
         isOscReady = true;
+        oscPort.socket.onmessage = function(e) {
+            var msg = JSON.parse(e.data);
+            if (msg.COMMAND == 'PATH_CHANGED') {
+                // TODO: Handle this message.
+            } else {
+                console.log('??????????');
+                console.log('Unknown message: ' + e.data);
+            }
+        }
     });
 }
 
