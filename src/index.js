@@ -50,13 +50,21 @@ function buildSingleControl(name, details) {
         getter = 'color';
     } else if (details.TYPE == 'd') {
         // Double
-        var min = details.RANGE[0].MIN;
-        var max = details.RANGE[0].MAX;
-        var value = 0;
-        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-            ' value="' + value + '" step="any"/>';
-        html += '<span class="curr-val">' + value + '</span>';
-        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        if (details.RANGE) {
+            var min = details.RANGE[0].MIN;
+            var max = details.RANGE[0].MAX;
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+                ' value="' + value + '" step="any"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        } else {
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" value="' + value + '" step="any"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+        }
         getter = 'parseFloat';
         setter = 'float';
     } else if (details.TYPE == 'F') {
@@ -64,13 +72,21 @@ function buildSingleControl(name, details) {
         html += '<input type="button" value="Send false"/>';
     } else if (details.TYPE == 'f') {
         // Float
-        var min = details.RANGE[0].MIN;
-        var max = details.RANGE[0].MAX;
-        var value = 0;
-        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-            ' value="' + value + '" step="any"/>';
-        html += '<span class="curr-val">' + value + '</span>';
-        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        if (details.RANGE) {
+            var min = details.RANGE[0].MIN;
+            var max = details.RANGE[0].MAX;
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+                ' value="' + value + '" step="any"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        } else {
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" value="' + value + '" step="any"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+        }
         getter = 'parseFloat';
         setter = 'float';
     } else if (details.TYPE == 'I') {
@@ -78,20 +94,32 @@ function buildSingleControl(name, details) {
         html += '<input type="button" value="Send infinity"/>';
     } else if (details.TYPE == 'i') {
         // Integer
-        var min = details.RANGE[0].MIN;
-        var max = details.RANGE[0].MAX;
-        var value = 0;
-        html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-            ' value="' + value + '"/>';
-        html += '<span class="curr-val">' + value + '</span>';
-        html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        if (details.RANGE) {
+            var min = details.RANGE[0].MIN;
+            var max = details.RANGE[0].MAX;
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
+                ' value="' + value + '"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+        } else {
+            // TODO: Starting value.
+            var value = 0;
+            html += '<input type="range" value="' + value + '"/>';
+            html += '<span class="curr-val">' + value + '</span>';
+        }
         getter = 'parseInt';
         setter = 'int';
     } else if (details.TYPE == 'h') {
         // Longlong
         var min = details.RANGE[0].MIN;
         var max = details.RANGE[0].MAX;
-        html += '<input type="range" min="' + min + '" max="' + max + '"/>';
+        if (details.RANGE) {
+            html += '<input type="range" min="' + min + '" max="' + max + '"/>';
+        } else {
+            html += '<input type="range" />';
+        }
         getter = 'value';
     } else if (details.TYPE == 'm') {
         // Midi
