@@ -166,12 +166,37 @@ function initWebSocket(url) {
     oscPort.on('ready', function() {
         isOscReady = true;
         oscPort.socket.onmessage = function(e) {
-            var msg = JSON.parse(e.data);
-            if (msg.COMMAND == 'PATH_CHANGED') {
-                // TODO: Handle this message.
-            } else {
-                console.log('??????????');
-                console.log('Unknown message: ' + e.data);
+            // Check if message was a JSON command.
+            var msg = null;
+            try {
+                msg = JSON.parse(e.data);
+            } catch (e) {
+                // pass
+            }
+            if (msg) {
+                if (msg.COMMAND == 'PATH_CHANGED') {
+                    // TODO: Handle this message.
+                } else {
+                    console.log('??????????');
+                    console.log('Unknown message: ' + e.data);
+                }
+                return;
+            }
+            // Non-JSON data, assume it's a binary OSC packet.
+            var packet = osc.readPacket(new Uint8Array(e.data), {});
+            console.log('***** Got packet <' + JSON.stringify(packet) + '>');
+            var address = packet.address;
+            var value = packet.args[0];
+            // TODO: Validate address contains allowed characters.
+            var query = '[data-full-path="' + address + '"]';
+            var detailsElem = document.querySelector(query);
+            // Apply OSC packet by setting control value, update UI.
+            var controlElem = detailsElem.parentNode;
+            var targetElem = controlElem.querySelector('input');
+            targetElem.value = value;
+            var setter = detailsElem.attributes['data-setter'];
+            if (setter) {
+                runSetter(controlElem, setter.value, targetElem.value);
             }
         }
     });
@@ -200,13 +225,7 @@ function controlEvent(e) {
         var firstArg = {type: dataType, value: {r:r, g:g, b:b} };
     }
     if (setter) {
-        if (setter.value == 'int') {
-            var currValElem = controlElem.querySelector('.curr-val');
-            currValElem.textContent = e.target.value;
-        } else if (setter.value == 'float') {
-            var currValElem = controlElem.querySelector('.curr-val');
-            currValElem.textContent = Math.round(e.target.value * 1000) / 1000;
-        }
+        runSetter(controlElem, setter.value, e.target.value);
     }
     var message = {
         address: fullPath,
@@ -215,6 +234,16 @@ function controlEvent(e) {
     console.log('***** Sending value: ' + JSON.stringify(message));
     if (isOscReady) {
         oscPort.send(message);
+    }
+}
+
+function runSetter(controlElem, type, value) {
+    if (type == 'int') {
+        var currValElem = controlElem.querySelector('.curr-val');
+        currValElem.textContent = value;
+    } else if (type == 'float') {
+        var currValElem = controlElem.querySelector('.curr-val');
+        currValElem.textContent = Math.round(value * 1000) / 1000;
     }
 }
 
@@ -239,12 +268,13 @@ function listenClick(e) {
         var fullPathElem = spanElem.parentNode.querySelector('.full-path');
         var path = fullPathElem.textContent;
         if (isOscReady) {
-            oscPort.socket.send(
+            var msg = JSON.stringify(
 {
     'COMMAND': 'LISTEN',
     'DATA': path
-}
-            );
+});
+            console.log('***** Sending WS: ' + msg);
+            oscPort.socket.send(msg);
         }
 
     } else {
