@@ -29,8 +29,7 @@ Otherwise, the json request will be blocked by Chrome's security policy.
 
 Missing features:
 
-1. LISTEN, IGNORE
-2. HOST_INFO and EXTENSIONS
-3. ACCESS checking, handle 40x's
-4. longlong type
-5. searching for tags
+1. HOST_INFO and EXTENSIONS
+2. ACCESS checking, handle 40x's
+3. longlong type
+4. searching for tags
