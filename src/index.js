@@ -262,24 +262,26 @@ function getDataEvent(element) {
 function listenClick(e) {
     var imgElem = e.target;
     var spanElem = imgElem.parentNode;
+    var fullPathElem = spanElem.parentNode.querySelector('.full-path');
+    var path = fullPathElem.textContent;
+    var command = null;
     if (spanElem.className.indexOf('pressed') == -1) {
         imgElem.src = pressedBase64;
         spanElem.className = 'listen-button pressed';
-        var fullPathElem = spanElem.parentNode.querySelector('.full-path');
-        var path = fullPathElem.textContent;
-        if (isOscReady) {
-            var msg = JSON.stringify(
-{
-    'COMMAND': 'LISTEN',
-    'DATA': path
-});
-            console.log('***** Sending WS: ' + msg);
-            oscPort.socket.send(msg);
-        }
-
+        command = 'LISTEN';
     } else {
         imgElem.src = listenBase64;
         spanElem.className = 'listen-button';
+        command = 'IGNORE';
+    }
+    if (isOscReady && command) {
+        var msg = JSON.stringify(
+{
+    'COMMAND': command,
+    'DATA': path
+});
+        console.log('***** Sending WS: ' + msg);
+        oscPort.socket.send(msg);
     }
 }
 
