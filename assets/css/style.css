@@ -17,6 +17,7 @@ body {
 
 .listen-button {
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .full-path {
