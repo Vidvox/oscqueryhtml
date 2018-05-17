@@ -30,14 +30,39 @@ function buildFromQueryResult(result) {
         dirContainerElem = directoryElem.firstChild;
         for (let k = 0; k < innerKeys.length; k++) {
             let key = innerKeys[k];
-            var control = buildSingleControl(key, innerContents[key]);
-            dirContainerElem.appendChild(control);
+            let details = innerContents[key];
+            buildControlElements(dirContainerElem, key, details);
         }
         mainContentsElem.append(directoryElem);
     }
 }
 
-function buildSingleControl(name, details) {
+function buildControlElements(containerElem, name, details) {
+    let selector = [0];
+    for (let i = 0; i < details.TYPE.length; i++) {
+        let type = details.TYPE[i];
+        if (type == '[') {
+            selector.push(0);
+            continue;
+        } else if (type == ']') {
+            selector.pop();
+        } else {
+            var control = buildSingleControl(name, details, type, selector);
+            containerElem.appendChild(control);
+        }
+        selector[selector.length - 1]++;
+    }
+}
+
+function applySelector(obj, selector) {
+    for (let n = 0; n < selector.length; n++) {
+        let i = selector[n];
+        obj = obj[i];
+    }
+    return obj;
+}
+
+function buildSingleControl(name, details, type, selector) {
     var html = '';
     html += '<span class="control-name">' + name + '</span>';
     html += '<span class="listen-button"><img src="';
@@ -47,20 +72,20 @@ function buildSingleControl(name, details) {
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     var getter = null;
     var setter = null;
-    if (details.TYPE == 'c') {
+    if (type == 'c') {
         // Char
         html += '<input data-event="keydown" type="text" maxlength="1" ' +
             'size="3"/>';
         getter = 'value';
-    } else if (details.TYPE == 'r') {
+    } else if (type == 'r') {
         // Color
         html += '<input type="color" value="#4466ff" />';
         getter = 'color';
-    } else if (details.TYPE == 'd') {
+    } else if (type == 'd') {
         // Double
         if (details.RANGE) {
-            var min = details.RANGE[0].MIN;
-            var max = details.RANGE[0].MAX;
+            var min = applySelector(details.RANGE, selector).MIN;
+            var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '" step="any"/>';
@@ -73,14 +98,14 @@ function buildSingleControl(name, details) {
         }
         getter = 'parseFloat';
         setter = 'float';
-    } else if (details.TYPE == 'F') {
+    } else if (type == 'F') {
         // False
         html += '<input type="button" value="Send false"/>';
-    } else if (details.TYPE == 'f') {
+    } else if (type == 'f') {
         // Float
         if (details.RANGE) {
-            var min = details.RANGE[0].MIN;
-            var max = details.RANGE[0].MAX;
+            var min = applySelector(details.RANGE, selector).MIN;
+            var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '" step="any"/>';
@@ -93,14 +118,14 @@ function buildSingleControl(name, details) {
         }
         getter = 'parseFloat';
         setter = 'float';
-    } else if (details.TYPE == 'I') {
+    } else if (type == 'I') {
         // Infinity
         html += '<input type="button" value="Send infinity"/>';
-    } else if (details.TYPE == 'i') {
+    } else if (type == 'i') {
         // Integer
         if (details.RANGE) {
-            var min = details.RANGE[0].MIN;
-            var max = details.RANGE[0].MAX;
+            var min = applySelector(details.RANGE, selector).MIN;
+            var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + min + '" max="' + max + '" ' +
                 ' value="' + value + '"/>';
@@ -113,42 +138,41 @@ function buildSingleControl(name, details) {
         }
         getter = 'parseInt';
         setter = 'int';
-    } else if (details.TYPE == 'h') {
+    } else if (type == 'h') {
         // Longlong
-        var min = details.RANGE[0].MIN;
-        var max = details.RANGE[0].MAX;
+        var min = applySelector(details.RANGE, selector).MIN;
+        var max = applySelector(details.RANGE, selector).MAX;
         if (details.RANGE) {
             html += '<input type="range" min="' + min + '" max="' + max + '"/>';
         } else {
             html += '<input type="range" />';
         }
         getter = 'value';
-    } else if (details.TYPE == 'm') {
+    } else if (type == 'm') {
         // Midi
         html += '<span class="type">TODO: midi node</span>';
         console.log('========================================');
         console.log(details);
-    } else if (details.TYPE == 'N') {
+    } else if (type == 'N') {
         // Null
         html += '<input type="button" value="Send null"/>';
-    } else if (details.TYPE == 's') {
+    } else if (type == 's') {
         // String
         html += '<input type="text"/>';
         getter = 'value';
-    } else if (details.TYPE == 'T') {
+    } else if (type == 'T') {
         // True
         html += '<input type="button" value="Send true"/>';
-    } else if (details.TYPE == 't') {
+    } else if (type == 't') {
         // Timetag
         html += '<span class="type">TODO: timetag node</span>';
         console.log('========================================');
         console.log(details);
     } else {
-        html += '<span class="type">UNKNOWN (' + details.TYPE + ')</span>';
+        html += '<span class="type">UNKNOWN (' + type + ')</span>';
     }
     html += '<span class="details" ' +
-        'data-full-path="' + details.FULL_PATH + '" ' +
-        'data-type="' + details.TYPE + '" ';
+        'data-full-path="' + details.FULL_PATH + '" data-type="' + type + '" ';
     if (getter) {
         html += 'data-getter="' + getter + '" ';
     }
