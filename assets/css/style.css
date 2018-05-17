@@ -2,6 +2,16 @@ body {
   font-family: Arial;
 }
 
+.dir-container {
+  border: solid 2px black;
+  margin-bottom: 8px;
+}
+
+.dir-name {
+  font-size: 140%;
+  font-weight: bold;
+}
+
 .control {
   border: solid 1px black;
   padding: 2px;

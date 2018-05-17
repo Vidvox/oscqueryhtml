@@ -16,16 +16,24 @@ function objectGetValue(obj, i) {
 }
 
 function buildFromQueryResult(result) {
+    let mainContentsElem = $('#mainContents');
     let contents = result.CONTENTS;
-    // TODO: Iterate all directories?
-    let dir = objectGetValue(contents, 0);
-    let innerContents = dir.CONTENTS;
-    let innerKeys = Object.keys(innerContents);
-    for (let k = 0; k < innerKeys.length; k++) {
-        let key = innerKeys[k];
-        var control = buildSingleControl(key, innerContents[key]);
-        var mainContents = $('#mainContents');
-        mainContents.appendChild(control);
+    let dirNames = Object.keys(contents);
+    for (let j = 0; j < dirNames.length; j++) {
+        let dir = contents[dirNames[j]];
+        let innerContents = dir.CONTENTS;
+        let innerKeys = Object.keys(innerContents);
+        let directoryElem = document.createElement('div');
+        directoryElem.innerHTML = (
+            '<div class="dir-container"><span class="dir-name">' +
+                dirNames[j] + '</span></div>');
+        dirContainerElem = directoryElem.firstChild;
+        for (let k = 0; k < innerKeys.length; k++) {
+            let key = innerKeys[k];
+            var control = buildSingleControl(key, innerContents[key]);
+            dirContainerElem.appendChild(control);
+        }
+        mainContentsElem.append(directoryElem);
     }
 }
 
