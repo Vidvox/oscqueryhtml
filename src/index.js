@@ -285,6 +285,16 @@ function charKeyDownEvent(e) {
     controlEvent(e);
 }
 
+function rangeModifyEvent(e) {
+    let value = e.target.value;
+    // Cache value so that it won't send twice in a row.
+    if (e.target.cacheValue === value) {
+        return;
+    }
+    e.target.cacheValue = value
+    controlEvent(e);
+}
+
 function getDataEvent(element) {
     if (element.attributes['data-event']) {
         return element.attributes['data-event'].value;
@@ -326,6 +336,9 @@ function addInputEventHandlers() {
             input.addEventListener('keydown', charKeyDownEvent, false);
         } else if (input.type == "button") {
             input.addEventListener('click', controlEvent, false);
+        } else if (input.type == "range") {
+            input.addEventListener('input', rangeModifyEvent, false);
+            input.addEventListener('change', rangeModifyEvent, false);
         } else {
             input.addEventListener('change', controlEvent, false);
         }
