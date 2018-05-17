@@ -48,7 +48,9 @@ function buildControlElements(containerElem, name, details) {
             selector.pop();
         } else {
             var control = buildSingleControl(name, details, type, selector);
-            containerElem.appendChild(control);
+            if (control) {
+                containerElem.appendChild(control);
+            }
         }
         selector[selector.length - 1]++;
     }
@@ -149,10 +151,8 @@ function buildSingleControl(name, details, type, selector) {
         }
         getter = 'value';
     } else if (type == 'm') {
-        // Midi
-        html += '<span class="type">TODO: midi node</span>';
-        console.log('========================================');
-        console.log(details);
+        // MIDI
+        return null;
     } else if (type == 'N') {
         // Null
         html += '<input type="button" value="Send null"/>';
@@ -165,9 +165,7 @@ function buildSingleControl(name, details, type, selector) {
         html += '<input type="button" value="Send true"/>';
     } else if (type == 't') {
         // Timetag
-        html += '<span class="type">TODO: timetag node</span>';
-        console.log('========================================');
-        console.log(details);
+        return null;
     } else {
         html += '<span class="type">UNKNOWN (' + type + ')</span>';
     }
