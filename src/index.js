@@ -18,6 +18,9 @@ function objectGetValue(obj, i) {
 function buildFromQueryResult(result) {
     let mainContentsElem = $('#mainContents');
     let contents = result.CONTENTS;
+    if (!contents) {
+        return;
+    }
     let dirNames = Object.keys(contents);
     for (let j = 0; j < dirNames.length; j++) {
         let dir = contents[dirNames[j]];
