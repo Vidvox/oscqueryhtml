@@ -19,6 +19,9 @@ function buildFromQueryResult(result) {
     let mainContentsElem = $('#mainContents');
     let contents = result.CONTENTS;
     if (!contents) {
+        let noControlsElem = document.createElement('div');
+        noControlsElem = 'No controls detected';
+        mainContentsElem.append(noControlsElem);
         return;
     }
     let dirNames = Object.keys(contents);
