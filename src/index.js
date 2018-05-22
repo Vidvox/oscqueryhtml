@@ -24,6 +24,19 @@ function buildFromQueryResult(result) {
         mainContentsElem.append(noControlsElem);
         return;
     }
+    // Label for listen button.
+    let labelDivElem = document.createElement('div');
+    labelDivElem.className = 'listen-label';
+    labelDivElem.textContent = 'Listen for OSC: ';
+    mainContentsElem.append(labelDivElem);
+    // Listen button.
+    let listenImgElem = document.createElement('img');
+    listenImgElem.src = listenBase64;
+    let listenSpanElem = document.createElement('span');
+    listenSpanElem.className = 'listen-button';
+    listenSpanElem.appendChild(listenImgElem);
+    mainContentsElem.append(listenSpanElem);
+    //
     let dirNames = Object.keys(contents);
     for (let j = 0; j < dirNames.length; j++) {
         let dir = contents[dirNames[j]];
@@ -73,9 +86,6 @@ function applySelector(obj, selector) {
 function buildSingleControl(name, details, type, selector) {
     var html = '';
     html += '<span class="control-name">' + name + '</span>';
-    html += '<span class="listen-button"><img src="';
-    html += listenBase64;
-    html += '" width=24 height=24/></span>';
     html += '<span class="full-path">' + details.FULL_PATH + '</span>';
     html += '<span class="description">' + details.DESCRIPTION + '</span>';
     var getter = null;
@@ -344,8 +354,7 @@ function getDataEvent(element) {
 function listenClick(e) {
     var imgElem = e.target;
     var spanElem = imgElem.parentNode;
-    var fullPathElem = spanElem.parentNode.querySelector('.full-path');
-    var path = fullPathElem.textContent;
+    var path = '/';
     var command = null;
     if (spanElem.className.indexOf('pressed') == -1) {
         imgElem.src = pressedBase64;
