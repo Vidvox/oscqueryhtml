@@ -82,9 +82,21 @@ function buildSingleControl(name, details, type, selector) {
     var setter = null;
     if (type == 'c') {
         // Char
-        html += '<input data-event="keydown" type="text" maxlength="1" ' +
-            'size="3"/>';
-        getter = 'value';
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            // TODO: Set initial value from details.VALUE
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + v + '">' + v + '</option>'
+            }
+            html += '</select>';
+            getter = 'value';
+        } else {
+            html += '<input data-event="keydown" type="text" maxlength="1" ' +
+                'size="3"/>';
+            getter = 'value';
+        }
     } else if (type == 'r') {
         // Color
         html += '<input type="color" value="#4466ff" />';
@@ -176,8 +188,20 @@ function buildSingleControl(name, details, type, selector) {
         html += '<input type="button" value="Send null"/>';
     } else if (type == 's') {
         // String
-        html += '<input type="text"/>';
-        getter = 'value';
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            // TODO: Set initial value from details.VALUE
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + v + '">' + v + '</option>'
+            }
+            html += '</select>';
+            getter = 'value';
+        } else {
+            html += '<input type="text"/>';
+            getter = 'value';
+        }
     } else if (type == 'T') {
         // True
         html += '<input type="button" value="Send true"/>';
