@@ -36,23 +36,28 @@ function buildFromQueryResult(result) {
     listenSpanElem.className = 'listen-button';
     listenSpanElem.appendChild(listenImgElem);
     mainContentsElem.append(listenSpanElem);
-    //
+    // Build contents for the main container.
+    buildContentsAddToContainer(contents, mainContentsElem)
+}
+
+function buildContentsAddToContainer(contents, parentContainer) {
     let dirNames = Object.keys(contents);
     for (let j = 0; j < dirNames.length; j++) {
-        let dir = contents[dirNames[j]];
-        let innerContents = dir.CONTENTS;
-        let innerKeys = Object.keys(innerContents);
+        let name = dirNames[j];
+        let dirObj = contents[dirNames[j]];
+        // Container for this directory.
         let directoryElem = document.createElement('div');
-        directoryElem.innerHTML = (
-            '<div class="dir-container"><span class="dir-name">' +
-                dirNames[j] + '</span></div>');
-        dirContainerElem = directoryElem.firstChild;
-        for (let k = 0; k < innerKeys.length; k++) {
-            let key = innerKeys[k];
-            let details = innerContents[key];
-            buildControlElements(dirContainerElem, key, details);
+        if (dirObj.CONTENTS) {
+            // Recursive call to handle the inner contents.
+            directoryElem.className = 'dir-container';
+            directoryElem.innerHTML = (
+                '<span class="dir-name">' + dirNames[j] + '</span>');
+            buildContentsAddToContainer(dirObj.CONTENTS, directoryElem);
+        } else {
+            // Build a control from the details.
+            buildControlElements(directoryElem, name, dirObj);
         }
-        mainContentsElem.append(directoryElem);
+        parentContainer.append(directoryElem);
     }
 }
 
