@@ -131,7 +131,17 @@ function buildSingleControl(name, details, type, selector) {
         html += '<input type="button" value="Send infinity"/>';
     } else if (type == 'i') {
         // Integer
-        if (details.RANGE) {
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            // TODO: Set initial value from details.VALUE
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + v + '">' + v + '</option>'
+            }
+            html += '</select>';
+            getter = 'parseInt';
+        } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN;
             var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
@@ -139,13 +149,15 @@ function buildSingleControl(name, details, type, selector) {
                 ' value="' + value + '"/>';
             html += '<span class="curr-val">' + value + '</span>';
             html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+            getter = 'parseInt';
+            setter = 'int';
         } else {
             var value = details.VALUE || 0;
             html += '<input type="range" value="' + value + '"/>';
             html += '<span class="curr-val">' + value + '</span>';
+            getter = 'parseInt';
+            setter = 'int';
         }
-        getter = 'parseInt';
-        setter = 'int';
     } else if (type == 'h') {
         // Longlong
         var min = applySelector(details.RANGE, selector).MIN;
@@ -332,9 +344,9 @@ function listenClick(e) {
 }
 
 function addInputEventHandlers() {
-    var inputs = document.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; i++) {
-        var input = inputs[i];
+    let inputs = document.getElementsByTagName("input");
+    for (let i = 0; i < inputs.length; i++) {
+        let input = inputs[i];
         if (getDataEvent(input) == 'keydown') {
             input.addEventListener('keydown', charKeyDownEvent, false);
         } else if (input.type == "button") {
@@ -346,9 +358,14 @@ function addInputEventHandlers() {
             input.addEventListener('change', controlEvent, false);
         }
     }
-    var listenButtons = document.getElementsByClassName("listen-button");
-    for (var i = 0; i < listenButtons.length; i++) {
-        var listenBtn = listenButtons[i];
+    let selects = document.getElementsByTagName("select");
+    for (let i = 0; i < selects.length; i++) {
+        let select = selects[i];
+        select.addEventListener('change', controlEvent, false);
+    }
+    let listenButtons = document.getElementsByClassName("listen-button");
+    for (let i = 0; i < listenButtons.length; i++) {
+        let listenBtn = listenButtons[i];
         listenBtn.addEventListener('click', listenClick, false);
     }
 }
