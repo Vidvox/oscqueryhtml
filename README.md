@@ -2,6 +2,10 @@
 
 An HTML, Javascript, css application for retrieving OSCQuery responses (in json) and rendering an appropriate webapp.
 
+### Proposal
+
+See [https://github.com/mrRay/OSCQueryProposal](https://github.com/mrRay/OSCQueryProposal)
+
 ### Usage
 
 1. Copy web/views/pages/index.ejs to index.html
