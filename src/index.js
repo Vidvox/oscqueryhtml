@@ -23,21 +23,21 @@ function buildFromQueryResult(result) {
     if (!contents) {
         let noControlsElem = document.createElement('div');
         noControlsElem = 'No controls detected';
-        mainContentsElem.append(noControlsElem);
+        mainContentsElem.appendChild(noControlsElem);
         return;
     }
     // Label for listen button.
     let labelDivElem = document.createElement('div');
     labelDivElem.className = 'listen-label';
     labelDivElem.textContent = 'Listen for OSC: ';
-    mainContentsElem.append(labelDivElem);
+    mainContentsElem.appendChild(labelDivElem);
     // Listen button.
     let listenImgElem = document.createElement('img');
     listenImgElem.src = listenBase64;
     let listenSpanElem = document.createElement('span');
     listenSpanElem.className = 'listen-button';
     listenSpanElem.appendChild(listenImgElem);
-    mainContentsElem.append(listenSpanElem);
+    mainContentsElem.appendChild(listenSpanElem);
     // Build contents for the main container.
     buildContentsAddToContainer(contents, mainContentsElem)
 }
@@ -59,7 +59,7 @@ function buildContentsAddToContainer(contents, parentContainer) {
             // Build a control from the details.
             buildControlElements(directoryElem, name, dirObj);
         }
-        parentContainer.append(directoryElem);
+        parentContainer.appendChild(directoryElem);
     }
 }
 
