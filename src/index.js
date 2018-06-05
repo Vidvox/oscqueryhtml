@@ -123,6 +123,7 @@ function buildSingleControl(name, details, type, selector) {
         // Color
         html += '<input type="color" value="#4466ff" />';
         getter = 'color';
+        setter = 'color';
     } else if (type == 'd') {
         // Double
         if (details.RANGE) {
@@ -271,6 +272,18 @@ function storeControlStructure(data) {
     allControlStruct = extractControlPaths(data);
 }
 
+function textToHexColor(elem) {
+    return '#' + num2Hex(elem['r']) + num2Hex(elem['g']) + num2Hex(elem['b']);
+}
+
+function num2Hex(num) {
+    let hex = Number(num).toString(16);
+    if (hex.length < 2) {
+        hex = '0' + hex;
+    }
+    return hex;
+}
+
 var oscPort;
 var isOscReady = false;
 
@@ -310,11 +323,15 @@ function initWebSocket(url) {
             // Apply OSC packet by setting control value, update UI.
             var controlElem = detailsElem.parentNode;
             var targetElem = controlElem.querySelector('input');
-            targetElem.value = value;
             var setter = detailsElem.attributes['data-setter'];
             if (setter) {
-                runSetter(controlElem, setter.value, targetElem.value);
+                if (setter.value == 'color') {
+                    value = textToHexColor(value);
+                } else {
+                    runSetter(controlElem, setter.value, targetElem.value);
+                }
             }
+            targetElem.value = value;
         }
     });
 }
