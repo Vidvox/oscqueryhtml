@@ -53,7 +53,7 @@ function buildContentsAddToContainer(contents, parentContainer) {
             // Recursive call to handle the inner contents.
             directoryElem.className = 'dir-container';
             directoryElem.innerHTML = (
-                '<span class="dir-name">' + dirNames[j] + '</span>');
+                '<span class="dir-name">' + E(dirNames[j]) + '</span>');
             buildContentsAddToContainer(dirObj.CONTENTS, directoryElem);
         } else {
             // Build a control from the details.
@@ -90,11 +90,16 @@ function applySelector(obj, selector) {
     return obj;
 }
 
+function E(text) {
+    return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').
+        replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function buildSingleControl(name, details, type, selector) {
     var html = '';
-    html += '<span class="control-name">' + name + '</span>';
-    html += '<span class="full-path">' + details.FULL_PATH + '</span>';
-    html += '<span class="description">' + details.DESCRIPTION + '</span>';
+    html += '<span class="control-name">' + E(name) + '</span>';
+    html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
+    html += '<span class="description">' + E(details.DESCRIPTION) + '</span>';
     var getter = null;
     var setter = null;
     if (type == 'c') {
@@ -105,7 +110,7 @@ function buildSingleControl(name, details, type, selector) {
             html += '<select>';
             for (let i = 0; i < values.length; i++) {
                 let v = values[i];
-                html += '<option value="' + v + '">' + v + '</option>'
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
             getter = 'value';
@@ -124,14 +129,15 @@ function buildSingleControl(name, details, type, selector) {
             var min = applySelector(details.RANGE, selector).MIN;
             var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
-            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-                ' value="' + value + '" step="any"/>';
-            html += '<span class="curr-val">' + value + '</span>';
-            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+            html += '<input type="range" min="' + E(min) + '" max="' +
+                E(max) + '" value="' + E(value) + '" step="any"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += '<span class="range-val"> (' + E(min) + '-' +
+                E(max) + ')</span>'
         } else {
             var value = details.VALUE || 0;
-            html += '<input type="range" value="' + value + '" step="any"/>';
-            html += '<span class="curr-val">' + value + '</span>';
+            html += '<input type="range" value="' + E(value) + '" step="any"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
         }
         getter = 'parseFloat';
         setter = 'float';
@@ -144,14 +150,15 @@ function buildSingleControl(name, details, type, selector) {
             var min = applySelector(details.RANGE, selector).MIN;
             var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
-            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-                ' value="' + value + '" step="any"/>';
-            html += '<span class="curr-val">' + value + '</span>';
-            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+            html += '<input type="range" min="' + E(min) + '" max="' +
+                E(max) + '" value="' + E(value) + '" step="any"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += '<span class="range-val"> (' + E(min) + '-' +
+                E(max) + ')</span>'
         } else {
             var value = details.VALUE || 0;
-            html += '<input type="range" value="' + value + '" step="any"/>';
-            html += '<span class="curr-val">' + value + '</span>';
+            html += '<input type="range" value="' + E(value) + '" step="any"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
         }
         getter = 'parseFloat';
         setter = 'float';
@@ -166,7 +173,7 @@ function buildSingleControl(name, details, type, selector) {
             html += '<select>';
             for (let i = 0; i < values.length; i++) {
                 let v = values[i];
-                html += '<option value="' + v + '">' + v + '</option>'
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
             getter = 'parseInt';
@@ -174,16 +181,17 @@ function buildSingleControl(name, details, type, selector) {
             var min = applySelector(details.RANGE, selector).MIN;
             var max = applySelector(details.RANGE, selector).MAX;
             var value = details.VALUE || 0;
-            html += '<input type="range" min="' + min + '" max="' + max + '" ' +
-                ' value="' + value + '"/>';
-            html += '<span class="curr-val">' + value + '</span>';
-            html += '<span class="range-val"> (' + min + '-' + max + ')</span>'
+            html += '<input type="range" min="' + E(min) + '" max="' +
+                E(max) + '" value="' + E(value) + '"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += '<span class="range-val"> (' + E(min) + '-' +
+                E(max) + ')</span>'
             getter = 'parseInt';
             setter = 'int';
         } else {
             var value = details.VALUE || 0;
-            html += '<input type="range" value="' + value + '"/>';
-            html += '<span class="curr-val">' + value + '</span>';
+            html += '<input type="range" value="' + E(value) + '"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
             getter = 'parseInt';
             setter = 'int';
         }
@@ -192,7 +200,8 @@ function buildSingleControl(name, details, type, selector) {
         var min = applySelector(details.RANGE, selector).MIN;
         var max = applySelector(details.RANGE, selector).MAX;
         if (details.RANGE) {
-            html += '<input type="range" min="' + min + '" max="' + max + '"/>';
+            html += '<input type="range" min="' + E(min) + '" max="'
+                + E(max) + '"/>';
         } else {
             html += '<input type="range" />';
         }
@@ -211,7 +220,7 @@ function buildSingleControl(name, details, type, selector) {
             html += '<select>';
             for (let i = 0; i < values.length; i++) {
                 let v = values[i];
-                html += '<option value="' + v + '">' + v + '</option>'
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
             getter = 'value';
@@ -226,15 +235,15 @@ function buildSingleControl(name, details, type, selector) {
         // Timetag
         return null;
     } else {
-        html += '<span class="type">UNKNOWN (' + type + ')</span>';
+        html += '<span class="type">UNKNOWN (' + E(type) + ')</span>';
     }
-    html += '<span class="details" ' +
-        'data-full-path="' + details.FULL_PATH + '" data-type="' + type + '" ';
+    html += '<span class="details" data-full-path="' + E(details.FULL_PATH) +
+        '" data-type="' + E(type) + '" ';
     if (getter) {
-        html += 'data-getter="' + getter + '" ';
+        html += 'data-getter="' + E(getter) + '" ';
     }
     if (setter) {
-        html += 'data-setter="' + setter + '" ';
+        html += 'data-setter="' + E(setter) + '" ';
     }
     html += '/></span>';
     var div = document.createElement('div');
