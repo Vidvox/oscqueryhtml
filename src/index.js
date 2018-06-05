@@ -7,6 +7,8 @@ const retrieve = require('./retrieve.js');
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
 
+var allControlStruct = null;
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -241,6 +243,25 @@ function buildSingleControl(name, details, type, selector) {
     return div;
 }
 
+function extractControlPaths(obj) {
+    var paths = [];
+    if (obj.CONTENTS) {
+        let dirNames = Object.keys(obj.CONTENTS);
+        for (let j = 0; j < dirNames.length; j++) {
+            let name = dirNames[j];
+            let dirObj = obj.CONTENTS[dirNames[j]];
+            paths = paths.concat(extractControlPaths(dirObj));
+        }
+    } else if (obj.FULL_PATH) {
+        paths.push(obj.FULL_PATH);
+    }
+    return paths;
+}
+
+function storeControlStructure(data) {
+    allControlStruct = extractControlPaths(data);
+}
+
 var oscPort;
 var isOscReady = false;
 
@@ -371,13 +392,16 @@ function listenClick(e) {
         command = 'IGNORE';
     }
     if (isOscReady && command) {
-        var msg = JSON.stringify(
+        for (let i = 0; i < allControlStruct.length; i++) {
+            var path = allControlStruct[i];
+            var msg = JSON.stringify(
 {
     'COMMAND': command,
     'DATA': path
 });
-        console.log('***** Sending WS: ' + msg);
-        oscPort.socket.send(msg);
+            console.log('***** Sending WS: ' + msg);
+            oscPort.socket.send(msg);
+        }
     }
 }
 
@@ -415,6 +439,7 @@ function createApp(serverUrl) {
         console.log(hostInfo);
         retrieve.retrieveJson(serverUrl, (result) => {
             buildFromQueryResult(result);
+            storeControlStructure(result);
             addInputEventHandlers();
         });
     });
