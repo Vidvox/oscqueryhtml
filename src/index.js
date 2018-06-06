@@ -7,7 +7,9 @@ const retrieve = require('./retrieve.js');
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
 
-var allControlStruct = null;
+var g_allControlStruct = null;
+var g_hostInfo = null;
+var g_extensions = null;
 
 function $(selector) {
     return document.querySelector(selector);
@@ -15,6 +17,11 @@ function $(selector) {
 
 function objectGetValue(obj, i) {
     return obj[Object.keys(obj)[i]];
+}
+
+function storeHostInfo(hostInfo) {
+    g_hostInfo = hostInfo;
+    g_extensions = hostInfo.EXTENSIONS;
 }
 
 function buildFromQueryResult(result) {
@@ -39,18 +46,20 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(noControlsElem);
         return;
     }
-    // Label for listen button.
-    let labelDivElem = document.createElement('div');
-    labelDivElem.className = 'listen-label';
-    labelDivElem.textContent = 'Listen for OSC: ';
-    mainContentsElem.appendChild(labelDivElem);
-    // Listen button.
-    let listenImgElem = document.createElement('img');
-    listenImgElem.src = listenBase64;
-    let listenSpanElem = document.createElement('span');
-    listenSpanElem.className = 'listen-button';
-    listenSpanElem.appendChild(listenImgElem);
-    mainContentsElem.appendChild(listenSpanElem);
+    if (g_extensions.LISTEN) {
+        // Label for listen button.
+        let labelDivElem = document.createElement('div');
+        labelDivElem.className = 'listen-label';
+        labelDivElem.textContent = 'Listen for OSC: ';
+        mainContentsElem.appendChild(labelDivElem);
+        // Listen button.
+        let listenImgElem = document.createElement('img');
+        listenImgElem.src = listenBase64;
+        let listenSpanElem = document.createElement('span');
+        listenSpanElem.className = 'listen-button';
+        listenSpanElem.appendChild(listenImgElem);
+        mainContentsElem.appendChild(listenSpanElem);
+    }
     // Build contents for the main container.
     buildContentsAddToContainer(contents, mainContentsElem)
 }
@@ -300,7 +309,7 @@ function extractControlPaths(obj) {
 }
 
 function storeControlStructure(data) {
-    allControlStruct = extractControlPaths(data);
+    g_allControlStruct = extractControlPaths(data);
 }
 
 function textToHexColor(elem) {
@@ -450,8 +459,8 @@ function listenClick(e) {
         command = 'IGNORE';
     }
     if (isOscReady && command) {
-        for (let i = 0; i < allControlStruct.length; i++) {
-            var path = allControlStruct[i];
+        for (let i = 0; i < g_allControlStruct.length; i++) {
+            var path = g_allControlStruct[i];
             var msg = JSON.stringify(
 {
     'COMMAND': command,
@@ -493,8 +502,7 @@ function addInputEventHandlers() {
 function createApp(serverUrl) {
     initWebSocket(serverUrl.replace("http", "ws"));
     retrieve.retrieveHostInfo(serverUrl, (hostInfo) => {
-        // TODO: Parse the hostInfo, act based upon what extensions are allowed.
-        console.log(hostInfo);
+        storeHostInfo(hostInfo);
         retrieve.retrieveJson(serverUrl, (result) => {
             buildFromQueryResult(result);
             storeControlStructure(result);
