@@ -19,6 +19,19 @@ function objectGetValue(obj, i) {
 
 function buildFromQueryResult(result) {
     let mainContentsElem = $('#mainContents');
+    {
+        let refreshMessageElem = document.createElement('div');
+        refreshMessageElem.id = 'refresh-butter';
+        refreshMessageElem.style.display = 'none';
+        refreshMessageElem.style.backgroundColor = '#ffff88';
+        refreshMessageElem.style.position = 'absolute';
+        refreshMessageElem.style.top = '2px';
+        refreshMessageElem.style.left = '2px';
+        refreshMessageElem.style.textAlign = 'center';
+        refreshMessageElem.style.width = '40%';
+        refreshMessageElem.textContent = 'Changes found, refresh to see them';
+        document.body.appendChild(refreshMessageElem);
+    }
     let contents = result.CONTENTS;
     if (!contents) {
         let noControlsElem = document.createElement('div');
@@ -198,15 +211,33 @@ function buildSingleControl(name, details, type, selector) {
         }
     } else if (type == 'h') {
         // Longlong
-        var min = applySelector(details.RANGE, selector).MIN;
-        var max = applySelector(details.RANGE, selector).MAX;
-        if (details.RANGE) {
-            html += '<input type="range" min="' + E(min) + '" max="'
-                + E(max) + '"/>';
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+            }
+            html += '</select>';
+            getter = 'parseInt';
+        } else if (details.RANGE) {
+            var min = applySelector(details.RANGE, selector).MIN;
+            var max = applySelector(details.RANGE, selector).MAX;
+            var value = details.VALUE || 0;
+            html += '<input type="range" min="' + E(min) + '" max="' +
+                E(max) + '" value="' + E(value) + '"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += '<span class="range-val"> (' + E(min) + '-' +
+                E(max) + ')</span>'
+            getter = 'parseInt';
+            setter = 'int';
         } else {
-            html += '<input type="range" />';
+            var value = details.VALUE || 0;
+            html += '<input type="range" value="' + E(value) + '"/>';
+            html += '<span class="curr-val">' + E(value) + '</span>';
+            getter = 'parseInt';
+            setter = 'int';
         }
-        getter = 'value';
     } else if (type == 'm') {
         // MIDI
         return null;
@@ -305,7 +336,8 @@ function initWebSocket(url) {
             }
             if (msg) {
                 if (msg.COMMAND == 'PATH_CHANGED') {
-                    // TODO: Handle this message.
+                    let refreshElem = document.getElementById('refresh-butter');
+                    refreshElem.style.display = 'inline';
                 } else {
                     console.log('??????????');
                     console.log('Unknown message: ' + e.data);
