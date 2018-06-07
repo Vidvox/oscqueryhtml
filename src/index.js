@@ -113,6 +113,9 @@ function applySelector(obj, selector) {
 }
 
 function E(text) {
+    if (!text) {
+        return "";
+    }
     return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
