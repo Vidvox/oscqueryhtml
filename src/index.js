@@ -66,6 +66,7 @@ function buildFromQueryResult(result) {
 
 function buildContentsAddToContainer(contents, parentContainer) {
     let dirNames = Object.keys(contents);
+    dirNames.sort();
     for (let j = 0; j < dirNames.length; j++) {
         let name = dirNames[j];
         let dirObj = contents[dirNames[j]];
@@ -300,6 +301,7 @@ function extractControlPaths(obj) {
     var paths = [];
     if (obj.CONTENTS) {
         let dirNames = Object.keys(obj.CONTENTS);
+        dirNames.sort();
         for (let j = 0; j < dirNames.length; j++) {
             let name = dirNames[j];
             let dirObj = obj.CONTENTS[dirNames[j]];
