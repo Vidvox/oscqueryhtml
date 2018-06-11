@@ -10,6 +10,7 @@ const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
 var g_allControlStruct = null;
 var g_hostInfo = null;
 var g_extensions = null;
+var g_idGen = 0;
 
 function $(selector) {
     return document.querySelector(selector);
@@ -17,6 +18,12 @@ function $(selector) {
 
 function objectGetValue(obj, i) {
     return obj[Object.keys(obj)[i]];
+}
+
+function generateId() {
+    let result = 'control_id_' + g_idGen;
+    g_idGen++;
+    return result;
 }
 
 function storeHostInfo(hostInfo) {
@@ -96,10 +103,7 @@ function buildControlElements(containerElem, name, details) {
         } else if (type == ']') {
             selector.pop();
         } else {
-            var control = buildSingleControl(name, details, type, selector);
-            if (control) {
-                containerElem.appendChild(control);
-            }
+            buildSingleControl(containerElem, name, details, type, selector);
         }
         selector[selector.length - 1]++;
     }
@@ -121,7 +125,7 @@ function E(text) {
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildSingleControl(name, details, type, selector) {
+function buildSingleControl(container, name, details, type, selector) {
     var html = '';
     html += '<span class="control-name">' + E(name) + '</span>';
     html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
@@ -291,10 +295,9 @@ function buildSingleControl(name, details, type, selector) {
         html += 'data-setter="' + E(setter) + '" ';
     }
     html += '/></span>';
-    var div = document.createElement('div');
-    div.setAttribute('class', 'control');
-    div.innerHTML = html;
-    return div;
+    container.innerHTML = html;
+    container.className = 'control';
+    container.id = generateId();
 }
 
 function extractControlPaths(obj) {
