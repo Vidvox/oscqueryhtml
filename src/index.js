@@ -21,7 +21,7 @@ function objectGetValue(obj, i) {
 }
 
 function generateId() {
-    let result = 'control_id_' + g_idGen;
+    let result = g_idGen;
     g_idGen++;
     return result;
 }
@@ -126,7 +126,12 @@ function E(text) {
 }
 
 function buildSingleControl(container, name, details, type, selector) {
+    var id = generateId();
     var html = '';
+    html += '<div class="toggle-show" id="toggle_show_' + id +
+        '" style="display:none">[+]</div>';
+    html += '<div class="toggle-hide" id="toggle_hide_' + id + '">[-]</div>';
+    html += '<div id="control_body_' + id + '">';
     html += '<span class="control-name">' + E(name) + '</span>';
     html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
     html += '<span class="description">' + E(details.DESCRIPTION) + '</span>';
@@ -295,9 +300,9 @@ function buildSingleControl(container, name, details, type, selector) {
         html += 'data-setter="' + E(setter) + '" ';
     }
     html += '/></span>';
+    html += '</div>';
     container.innerHTML = html;
     container.className = 'control';
-    container.id = generateId();
 }
 
 function extractControlPaths(obj) {
@@ -480,6 +485,22 @@ function listenClick(e) {
     }
 }
 
+function toggleHide(e) {
+    let text = e.target.id;
+    let id = text.substr(12);
+    $('#control_body_' + id).style.display = 'none';
+    $('#toggle_show_'  + id).style.display = 'block';
+    $('#toggle_hide_'  + id).style.display = 'none';
+}
+
+function toggleShow(e) {
+    let text = e.target.id;
+    let id = text.substr(12);
+    $('#control_body_' + id).style.display = 'block';
+    $('#toggle_show_'  + id).style.display = 'none';
+    $('#toggle_hide_'  + id).style.display = 'block';
+}
+
 function addInputEventHandlers() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
@@ -500,10 +521,20 @@ function addInputEventHandlers() {
         let select = selects[i];
         select.addEventListener('change', controlEvent, false);
     }
-    let listenButtons = document.getElementsByClassName("listen-button");
+    let listenButtons = document.getElementsByClassName('listen-button');
     for (let i = 0; i < listenButtons.length; i++) {
         let listenBtn = listenButtons[i];
         listenBtn.addEventListener('click', listenClick, false);
+    }
+    let toggleHideElems = document.getElementsByClassName('toggle-hide');
+    for (let i = 0; i < toggleHideElems.length; i++) {
+        let elem = toggleHideElems[i];
+        elem.addEventListener('click', toggleHide, false);
+    }
+    let toggleShowElems = document.getElementsByClassName('toggle-show');
+    for (let i = 0; i < toggleShowElems.length; i++) {
+        let elem = toggleShowElems[i];
+        elem.addEventListener('click', toggleShow, false);
     }
 }
 
