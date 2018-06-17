@@ -439,7 +439,7 @@ function controlEvent(e) {
         var r = parseInt(color.substr(1, 2), 16);
         var g = parseInt(color.substr(3, 2), 16);
         var b = parseInt(color.substr(5, 2), 16);
-        var firstArg = {type: dataType, value: {r:r, g:g, b:b} };
+        var firstArg = {type: dataType, value: {r:r, g:g, b:b, a:1} };
     }
     if (setter) {
         runSetter(controlElem, setter.value, e.target.value);
