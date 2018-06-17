@@ -105,11 +105,22 @@ function buildContentsAddToContainer(contents, parentContainer) {
         // Container for this directory.
         let directoryElem = document.createElement('div');
         if (dirObj.CONTENTS) {
+            // TODO: Refactor into common utility function.
+            var id = generateId();
+            let html = '';
+            html += '<div class="toggle-show" id="toggle_show_' + id +
+                '" style="display:none">[+]</div>';
+            html += '<div class="toggle-hide" id="toggle_hide_' + id + '">[-]';
+            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
+            html += '</div>';
+            html += '<div id="control_body_' + id + '"></div>';
             // Recursive call to handle the inner contents.
+            //directoryElem.id = 'control_body_' + id;
+            directoryElem.innerHTML = html;
+            directoryContainer = directoryElem.querySelector('#control_body_' + id);
+            //directoryContainer.className = 'dir-container';
             directoryElem.className = 'dir-container';
-            directoryElem.innerHTML = (
-                '<span class="dir-name">' + E(dirNames[j]) + '</span>');
-            buildContentsAddToContainer(dirObj.CONTENTS, directoryElem);
+            buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
         } else {
             // Build a control from the details.
             buildControlElements(directoryElem, name, dirObj);
