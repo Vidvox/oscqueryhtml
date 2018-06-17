@@ -175,7 +175,7 @@ function buildSingleControl(container, name, details, type, selector) {
             html += '</select>';
             getter = 'value';
         } else {
-            html += '<input data-event="keydown" type="text" maxlength="1" ' +
+            html += '<input data-event="keypress" type="text" maxlength="1" ' +
                 'size="3"/>';
             getter = 'value';
         }
@@ -464,8 +464,8 @@ function runSetter(controlElem, type, value) {
     }
 }
 
-function charKeyDownEvent(e) {
-    e.target.value = e.key;
+function charKeyPressEvent(e) {
+    e.target.value = String.fromCharCode(e.keyCode);
     controlEvent(e);
 }
 
@@ -552,8 +552,8 @@ function addInputEventHandlers() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
-        if (getDataEvent(input) == 'keydown') {
-            input.addEventListener('keydown', charKeyDownEvent, false);
+        if (getDataEvent(input) == 'keypress') {
+            input.addEventListener('keypress', charKeyPressEvent, false);
         } else if (input.type == "button") {
             input.addEventListener('click', controlEvent, false);
         } else if (input.type == "range") {
