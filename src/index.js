@@ -3,6 +3,7 @@ const oscTransports = require('osc-transports');
 const oscWebsocketClient = require('osc-websocket-client');
 
 const retrieve = require('./retrieve.js');
+const colorpicker = require('./colorpicker.js');
 
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
@@ -29,6 +30,34 @@ function generateId() {
 function storeHostInfo(hostInfo) {
     g_hostInfo = hostInfo;
     g_extensions = hostInfo.EXTENSIONS;
+}
+
+var g_supportColorPicker = false;
+
+function detectColorPicker() {
+    let input = document.createElement('input');
+    input.setAttribute('type', 'color');
+    input.setAttribute('value', '$');
+    g_supportColorPicker = (input.type == 'color' && input.value != '$');
+}
+
+function buildColorPicker() {
+    detectColorPicker();
+    if (g_supportColorPicker) {
+        return;
+    }
+    let mainContentsElem = $('#mainContents');
+    let colorPickerElem = document.createElement('div');
+    colorPickerElem.id = 'colorPicker';
+    colorPickerElem.innerHTML = '<div id="picker-wrapper"><div id="picker"></div></div><div id="slider-wrapper"><div id="slider"></div></div>';
+    mainContentsElem.appendChild(colorPickerElem);
+    let pickerElem = $('#picker');
+    let sliderElem = $('#slider');
+    ColorPicker(sliderElem,
+                pickerElem,
+                function(hex, hsv, rgb) {
+                    console.log('hex=' + hex + ' hsv=' + hsv + ' rgb=' + rgb);
+                });
 }
 
 function buildFromQueryResult(result) {
@@ -543,6 +572,7 @@ function createApp(serverUrl) {
     retrieve.retrieveHostInfo(serverUrl, (hostInfo) => {
         storeHostInfo(hostInfo);
         retrieve.retrieveJson(serverUrl, (result) => {
+            buildColorPicker();
             buildFromQueryResult(result);
             storeControlStructure(result);
             addInputEventHandlers();

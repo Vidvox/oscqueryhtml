@@ -60,3 +60,28 @@ body {
   font-size: 80%;
   padding-bottom: 8px;
 }
+
+#colorPicker {
+  position: absolute;
+  display: none;
+  width: 200px;
+  background-color: #ccc;
+  padding: 8px;
+}
+
+#picker-wrapper {
+  position: relative;
+  float: left;
+  width: 160px;
+}
+
+#slider-wrapper {
+  position: relative;
+  float: left;
+  width: 20px;
+  margin-left: 12px;
+}
+
+#colorPicker-clear {
+  clear: both;
+}
