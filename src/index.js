@@ -546,6 +546,10 @@ function colorControlPickedColor(hex, hsv, rgb) {
     colorPickerElem.style.display = 'none';
     let controlElem = colorPickerElem.controlTarget;
     controlElem.style.backgroundColor = hex;
+    controlElem.value = hex;
+    controlEvent({
+        target: controlElem,
+    });
 }
 
 function addInputEventHandlers() {
