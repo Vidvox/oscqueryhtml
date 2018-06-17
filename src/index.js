@@ -117,8 +117,8 @@ function buildContentsAddToContainer(contents, parentContainer) {
             html += '</div>';
             // Recursive call to handle the inner contents.
             directoryElem.innerHTML = html;
-            directoryContainer = directoryElem.querySelector('#control_body_' + id);
             directoryElem.className = 'dir-container';
+            directoryContainer = directoryElem.querySelector('#control_body_' + id);
             buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
         } else {
             // Build a control from the details.
