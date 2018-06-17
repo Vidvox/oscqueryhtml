@@ -32,18 +32,18 @@ function storeHostInfo(hostInfo) {
     g_extensions = hostInfo.EXTENSIONS;
 }
 
-var g_supportColorPicker = false;
+var g_supportHtml5Color = false;
 
 function detectColorPicker() {
     let input = document.createElement('input');
     input.setAttribute('type', 'color');
     input.setAttribute('value', '$');
-    g_supportColorPicker = (input.type == 'color' && input.value != '$');
+    g_supportHtml5Color = (input.type == 'color' && input.value != '$');
 }
 
 function buildColorPicker() {
     detectColorPicker();
-    if (g_supportColorPicker) {
+    if (g_supportHtml5Color) {
         return;
     }
     let mainContentsElem = $('#mainContents');
@@ -53,11 +53,7 @@ function buildColorPicker() {
     mainContentsElem.appendChild(colorPickerElem);
     let pickerElem = $('#picker');
     let sliderElem = $('#slider');
-    ColorPicker(sliderElem,
-                pickerElem,
-                function(hex, hsv, rgb) {
-                    console.log('hex=' + hex + ' hsv=' + hsv + ' rgb=' + rgb);
-                });
+    ColorPicker(sliderElem, pickerElem, colorControlPickedColor);
 }
 
 function buildFromQueryResult(result) {
@@ -185,7 +181,11 @@ function buildSingleControl(container, name, details, type, selector) {
         }
     } else if (type == 'r') {
         // Color
-        html += '<input type="color" value="#4466ff" />';
+        if (g_supportHtml5Color) {
+            html += '<input type="color" value="#4466ff" />';
+        } else {
+            html += '<div class="color-control"></div>'
+        }
         getter = 'color';
         setter = 'color';
     } else if (type == 'd') {
@@ -530,6 +530,24 @@ function toggleShow(e) {
     $('#toggle_hide_'  + id).style.display = 'block';
 }
 
+function colorControlClick(e) {
+    colorPickerElem = $('#colorPicker');
+    colorPickerElem.style.display = 'inline';
+    let y = e.target.offsetTop + 10;
+    let x = e.target.offsetLeft + 20;
+    colorPickerElem.style.position = 'absolute';
+    colorPickerElem.style.top = y + 'px';
+    colorPickerElem.style.left = x + 'px';
+    colorPickerElem.controlTarget = e.target;
+}
+
+function colorControlPickedColor(hex, hsv, rgb) {
+    colorPickerElem = $('#colorPicker');
+    colorPickerElem.style.display = 'none';
+    let controlElem = colorPickerElem.controlTarget;
+    controlElem.style.backgroundColor = hex;
+}
+
 function addInputEventHandlers() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
@@ -564,6 +582,11 @@ function addInputEventHandlers() {
     for (let i = 0; i < toggleShowElems.length; i++) {
         let elem = toggleShowElems[i];
         elem.addEventListener('click', toggleShow, false);
+    }
+    let colorControlElems = document.getElementsByClassName('color-control');
+    for (let i = 0; i < colorControlElems.length; i++) {
+        let elem = colorControlElems[i];
+        elem.addEventListener('click', colorControlClick, false);
     }
 }
 
