@@ -163,9 +163,6 @@ function E(text) {
 function buildSingleControl(container, name, details, type, selector) {
     var id = generateId();
     var html = '';
-    html += '<div class="toggle-show" id="toggle_show_' + id +
-        '" style="display:none">[+]</div>';
-    html += '<div class="toggle-hide" id="toggle_hide_' + id + '">[-]</div>';
     html += '<div id="control_body_' + id + '">';
     html += '<span class="control-name">' + E(name) + '</span>';
     html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
