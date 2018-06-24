@@ -109,7 +109,9 @@ function buildContentsAddToContainer(contents, parentContainer) {
             var id = generateId();
             let html = '';
             html += '<div class="toggle-show" id="toggle_show_' + id +
-                '" style="display:none">[+]</div>';
+                '" style="display:none">[+] '
+            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
+            html += '</div>';
             html += '<div class="toggle-hide" id="toggle_hide_' + id + '">[-]';
             html += '</div>';
             html += '<div id="control_body_' + id + '">';
