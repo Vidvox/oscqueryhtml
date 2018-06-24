@@ -93,3 +93,11 @@ body {
   margin: 3px;
   border: solid 3px #ccc;
 }
+
+img.toggle-hide {
+  padding: 4px 2px;
+}
+
+img.toggle-show {
+  padding: 4px 2px;
+}

@@ -7,6 +7,8 @@ const colorpicker = require('./colorpicker.js');
 
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
+const toggleMinusBase64 = require("base64-image-loader!../assets/img/toggle-minus.png");
+const togglePlusBase64 = require("base64-image-loader!../assets/img/toggle-plus.png");
 
 var g_allControlStruct = null;
 var g_hostInfo = null;
@@ -109,10 +111,12 @@ function buildContentsAddToContainer(contents, parentContainer) {
             var id = generateId();
             let html = '';
             html += '<div class="toggle-show" id="toggle_show_' + id +
-                '" style="display:none">[+] '
-            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
+                '" style="display:none">';
+            html += '<img class="toggle-show" src="' + togglePlusBase64 + '"/>';
+            html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
             html += '</div>';
-            html += '<div class="toggle-hide" id="toggle_hide_' + id + '">[-]';
+            html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
+            html += '<img class="toggle-hide" src="' + toggleMinusBase64 + '"/>';
             html += '</div>';
             html += '<div id="control_body_' + id + '">';
             html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
@@ -524,7 +528,14 @@ function listenClick(e) {
 }
 
 function toggleHide(e) {
-    let text = e.target.id;
+    let elem = e.target;
+    for (let i = 0; i < 3; i++) {
+        if (elem.id) {
+            break;
+        }
+        elem = elem.parentNode;
+    }
+    let text = elem.id;
     let id = text.substr(12);
     $('#control_body_' + id).style.display = 'none';
     $('#toggle_show_'  + id).style.display = 'block';
@@ -532,7 +543,14 @@ function toggleHide(e) {
 }
 
 function toggleShow(e) {
-    let text = e.target.id;
+    let elem = e.target;
+    for (let i = 0; i < 3; i++) {
+        if (elem.id) {
+            break;
+        }
+        elem = elem.parentNode;
+    }
+    let text = elem.id;
     let id = text.substr(12);
     $('#control_body_' + id).style.display = 'block';
     $('#toggle_show_'  + id).style.display = 'none';
