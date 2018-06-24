@@ -540,6 +540,17 @@ function toggleHide(e) {
     $('#control_body_' + id).style.display = 'none';
     $('#toggle_show_'  + id).style.display = 'block';
     $('#toggle_hide_'  + id).style.display = 'none';
+    if (e.altKey) {
+        let controlBody = $('#control_body_' + id);
+        if (!controlBody) {
+            return;
+        }
+        let dirContainerElems = controlBody.querySelectorAll('.dir-container');
+        for (let i = 0; i < dirContainerElems.length; i++) {
+            let toggleElem = dirContainerElems[i].querySelector('.toggle-hide');
+            toggleHide({target: toggleElem, altKey: true});
+        }
+    }
 }
 
 function toggleShow(e) {
@@ -555,6 +566,17 @@ function toggleShow(e) {
     $('#control_body_' + id).style.display = 'block';
     $('#toggle_show_'  + id).style.display = 'none';
     $('#toggle_hide_'  + id).style.display = 'block';
+    if (e.altKey) {
+        let controlBody = $('#control_body_' + id);
+        if (!controlBody) {
+            return;
+        }
+        let dirContainerElems = controlBody.querySelectorAll('.dir-container');
+        for (let i = 0; i < dirContainerElems.length; i++) {
+            let toggleElem = dirContainerElems[i].querySelector('.toggle-show');
+            toggleShow({target: toggleElem, altKey: true});
+        }
+    }
 }
 
 function colorControlClick(e) {
