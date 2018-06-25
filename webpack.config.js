@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: ['whatwg-fetch', './src/index.js'],
@@ -24,5 +25,10 @@ module.exports = {
   },
   externals: {
     ws: 'ws'
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({uglifyOptions:{safari10:true}})
+    ]
   }
 };
