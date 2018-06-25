@@ -422,6 +422,15 @@ function initWebSocket(url) {
             var setter = detailsElem.attributes['data-setter'];
             if (setter) {
                 if (setter.value == 'color') {
+                    // If the html5 color control is being dragged around,
+                    // and LISTEN is enabled, the messages sent from this
+                    // control will be routed back to it, and subtly decrease
+                    // the lightness due to rounding errors. So, while the
+                    // control is being changed, wait a short amount of time
+                    // before accepting new updates.
+                    if (_g_colorIsChanging) {
+                        return;
+                    }
                     value = textToHexColor(value);
                 } else {
                     runSetter(controlElem, setter.value, targetElem.value);
@@ -489,6 +498,16 @@ function rangeModifyEvent(e) {
         return;
     }
     e.target.cacheValue = value
+    controlEvent(e);
+}
+
+var _g_colorIsChanging = false;
+
+function colorModifyEvent(e) {
+    _g_colorIsChanging = true;
+    setTimeout(function() {
+        _g_colorIsChanging = false;
+    }, 500);
     controlEvent(e);
 }
 
@@ -612,6 +631,8 @@ function addInputEventHandlers() {
         } else if (input.type == "range") {
             input.addEventListener('input', rangeModifyEvent, false);
             input.addEventListener('change', rangeModifyEvent, false);
+        } else if (input.type == "color") {
+            input.addEventListener('change', colorModifyEvent, false);
         } else {
             input.addEventListener('change', controlEvent, false);
         }
