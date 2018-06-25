@@ -128,6 +128,7 @@ function buildContentsAddToContainer(contents, parentContainer) {
             buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
         } else {
             // Build a control from the details.
+            directoryElem.className = 'node';
             buildControlElements(directoryElem, name, dirObj);
         }
         parentContainer.appendChild(directoryElem);
@@ -444,37 +445,52 @@ function initWebSocket(url) {
 }
 
 function controlEvent(e) {
-    var controlElem = e.target.parentNode;
-    var detailsElem = controlElem.querySelector('.details');
-    var fullPath = detailsElem.attributes['data-full-path'].value;
-    var dataType = detailsElem.attributes['data-type'].value;
-    var getter = detailsElem.attributes['data-getter'];
-    var setter = detailsElem.attributes['data-setter'];
-    if (!getter) {
-        var firstArg = {type: dataType};
-    } else if (getter.value == 'value') {
-        var firstArg = {type: dataType, value: e.target.value };
-    } else if (getter.value == 'parseInt') {
-        var firstArg = {type: dataType, value: parseInt(e.target.value) };
-    } else if (getter.value == 'parseFloat') {
-        var firstArg = {type: dataType, value: parseFloat(e.target.value) };
-    } else if (getter.value == 'color') {
-        var color = e.target.value;
-        var r = parseInt(color.substr(1, 2), 16);
-        var g = parseInt(color.substr(3, 2), 16);
-        var b = parseInt(color.substr(5, 2), 16);
-        var firstArg = {type: dataType, value: {r:r, g:g, b:b, a:1} };
+    let controlElem = e.target.parentNode;
+    let detailsElem = controlElem.querySelector('.details');
+    let fullPath = detailsElem.attributes['data-full-path'].value;
+    let setter = detailsElem.attributes['data-setter'];
+    let nodeElem = controlElem.parentNode;
+    let args = [];
+    for (let i = 0; i < nodeElem.children.length; i++) {
+        args.push(getControlArg(nodeElem.children[i]));
     }
     if (setter) {
         runSetter(controlElem, setter.value, e.target.value);
     }
     var message = {
         address: fullPath,
-        args: [firstArg],
+        args: args,
     };
     console.log('***** Sending value: ' + JSON.stringify(message));
     if (isOscReady) {
         oscPort.send(message);
+    }
+}
+
+function getControlArg(controlElem) {
+    let inputElem = controlElem.querySelector('input');
+    if (!inputElem) {
+        inputElem = controlElem.querySelector('select');
+    }
+    let detailsElem = controlElem.querySelector('.details');
+    let fullPath = detailsElem.attributes['data-full-path'].value;
+    let dataType = detailsElem.attributes['data-type'].value;
+    let getter = detailsElem.attributes['data-getter'];
+    let arg = null;
+    if (!getter) {
+        return {type: dataType};
+    } else if (getter.value == 'value') {
+        return {type: dataType, value: inputElem.value };
+    } else if (getter.value == 'parseInt') {
+        return {type: dataType, value: parseInt(inputElem.value) };
+    } else if (getter.value == 'parseFloat') {
+        return {type: dataType, value: parseFloat(inputElem.value) };
+    } else if (getter.value == 'color') {
+        var color = inputElem.value;
+        var r = parseInt(color.substr(1, 2), 16);
+        var g = parseInt(color.substr(3, 2), 16);
+        var b = parseInt(color.substr(5, 2), 16);
+        return {type: dataType, value: {r:r, g:g, b:b, a:1} };
     }
 }
 
