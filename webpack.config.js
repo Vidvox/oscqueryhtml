@@ -8,7 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     library: 'oscQuery',
-    libraryTarget: 'window'
+    libraryTarget: 'window',
   },
   resolve: {
     alias: {
@@ -28,7 +28,10 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({uglifyOptions:{safari10:true}})
+      new UglifyJsPlugin({
+          sourceMap: true,
+          uglifyOptions:{safari10:true}
+      })
     ]
   }
 };
