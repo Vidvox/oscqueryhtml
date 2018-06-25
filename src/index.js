@@ -144,7 +144,8 @@ function buildControlElements(containerElem, name, details) {
         } else if (type == ']') {
             selector.pop();
         } else {
-            buildSingleControl(containerElem, name, details, type, selector);
+            let elem = buildSingleControl(name, details, type, selector);
+            containerElem.appendChild(elem);
         }
         selector[selector.length - 1]++;
     }
@@ -166,10 +167,9 @@ function E(text) {
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildSingleControl(container, name, details, type, selector) {
+function buildSingleControl(name, details, type, selector) {
     var id = generateId();
     var html = '';
-    html += '<div id="control_body_' + id + '">';
     html += '<span class="control-name">' + E(name) + '</span>';
     html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
     html += '<span class="description">' + E(details.DESCRIPTION) + '</span>';
@@ -342,9 +342,11 @@ function buildSingleControl(container, name, details, type, selector) {
         html += 'data-setter="' + E(setter) + '" ';
     }
     html += '/></span>';
-    html += '</div>';
-    container.innerHTML = html;
-    container.className = 'control';
+    let elem = document.createElement('div');
+    elem.id = 'control_body_' + id;
+    elem.className = 'control';
+    elem.innerHTML = html;
+    return elem;
 }
 
 function extractControlPaths(obj) {
