@@ -428,7 +428,7 @@ function initWebSocket(url) {
                     // the lightness due to rounding errors. So, while the
                     // control is being changed, wait a short amount of time
                     // before accepting new updates.
-                    if (_g_colorIsChanging) {
+                    if (g_colorIsChanging) {
                         return;
                     }
                     value = textToHexColor(value);
@@ -501,12 +501,12 @@ function rangeModifyEvent(e) {
     controlEvent(e);
 }
 
-var _g_colorIsChanging = false;
+var g_colorIsChanging = false;
 
 function colorModifyEvent(e) {
-    _g_colorIsChanging = true;
+    g_colorIsChanging = true;
     setTimeout(function() {
-        _g_colorIsChanging = false;
+        g_colorIsChanging = false;
     }, 500);
     controlEvent(e);
 }
