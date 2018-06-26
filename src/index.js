@@ -146,7 +146,9 @@ function buildControlElements(containerElem, name, details) {
             selector.pop();
         } else {
             let elem = buildSingleControl(name, details, type, selector);
-            containerElem.appendChild(elem);
+            if (elem) {
+                containerElem.appendChild(elem);
+            }
         }
         selector[selector.length - 1]++;
     }
