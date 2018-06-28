@@ -14,6 +14,7 @@ var g_allControlStruct = null;
 var g_hostInfo = null;
 var g_extensions = null;
 var g_idGen = 0;
+var g_isListenEnabled = false;
 
 function $(selector) {
     return document.querySelector(selector);
@@ -433,7 +434,8 @@ function initWebSocket(url) {
                     // the lightness due to rounding errors. So, while the
                     // control is being changed, wait a short amount of time
                     // before accepting new updates.
-                    if (g_colorIsChanging) {
+                    if (g_numMessagePending > 0) {
+                        g_numMessagePending--;
                         return;
                     }
                     value = textToHexColor(value);
@@ -521,15 +523,27 @@ function rangeModifyEvent(e) {
     controlEvent(e);
 }
 
-var g_colorIsChanging = false;
+var g_numMessagePending = 0;
+var g_lastMessageSent = null;
 
 function colorModifyEvent(e) {
-    g_colorIsChanging = true;
-    setTimeout(function() {
-        g_colorIsChanging = false;
-    }, 500);
+    if (g_isListenEnabled) {
+        g_numMessagePending++;
+        g_lastMessageSent = new Date();
+    }
     controlEvent(e);
 }
+
+setInterval(function() {
+    if (!g_lastMessageSent) {
+        return;
+    }
+    let now = new Date();
+    if (now - g_lastMessageSent > 2000) {
+        g_numMessagePending = 0;
+        g_lastMessageSent = null;
+    }
+}, 1000);
 
 function getDataEvent(element) {
     if (element.attributes['data-event']) {
@@ -544,10 +558,12 @@ function listenClick(e) {
     var path = '/';
     var command = null;
     if (spanElem.className.indexOf('pressed') == -1) {
+        g_isListenEnabled = true;
         imgElem.src = pressedBase64;
         spanElem.className = 'listen-button pressed';
         command = 'LISTEN';
     } else {
+        g_isListenEnabled = false;
         imgElem.src = listenBase64;
         spanElem.className = 'listen-button';
         command = 'IGNORE';
