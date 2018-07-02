@@ -16,6 +16,8 @@ var g_extensions = null;
 var g_idGen = 0;
 var g_isListenEnabled = false;
 
+const DEFAULT_COLOR_ELEM_VALUE = '#4466ff';
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -195,14 +197,19 @@ function buildSingleControl(name, details, type, selector) {
             html += '</select>';
             getter = 'value';
         } else {
+            var value = details.VALUE || '';
             html += '<input data-event="keypress" type="text" maxlength="1" ' +
-                'size="3"/>';
+                'size="3" value="' + E(value) + '"/>';
             getter = 'value';
         }
     } else if (type == 'r') {
         // Color
+        var value = DEFAULT_COLOR_ELEM_VALUE;
+        if (details.VALUE) {
+            value = convertOSCColorToHex(details.VALUE);
+        }
         if (g_supportHtml5Color) {
-            html += '<input type="color" value="#4466ff" />';
+            html += '<input type="color" value="' + value + '" />';
         } else {
             html += '<div class="color-control"></div>'
         }
@@ -328,6 +335,7 @@ function buildSingleControl(name, details, type, selector) {
             html += '</select>';
             getter = 'value';
         } else {
+            // TODO: Set initial value from details.VALUE
             html += '<input type="text"/>';
             getter = 'value';
         }
@@ -381,11 +389,16 @@ function textToHexColor(elem) {
 }
 
 function num2Hex(num) {
-    let hex = Number(num).toString(16);
+    let hex = Number(Math.floor(num)).toString(16);
     if (hex.length < 2) {
         hex = '0' + hex;
     }
     return hex;
+}
+
+function convertOSCColorToHex(msg) {
+    let c = msg[0]
+    return '#' + num2Hex(c[0]*255) + num2Hex(c[1]*255) + num2Hex(c[2]*255);
 }
 
 var oscPort;
