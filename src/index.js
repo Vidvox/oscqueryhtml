@@ -316,7 +316,7 @@ function buildSingleControl(name, details, type, selector, pos) {
             var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
-                E(max) + '" value="' + E(value) + '" step="any"/>';
+                E(max) + '" value="' + E(value) + '" />';
             html += '<span class="curr-val">' + E(value) + '</span>';
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
@@ -324,7 +324,7 @@ function buildSingleControl(name, details, type, selector, pos) {
             setter = 'int';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" value="' + E(value) + '" step="any"/>';
+            html += '<input type="range" value="' + E(value) + '" />';
             html += '<span class="curr-val">' + E(value) + '</span>';
             getter = 'parseInt';
             setter = 'int';
