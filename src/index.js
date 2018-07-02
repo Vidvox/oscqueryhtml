@@ -229,7 +229,8 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (g_supportHtml5Color) {
             html += '<input type="color" value="' + value + '" />';
         } else {
-            html += '<div class="color-control"></div>'
+            html += '<div class="color-control" ';
+            html += 'style="background-color:' + value + '"></div>'
         }
         getter = 'color';
         setter = 'color';
@@ -568,6 +569,11 @@ function getControlArg(controlElem) {
     } else if (getter.value == 'parseFloat') {
         return {type: dataType, value: parseFloat(inputElem.value) };
     } else if (getter.value == 'color') {
+        if (!inputElem) {
+            // Only for color elements in browsers that don't support the
+            // html5 color input.
+            inputElem = controlElem.querySelector('.color-control');
+        }
         var color = inputElem.value;
         var r = parseInt(color.substr(1, 2), 16);
         var g = parseInt(color.substr(3, 2), 16);
