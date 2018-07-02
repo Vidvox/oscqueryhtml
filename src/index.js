@@ -201,11 +201,14 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || '';
-            // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
                 let v = options[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'value';
@@ -235,11 +238,14 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
-            // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
                 let v = options[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'value';
@@ -269,11 +275,14 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
-            // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
                 let v = options[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'value';
@@ -303,11 +312,14 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
-            // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
                 let v = options[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'value';
@@ -336,8 +348,12 @@ function buildSingleControl(name, details, type, selector, pos) {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
-                let v = optionsalues[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                let v = options[i];
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'parseInt';
@@ -370,11 +386,14 @@ function buildSingleControl(name, details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || '';
-            // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
                 let v = options[i];
-                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+                html += '<option value="' + E(v) + '" ';
+                if (v == value) {
+                    html += 'selected ';
+                }
+                html += '>' + E(v) + '</option>';
             }
             html += '</select>';
             getter = 'value';
