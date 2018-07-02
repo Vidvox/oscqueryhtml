@@ -191,6 +191,7 @@ function buildSingleControl(name, details, type, selector) {
         // Char
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var values = applySelector(details.RANGE, selector).VALS;
+            var value = applySelector(details.VALUE, selector) || '';
             // TODO: Set initial value from details.VALUE
             html += '<select>';
             for (let i = 0; i < values.length; i++) {
@@ -222,7 +223,18 @@ function buildSingleControl(name, details, type, selector) {
         setter = 'color';
     } else if (type == 'd') {
         // Double
-        if (details.RANGE) {
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            var value = applySelector(details.VALUE, selector) || 0;
+            // TODO: Set initial value from details.VALUE
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+            }
+            html += '</select>';
+            getter = 'value';
+        } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN || 0;
             var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = applySelector(details.VALUE, selector) || 0;
@@ -231,19 +243,32 @@ function buildSingleControl(name, details, type, selector) {
             html += '<span class="curr-val">' + E(value) + '</span>';
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
+            getter = 'parseFloat';
+            setter = 'float';
         } else {
             var value = applySelector(details.VALUE, selector) || 0;
             html += '<input type="range" value="' + E(value) + '" step="any"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
+            getter = 'parseFloat';
+            setter = 'float';
         }
-        getter = 'parseFloat';
-        setter = 'float';
     } else if (type == 'F') {
         // False
         html += '<input type="button" value="Send false"/>';
     } else if (type == 'f') {
         // Float
-        if (details.RANGE) {
+        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
+            var values = applySelector(details.RANGE, selector).VALS;
+            var value = applySelector(details.VALUE, selector) || 0;
+            // TODO: Set initial value from details.VALUE
+            html += '<select>';
+            for (let i = 0; i < values.length; i++) {
+                let v = values[i];
+                html += '<option value="' + E(v) + '">' + E(v) + '</option>'
+            }
+            html += '</select>';
+            getter = 'value';
+        } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN || 0;
             var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = applySelector(details.VALUE, selector) || 0;
@@ -252,13 +277,15 @@ function buildSingleControl(name, details, type, selector) {
             html += '<span class="curr-val">' + E(value) + '</span>';
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
+            getter = 'parseFloat';
+            setter = 'float';
         } else {
             var value = applySelector(details.VALUE, selector) || 0;
             html += '<input type="range" value="' + E(value) + '" step="any"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
+            getter = 'parseFloat';
+            setter = 'float';
         }
-        getter = 'parseFloat';
-        setter = 'float';
     } else if (type == 'I') {
         // Infinity
         html += '<input type="button" value="Send infinity"/>';
@@ -274,13 +301,13 @@ function buildSingleControl(name, details, type, selector) {
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
-            getter = 'parseInt';
+            getter = 'value';
         } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN || 0;
             var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = applySelector(details.VALUE, selector) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
-                E(max) + '" value="' + E(value) + '"/>';
+                E(max) + '" value="' + E(value) + '" step="any"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
@@ -288,7 +315,7 @@ function buildSingleControl(name, details, type, selector) {
             setter = 'int';
         } else {
             var value = applySelector(details.VALUE, selector) || 0;
-            html += '<input type="range" value="' + E(value) + '"/>';
+            html += '<input type="range" value="' + E(value) + '" step="any"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
             getter = 'parseInt';
             setter = 'int';
@@ -297,6 +324,7 @@ function buildSingleControl(name, details, type, selector) {
         // Longlong
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var values = applySelector(details.RANGE, selector).VALS;
+            var value = applySelector(details.VALUE, selector) || 0;
             html += '<select>';
             for (let i = 0; i < values.length; i++) {
                 let v = values[i];
