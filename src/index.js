@@ -164,6 +164,9 @@ function applySelector(obj, selector) {
 }
 
 function E(text) {
+    if (text === 0) {
+        return "0";
+    }
     if (!text) {
         return "";
     }
@@ -208,8 +211,8 @@ function buildSingleControl(name, details, type, selector) {
     } else if (type == 'd') {
         // Double
         if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN;
-            var max = applySelector(details.RANGE, selector).MAX;
+            var min = applySelector(details.RANGE, selector).MIN || 0;
+            var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
@@ -229,8 +232,8 @@ function buildSingleControl(name, details, type, selector) {
     } else if (type == 'f') {
         // Float
         if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN;
-            var max = applySelector(details.RANGE, selector).MAX;
+            var min = applySelector(details.RANGE, selector).MIN || 0;
+            var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
@@ -260,8 +263,8 @@ function buildSingleControl(name, details, type, selector) {
             html += '</select>';
             getter = 'parseInt';
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN;
-            var max = applySelector(details.RANGE, selector).MAX;
+            var min = applySelector(details.RANGE, selector).MIN || 0;
+            var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '"/>';
@@ -289,8 +292,8 @@ function buildSingleControl(name, details, type, selector) {
             html += '</select>';
             getter = 'parseInt';
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN;
-            var max = applySelector(details.RANGE, selector).MAX;
+            var min = applySelector(details.RANGE, selector).MIN || 0;
+            var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = details.VALUE || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '"/>';
