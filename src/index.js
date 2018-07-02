@@ -199,12 +199,12 @@ function buildSingleControl(name, details, type, selector, pos) {
     if (type == 'c') {
         // Char
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || '';
             // TODO: Set initial value from details.VALUE
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = options[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
@@ -233,12 +233,12 @@ function buildSingleControl(name, details, type, selector, pos) {
     } else if (type == 'd') {
         // Double
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
             // TODO: Set initial value from details.VALUE
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = options[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
@@ -267,12 +267,12 @@ function buildSingleControl(name, details, type, selector, pos) {
     } else if (type == 'f') {
         // Float
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
             // TODO: Set initial value from details.VALUE
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = options[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
@@ -301,12 +301,12 @@ function buildSingleControl(name, details, type, selector, pos) {
     } else if (type == 'i') {
         // Integer
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
             // TODO: Set initial value from details.VALUE
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = options[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
@@ -332,11 +332,11 @@ function buildSingleControl(name, details, type, selector, pos) {
     } else if (type == 'h') {
         // Longlong
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = optionsalues[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
@@ -368,12 +368,12 @@ function buildSingleControl(name, details, type, selector, pos) {
     } else if (type == 's') {
         // String
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var values = applySelector(details.RANGE, selector).VALS;
+            var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || '';
             // TODO: Set initial value from details.VALUE
             html += '<select>';
-            for (let i = 0; i < values.length; i++) {
-                let v = values[i];
+            for (let i = 0; i < options.length; i++) {
+                let v = options[i];
                 html += '<option value="' + E(v) + '">' + E(v) + '</option>'
             }
             html += '</select>';
