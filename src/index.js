@@ -131,14 +131,24 @@ function buildContentsAddToContainer(contents, parentContainer) {
             buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
         } else {
             // Build a control from the details.
-            directoryElem.className = 'node';
+            directoryElem.className = 'node control';
             buildControlElements(directoryElem, name, dirObj);
         }
         parentContainer.appendChild(directoryElem);
     }
 }
 
+function createAppendElem(parentElem, tagName, className, text) {
+    let elem = document.createElement(tagName);
+    elem.className = className;
+    elem.textContent = text;
+    parentElem.appendChild(elem);
+}
+
 function buildControlElements(containerElem, name, details) {
+    createAppendElem(containerElem, 'span', 'control-name', name);
+    createAppendElem(containerElem, 'span', 'full-path', details.FULL_PATH);
+    createAppendElem(containerElem, 'span', 'description', details.DESCRIPTION);
     let selector = [0];
     let pos = 0;
     for (let i = 0; i < details.TYPE.length; i++) {
@@ -149,7 +159,7 @@ function buildControlElements(containerElem, name, details) {
         } else if (type == ']') {
             selector.pop();
         } else {
-            let html = buildSingleControl(name, details, type, selector, pos);
+            let html = buildSingleControl(details, type, selector, pos);
             if (html) {
                 var id = generateId();
                 let elem = document.createElement('div');
@@ -193,11 +203,8 @@ function E(text) {
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildSingleControl(name, details, type, selector, pos) {
+function buildSingleControl(details, type, selector, pos) {
     var html = '';
-    html += '<span class="control-name">' + E(name) + '</span>';
-    html += '<span class="full-path">' + E(details.FULL_PATH) + '</span>';
-    html += '<span class="description">' + E(details.DESCRIPTION) + '</span>';
     var getter = null;
     var setter = null;
     if (type == 'c') {
@@ -528,14 +535,19 @@ function initWebSocket(url) {
 }
 
 function controlEvent(e) {
+    // Control that was modified.
     let controlElem = e.target.parentNode;
     let detailsElem = controlElem.querySelector('.details');
     let fullPath = detailsElem.attributes['data-full-path'].value;
     let setter = detailsElem.attributes['data-setter'];
+    // Node that contains this control (in case the node has multiple types).
     let nodeElem = controlElem.parentNode;
     let args = [];
     for (let i = 0; i < nodeElem.children.length; i++) {
-        args.push(getControlArg(nodeElem.children[i]));
+        let c = nodeElem.children[i];
+        if (c.tagName.toLowerCase() == 'div' && c.className =='control') {
+            args.push(getControlArg(c));
+        }
     }
     if (setter) {
         runSetter(controlElem, setter.value, e.target.value);
