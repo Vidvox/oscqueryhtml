@@ -357,7 +357,7 @@ function buildSingleControl(name, details, type, selector, pos) {
                 html += '>' + E(v) + '</option>';
             }
             html += '</select>';
-            getter = 'parseInt';
+            getter = 'parseInt64';
         } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN || 0;
             var max = applySelector(details.RANGE, selector).MAX || 1;
@@ -367,13 +367,13 @@ function buildSingleControl(name, details, type, selector, pos) {
             html += '<span class="curr-val">' + E(value) + '</span>';
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
-            getter = 'parseInt';
+            getter = 'parseInt64';
             setter = 'int';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
-            getter = 'parseInt';
+            getter = 'parseInt64';
             setter = 'int';
         }
     } else if (type == 'm') {
@@ -566,6 +566,10 @@ function getControlArg(controlElem) {
         return {type: dataType, value: inputElem.value };
     } else if (getter.value == 'parseInt') {
         return {type: dataType, value: parseInt(inputElem.value) };
+    } else if (getter.value == 'parseInt64') {
+        let num = parseInt(inputElem.value);
+        let radix = 0x100000000;
+        return {type: dataType, value: {high: num / radix, low: num % radix}};
     } else if (getter.value == 'parseFloat') {
         return {type: dataType, value: parseFloat(inputElem.value) };
     } else if (getter.value == 'color') {
