@@ -324,28 +324,60 @@ function buildSingleControl(details, type, selector, pos) {
         if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
             var options = applySelector(details.RANGE, selector).VALS;
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<select>';
-            for (let i = 0; i < options.length; i++) {
-                let v = options[i];
-                html += '<option value="' + E(v) + '" ';
-                if (v == value) {
-                    html += 'selected ';
+            if (options.length == 1) {
+                value = options[0];
+                html += '<input type="button" value="' + E(value) +
+                    '" data-first="' + E(value) + '"/>';
+                getter = 'sendSingle';
+            } else if (options.length == 2) {
+                html += '<input type="checkbox" data-first="' + E(options[0]) +
+                    '" data-second="' + E(options[1]) + '"';
+                if (value == options[1]) {
+                    html += ' checked';
                 }
-                html += '>' + E(v) + '</option>';
+                html += '/> ' + E(options[0]) + ', ' + E(options[1]);
+                getter = 'sendCheckbox';
+                setter = 'setCheckbox';
+            } else {
+                html += '<select>';
+                for (let i = 0; i < options.length; i++) {
+                    let v = options[i];
+                    html += '<option value="' + E(v) + '" ';
+                    if (v == value) {
+                        html += 'selected ';
+                    }
+                    html += '>' + E(v) + '</option>';
+                }
+                html += '</select>';
+                getter = 'value';
             }
-            html += '</select>';
-            getter = 'value';
         } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector).MIN || 0;
             var max = applySelector(details.RANGE, selector).MAX || 1;
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" min="' + E(min) + '" max="' +
-                E(max) + '" value="' + E(value) + '" />';
-            html += '<span class="curr-val">' + E(value) + '</span>';
-            html += '<span class="range-val"> (' + E(min) + '-' +
-                E(max) + ')</span>'
-            getter = 'parseInt';
-            setter = 'int';
+            if (max - min == 0) {
+                value = min;
+                html += '<input type="button" value="' + E(value) +
+                    '" data-first="' + E(value) + '"/>';
+                getter = 'sendSingle';
+            } else if (max - min == 1) {
+                html += '<input type="checkbox" data-first="' + E(min) +
+                    '" data-second="' + E(max) + '"';
+                if (value == max) {
+                    html += ' checked';
+                }
+                html += '/> ' + E(min) + ', ' + E(max);
+                getter = 'sendCheckbox';
+                setter = 'setCheckbox';
+            } else {
+                html += '<input type="range" min="' + E(min) + '" max="' +
+                    E(max) + '" value="' + E(value) + '" />';
+                html += '<span class="curr-val">' + E(value) + '</span>';
+                html += '<span class="range-val"> (' + E(min) + '-' +
+                    E(max) + ')</span>'
+                getter = 'parseInt';
+                setter = 'int';
+            }
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '" />';
@@ -525,6 +557,18 @@ function initWebSocket(url) {
                         return;
                     }
                     value = textToHexColor(value);
+                } else if (setter.value == 'setCheckbox') {
+                    // If the control is a checkbox, there should only be
+                    // two possible values. Either check or uncheck the box,
+                    // but only if it matches one of the two known values.
+                    let first = targetElem.attributes['data-first'].value;
+                    let second = targetElem.attributes['data-second'].value;
+                    if (value == first) {
+                        targetElem.checked = false;
+                    } else if (value == second) {
+                        targetElem.checked = true;
+                    }
+                    return;
                 } else {
                     runSetter(controlElem, setter.value, targetElem.value);
                 }
@@ -577,13 +621,24 @@ function getControlArg(controlElem) {
     } else if (getter.value == 'value') {
         return {type: dataType, value: inputElem.value };
     } else if (getter.value == 'parseInt') {
-        return {type: dataType, value: parseInt(inputElem.value) };
+        return {type: dataType, value: parseInt(inputElem.value, 10) };
     } else if (getter.value == 'parseInt64') {
         let num = parseInt(inputElem.value);
         let radix = 0x100000000;
         return {type: dataType, value: {high: num / radix, low: num % radix}};
     } else if (getter.value == 'parseFloat') {
         return {type: dataType, value: parseFloat(inputElem.value) };
+    } else if (getter.value == 'sendSingle') {
+        let first = inputElem.attributes['data-first'].value;
+        return {type: dataType, value: parseInt(first, 10) };
+    } else if (getter.value == 'sendCheckbox') {
+        let value;
+        if (inputElem.checked) {
+            value = parseInt(inputElem.attributes['data-second'].value, 10);
+        } else {
+            value = parseInt(inputElem.attributes['data-first'].value, 10);
+        }
+        return {type: dataType, value: value};
     } else if (getter.value == 'color') {
         if (!inputElem) {
             // Only for color elements in browsers that don't support the
