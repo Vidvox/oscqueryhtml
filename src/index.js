@@ -109,10 +109,15 @@ function buildContentsAddToContainer(contents, parentContainer) {
         let dirObj = contents[dirNames[j]];
         // Container for this directory.
         let directoryElem = document.createElement('div');
+        if (dirObj.TYPE) {
+            // Build a control from the details.
+            directoryElem.className = 'node control';
+            buildControlElements(directoryElem, name, dirObj);
+        }
         if (dirObj.CONTENTS) {
             // TODO: Refactor into common utility function.
             var id = generateId();
-            let html = '';
+            let html = directoryElem.innerHTML;
             html += '<div class="toggle-show" id="toggle_show_' + id +
                 '" style="display:none">';
             html += '<img class="toggle-show" src="' + togglePlusBase64 + '"/>';
@@ -129,10 +134,6 @@ function buildContentsAddToContainer(contents, parentContainer) {
             directoryElem.className = 'dir-container';
             directoryContainer = directoryElem.querySelector('#control_body_' + id);
             buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
-        } else {
-            // Build a control from the details.
-            directoryElem.className = 'node control';
-            buildControlElements(directoryElem, name, dirObj);
         }
         parentContainer.appendChild(directoryElem);
     }
