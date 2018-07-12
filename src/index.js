@@ -73,7 +73,7 @@ function buildFromQueryResult(result) {
         refreshMessageElem.style.left = '2px';
         refreshMessageElem.style.textAlign = 'center';
         refreshMessageElem.style.width = '40%';
-        refreshMessageElem.textContent = 'Changes found, refresh to see them';
+        refreshMessageElem.textContent = 'Changes found, refreshing...';
         document.body.appendChild(refreshMessageElem);
     }
     let contents = result.CONTENTS;
@@ -526,6 +526,7 @@ function initWebSocket(url) {
                 if (msg.COMMAND == 'PATH_CHANGED') {
                     let refreshElem = document.getElementById('refresh-butter');
                     refreshElem.style.display = 'inline';
+                    window.location.reload(true);
                 } else {
                     console.log('??????????');
                     console.log('Unknown message: ' + e.data);
