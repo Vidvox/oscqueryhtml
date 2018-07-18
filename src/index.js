@@ -15,6 +15,7 @@ var g_hostInfo = null;
 var g_extensions = null;
 var g_idGen = 0;
 var g_isListenEnabled = false;
+var g_serverUrl = null;
 
 const DEFAULT_COLOR_ELEM_VALUE = '#4466ff';
 
@@ -105,14 +106,14 @@ function buildContentsAddToContainer(contents, parentContainer) {
     let dirNames = Object.keys(contents);
     dirNames.sort();
     for (let j = 0; j < dirNames.length; j++) {
-        let name = dirNames[j];
+        let nodeName = dirNames[j];
         let dirObj = contents[dirNames[j]];
         // Container for this directory.
         let directoryElem = document.createElement('div');
         if (dirObj.TYPE) {
             // Build a control from the details.
             directoryElem.className = 'node control';
-            buildControlElements(directoryElem, name, dirObj);
+            buildControlElements(directoryElem, nodeName, dirObj);
         }
         if (dirObj.CONTENTS) {
             // TODO: Refactor into common utility function.
@@ -528,6 +529,21 @@ function initWebSocket(url) {
                     let refreshElem = document.getElementById('refresh-butter');
                     refreshElem.style.display = 'inline';
                     window.location.reload(true);
+                } else if (msg.COMMAND == 'PATH_ADDED') {
+                    let nodePath = msg.DATA;
+                    let nodeName = nodePath.substring(1, nodePath.length);
+                    let nodeUrl = g_serverUrl + nodePath;
+                    retrieve.retrieveJson(nodeUrl, (contents) => {
+                        let mainContentsElem = $('#mainContents');
+                        let holderElem = document.createElement('div');
+                        buildControlElements(holderElem, nodeName, contents);
+                        // TODO: Does not handle paths properly.
+                        mainContentsElem.appendChild(holderElem);
+                    });
+                } else if (msg.COMMAND == 'PATH_RENAMED') {
+                    console.log('* RENAMED');
+                } else if (msg.COMMAND == 'PATH_REMOVED') {
+                    console.log('* REMOVED');
                 } else {
                     console.log('??????????');
                     console.log('Unknown message: ' + e.data);
@@ -858,6 +874,7 @@ function addInputEventHandlers() {
 }
 
 function createApp(serverUrl) {
+    g_serverUrl = serverUrl;
     initWebSocket(serverUrl.replace("http", "ws"));
     retrieve.retrieveHostInfo(serverUrl, (hostInfo) => {
         storeHostInfo(hostInfo);
