@@ -536,6 +536,7 @@ function initWebSocket(url) {
                     retrieve.retrieveJson(nodeUrl, (contents) => {
                         let mainContentsElem = $('#mainContents');
                         let holderElem = document.createElement('div');
+                        holderElem.className = "dir-container";
                         buildControlElements(holderElem, nodeName, contents);
                         // TODO: Does not handle paths properly.
                         mainContentsElem.appendChild(holderElem);
