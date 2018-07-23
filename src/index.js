@@ -133,7 +133,8 @@ function buildContentsAddToContainer(contents, parentContainer) {
         }
         // Main body. This is the element that toggle shows or hides.
         let html = directoryElem.innerHTML;
-        html += '<div id="control_body_' + id + '">';
+        html += '<div id="control_body_' + id +
+            '" data-dir-path="' + dirObj.FULL_PATH + '">';
         html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
         html += '</div>';
         directoryElem.innerHTML = html;
