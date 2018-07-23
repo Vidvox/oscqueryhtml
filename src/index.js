@@ -47,6 +47,8 @@ function detectColorPicker() {
     g_supportHtml5Color = (input.type == 'color' && input.value != '$');
 }
 
+// Create a singleton color picker, only if this browser does not support
+// the built-in html5 color picker element.
 function buildColorPicker() {
     detectColorPicker();
     if (g_supportHtml5Color) {
@@ -62,6 +64,7 @@ function buildColorPicker() {
     ColorPicker(sliderElem, pickerElem, colorControlPickedColor);
 }
 
+// Build all controls from json object, from the top-level.
 function buildFromQueryResult(result) {
     let mainContentsElem = $('#mainContents');
     {
@@ -102,44 +105,54 @@ function buildFromQueryResult(result) {
     buildContentsAddToContainer(contents, mainContentsElem)
 }
 
+// Build controls recursively based upon the json, and append to the parent.
 function buildContentsAddToContainer(contents, parentContainer) {
     let dirNames = Object.keys(contents);
     dirNames.sort();
     for (let j = 0; j < dirNames.length; j++) {
         let nodeName = dirNames[j];
         let dirObj = contents[dirNames[j]];
-        // Container for this directory.
+        // Container for this node.
         let directoryElem = document.createElement('div');
-        if (dirObj.TYPE) {
-            // Build a control from the details.
-            directoryElem.className = 'node control';
-            buildControlElements(directoryElem, nodeName, dirObj);
-        }
+        // If this has CONTENTS, build a directory node.
         if (dirObj.CONTENTS) {
-            // TODO: Refactor into common utility function.
             var id = generateId();
             let html = directoryElem.innerHTML;
+            // Toggle button when this is collapsed, will show the node.
             html += '<div class="toggle-show" id="toggle_show_' + id +
                 '" style="display:none">';
             html += '<img class="toggle-show" src="' + togglePlusBase64 + '"/>';
             html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
             html += '</div>';
+            // Toggle button when this is expanded, will hide the node.
             html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
-            html += '<img class="toggle-hide" src="' + toggleMinusBase64 + '"/>';
+            html += '<img class="toggle-hide" src="' + toggleMinusBase64 +'"/>';
             html += '</div>';
-            html += '<div id="control_body_' + id + '">';
-            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
-            html += '</div>';
-            // Recursive call to handle the inner contents.
             directoryElem.innerHTML = html;
             directoryElem.className = 'dir-container';
-            directoryContainer = directoryElem.querySelector('#control_body_' + id);
-            buildContentsAddToContainer(dirObj.CONTENTS, directoryContainer);
+        }
+        // Main body. This is the element that toggle shows or hides.
+        let html = directoryElem.innerHTML;
+        html += '<div id="control_body_' + id + '">';
+        html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
+        html += '</div>';
+        directoryElem.innerHTML = html;
+        let nodeContainer = directoryElem.querySelector('#control_body_' + id);
+        // If this has TYPE, build control(s) from the details.
+        if (dirObj.TYPE) {
+            directoryElem.className = directoryElem.className + ' node control';
+            buildControlElements(nodeContainer, nodeName, dirObj);
+        }
+        // If this has CONTENTS, recursively handle the inner contents.
+        if (dirObj.CONTENTS) {
+            buildContentsAddToContainer(dirObj.CONTENTS, nodeContainer);
+            directoryElem.appendChild(nodeContainer);
         }
         parentContainer.appendChild(directoryElem);
     }
 }
 
+// Add an element to the parent, with the tag, class, and text content.
 function createAppendElem(parentElem, tagName, className, text) {
     let elem = document.createElement(tagName);
     elem.className = className;
@@ -147,8 +160,12 @@ function createAppendElem(parentElem, tagName, className, text) {
     parentElem.appendChild(elem);
 }
 
+// Add control nodes. Iterate the type field, adding one node per kind of type.
 function buildControlElements(containerElem, name, details) {
-    createAppendElem(containerElem, 'span', 'control-name', name);
+    let existingName = containerElem.querySelector('.dir-name');
+    if (!existingName) {
+        createAppendElem(containerElem, 'span', 'control-name', name);
+    }
     createAppendElem(containerElem, 'span', 'full-path', details.FULL_PATH);
     createAppendElem(containerElem, 'span', 'description', details.DESCRIPTION);
     let selector = [0];
