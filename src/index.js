@@ -550,15 +550,18 @@ function initWebSocket(url) {
                 } else if (msg.COMMAND == 'PATH_ADDED') {
                     let nodePath = msg.DATA;
                     let pathParts = nodePath.split('/');
-                    let nodeName = pathParts[pathParts.length - 1];
+                    let numParts = pathParts.length - 1;
+                    let nodeName = pathParts[numParts];
                     let nodeUrl = g_serverUrl + nodePath;
                     retrieve.retrieveJson(nodeUrl, (contents) => {
-                        let mainContentsElem = $('#mainContents');
+                        let targetPath = pathParts.slice(0, numParts).join('/');
+                        let targetElem = document.querySelector(
+                            '[data-dir-path="' + targetPath + '"]');
+                        // TODO: Validate targetElem exists
                         let holderElem = document.createElement('div');
-                        holderElem.className = "dir-container";
+                        holderElem.className = "node control";
                         buildControlElements(holderElem, nodeName, contents);
-                        // TODO: Does not handle paths properly.
-                        mainContentsElem.appendChild(holderElem);
+                        targetElem.appendChild(holderElem);
                     });
                 } else if (msg.COMMAND == 'PATH_RENAMED') {
                     console.log('* RENAMED');
