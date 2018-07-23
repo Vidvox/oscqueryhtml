@@ -531,7 +531,8 @@ function initWebSocket(url) {
                     window.location.reload(true);
                 } else if (msg.COMMAND == 'PATH_ADDED') {
                     let nodePath = msg.DATA;
-                    let nodeName = nodePath.substring(1, nodePath.length);
+                    let pathParts = nodePath.split('/');
+                    let nodeName = pathParts[pathParts.length - 1];
                     let nodeUrl = g_serverUrl + nodePath;
                     retrieve.retrieveJson(nodeUrl, (contents) => {
                         let mainContentsElem = $('#mainContents');
