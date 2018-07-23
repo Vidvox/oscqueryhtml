@@ -114,9 +114,9 @@ function buildContentsAddToContainer(contents, parentContainer) {
         let dirObj = contents[dirNames[j]];
         // Container for this node.
         let directoryElem = document.createElement('div');
+        let id = generateId();
         // If this has CONTENTS, build a directory node.
         if (dirObj.CONTENTS) {
-            var id = generateId();
             let html = directoryElem.innerHTML;
             // Toggle button when this is collapsed, will show the node.
             html += '<div class="toggle-show" id="toggle_show_' + id +
