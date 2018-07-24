@@ -83,7 +83,7 @@ function buildFromQueryResult(result) {
     let contents = result.CONTENTS;
     if (!contents) {
         let noControlsElem = document.createElement('div');
-        noControlsElem = 'No controls detected';
+        noControlsElem.textContent = 'No controls detected';
         mainContentsElem.appendChild(noControlsElem);
         return;
     }
