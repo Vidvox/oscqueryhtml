@@ -557,16 +557,24 @@ function initWebSocket(url) {
                         let targetPath = pathParts.slice(0, numParts).join('/');
                         let targetElem = document.querySelector(
                             '[data-dir-path="' + targetPath + '"]');
-                        // TODO: Validate targetElem exists
+                        if (!targetElem) {
+                            return;
+                        }
                         let holderElem = document.createElement('div');
                         holderElem.className = "node control";
+                        holderElem.setAttribute('data-dir-path', nodePath);
                         buildControlElements(holderElem, nodeName, contents);
                         targetElem.appendChild(holderElem);
                     });
                 } else if (msg.COMMAND == 'PATH_RENAMED') {
                     console.log('* RENAMED');
                 } else if (msg.COMMAND == 'PATH_REMOVED') {
-                    console.log('* REMOVED');
+                    let nodePath = msg.DATA;
+                    let targetElem = document.querySelector(
+                        '[data-dir-path="' + nodePath + '"]');
+                    if (targetElem) {
+                        targetElem.parentNode.removeChild(targetElem);
+                    }
                 } else {
                     console.log('??????????');
                     console.log('Unknown message: ' + e.data);
