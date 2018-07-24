@@ -921,4 +921,5 @@ function createApp(serverUrl) {
 module.exports = {
     createApp: createApp,
     getDataEvent: getDataEvent,
+    buildSingleControl: buildSingleControl,
 };
