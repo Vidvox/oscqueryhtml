@@ -102,5 +102,15 @@ describe('buildSingleControl', () => {
                          'data-type="i" data-getter="sendSingle" /></span>');
         });
     });
+    describe('i with invalid size of RANGE', () => {
+        it('returns a message about invalid node', () => {
+            let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
+                        'RANGE': []};
+            let html = index.buildSingleControl(data, 'i', [0], 0);
+            assert.equal(html,
+                         '<span class="error">Invalid node: RANGE needs ' +
+                         'MIN,MAX or VALS</span>');
+        });
+    });
 });
 

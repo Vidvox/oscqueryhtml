@@ -82,6 +82,11 @@ body {
   margin-left: 12px;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+}
+
 #colorPicker-clear {
   clear: both;
 }

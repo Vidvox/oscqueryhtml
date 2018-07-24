@@ -115,6 +115,13 @@ function buildContentsAddToContainer(contents, parentContainer) {
         // Container for this node.
         let directoryElem = document.createElement('div');
         let id = generateId();
+        if (!dirObj.CONTENTS && !dirObj.TYPE) {
+            directoryElem.innerHTML = (
+                '<span class="error">Invalid node: ' +
+                'Needs either CONTENTS or TYPE or BOTH</span>');
+            parentContainer.appendChild(directoryElem);
+            continue;
+        }
         // If this has CONTENTS, build a directory node.
         if (dirObj.CONTENTS) {
             let html = directoryElem.innerHTML;
@@ -194,15 +201,18 @@ function buildControlElements(containerElem, name, details) {
     }
 }
 
-function applySelector(obj, selector) {
+function applySelector(obj, selector, key) {
     if (!obj) {
         return null;
     }
     for (let n = 0; n < selector.length; n++) {
         let i = selector[n];
         obj = obj[i];
+        if (!obj) {
+            return null;
+        }
     }
-    return obj;
+    return obj[key];
 }
 
 function applyPos(obj, pos) {
@@ -229,8 +239,8 @@ function buildSingleControl(details, type, selector, pos) {
     var setter = null;
     if (type == 'c') {
         // Char
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || '';
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
@@ -267,8 +277,8 @@ function buildSingleControl(details, type, selector, pos) {
         setter = 'color';
     } else if (type == 'd') {
         // Double
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
@@ -282,8 +292,8 @@ function buildSingleControl(details, type, selector, pos) {
             html += '</select>';
             getter = 'value';
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN || 0;
-            var max = applySelector(details.RANGE, selector).MAX || 1;
+            var min = applySelector(details.RANGE, selector, 'MIN') || 0;
+            var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
@@ -304,8 +314,8 @@ function buildSingleControl(details, type, selector, pos) {
         html += '<input type="button" value="Send false"/>';
     } else if (type == 'f') {
         // Float
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
@@ -319,8 +329,8 @@ function buildSingleControl(details, type, selector, pos) {
             html += '</select>';
             getter = 'value';
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN || 0;
-            var max = applySelector(details.RANGE, selector).MAX || 1;
+            var min = applySelector(details.RANGE, selector, 'MIN') || 0;
+            var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
@@ -341,8 +351,8 @@ function buildSingleControl(details, type, selector, pos) {
         html += '<input type="button" value="Send infinity"/>';
     } else if (type == 'i') {
         // Integer
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || 0;
             if (options.length == 1) {
                 value = options[0];
@@ -372,8 +382,12 @@ function buildSingleControl(details, type, selector, pos) {
                 getter = 'value';
             }
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN || 0;
-            var max = applySelector(details.RANGE, selector).MAX || 1;
+            var min = applySelector(details.RANGE, selector, 'MIN');
+            var max = applySelector(details.RANGE, selector, 'MAX');
+            if (min == null || max == null) {
+                return ('<span class="error">Invalid node: RANGE needs ' +
+                        'MIN,MAX or VALS</span>');
+            }
             var value = applyPos(details.VALUE, pos) || 0;
             if (max - min == 0) {
                 value = min;
@@ -407,8 +421,8 @@ function buildSingleControl(details, type, selector, pos) {
         }
     } else if (type == 'h') {
         // Longlong
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
@@ -422,8 +436,8 @@ function buildSingleControl(details, type, selector, pos) {
             html += '</select>';
             getter = 'parseInt64';
         } else if (details.RANGE) {
-            var min = applySelector(details.RANGE, selector).MIN || 0;
-            var max = applySelector(details.RANGE, selector).MAX || 1;
+            var min = applySelector(details.RANGE, selector, 'MIN') || 0;
+            var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '"/>';
@@ -447,8 +461,8 @@ function buildSingleControl(details, type, selector, pos) {
         html += '<input type="button" value="Send null"/>';
     } else if (type == 's') {
         // String
-        if (details.RANGE && applySelector(details.RANGE, selector).VALS) {
-            var options = applySelector(details.RANGE, selector).VALS;
+        if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
+            var options = applySelector(details.RANGE, selector, 'VALS');
             var value = applyPos(details.VALUE, pos) || '';
             html += '<select>';
             for (let i = 0; i < options.length; i++) {
