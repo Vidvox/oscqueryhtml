@@ -557,42 +557,7 @@ function initWebSocket(url) {
                 // pass
             }
             if (msg) {
-                if (msg.COMMAND == 'PATH_CHANGED') {
-                    let refreshElem = document.getElementById('refresh-butter');
-                    refreshElem.style.display = 'inline';
-                    window.location.reload(true);
-                } else if (msg.COMMAND == 'PATH_ADDED') {
-                    let nodePath = msg.DATA;
-                    let pathParts = nodePath.split('/');
-                    let numParts = pathParts.length - 1;
-                    let nodeName = pathParts[numParts];
-                    let nodeUrl = g_serverUrl + nodePath;
-                    retrieve.retrieveJson(nodeUrl, (contents) => {
-                        let targetPath = pathParts.slice(0, numParts).join('/');
-                        let targetElem = document.querySelector(
-                            '[data-dir-path="' + targetPath + '"]');
-                        if (!targetElem) {
-                            return;
-                        }
-                        let holderElem = document.createElement('div');
-                        holderElem.className = "node control";
-                        holderElem.setAttribute('data-dir-path', nodePath);
-                        buildControlElements(holderElem, nodeName, contents);
-                        targetElem.appendChild(holderElem);
-                    });
-                } else if (msg.COMMAND == 'PATH_RENAMED') {
-                    console.log('* RENAMED');
-                } else if (msg.COMMAND == 'PATH_REMOVED') {
-                    let nodePath = msg.DATA;
-                    let targetElem = document.querySelector(
-                        '[data-dir-path="' + nodePath + '"]');
-                    if (targetElem) {
-                        targetElem.parentNode.removeChild(targetElem);
-                    }
-                } else {
-                    console.log('??????????');
-                    console.log('Unknown message: ' + e.data);
-                }
+                processCommandMessage(msg);
                 return;
             }
             // Non-JSON data, assume it's a binary OSC packet.
@@ -639,6 +604,53 @@ function initWebSocket(url) {
             targetElem.value = value;
         }
     });
+}
+
+function processCommandMessage(msg) {
+    if (msg.COMMAND == 'PATH_CHANGED') {
+        if (g_extensions.PATH_CHANGED) {
+            let refreshElem = document.getElementById('refresh-butter');
+            refreshElem.style.display = 'inline';
+            window.location.reload(true);
+        }
+    } else if (msg.COMMAND == 'PATH_ADDED') {
+        if (g_extensions.PATH_ADDED) {
+            let nodePath = msg.DATA;
+            let pathParts = nodePath.split('/');
+            let numParts = pathParts.length - 1;
+            let nodeName = pathParts[numParts];
+            let nodeUrl = g_serverUrl + nodePath;
+            retrieve.retrieveJson(nodeUrl, (contents) => {
+                let targetPath = pathParts.slice(0, numParts).join('/');
+                let targetElem = document.querySelector(
+                    '[data-dir-path="' + targetPath + '"]');
+                if (!targetElem) {
+                    return;
+                }
+                let holderElem = document.createElement('div');
+                holderElem.className = "node control";
+                holderElem.setAttribute('data-dir-path', nodePath);
+                buildControlElements(holderElem, nodeName, contents);
+                targetElem.appendChild(holderElem);
+            });
+        }
+    } else if (msg.COMMAND == 'PATH_RENAMED') {
+        if (g_extensions.PATH_RENAMED) {
+            console.log('* RENAMED');
+        }
+    } else if (msg.COMMAND == 'PATH_REMOVED') {
+        if (g_extensions.PATH_REMOVED) {
+            let nodePath = msg.DATA;
+            let targetElem = document.querySelector(
+                '[data-dir-path="' + nodePath + '"]');
+            if (targetElem) {
+                targetElem.parentNode.removeChild(targetElem);
+            }
+        }
+    } else {
+        console.log('??????????');
+        console.log('Unknown message: ' + e.data);
+    }
 }
 
 function controlEvent(e) {
