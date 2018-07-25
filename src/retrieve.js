@@ -7,9 +7,9 @@ function retrieveHostInfo(url, cb) {
             return response.json();
         })
         .then(function(json) {
-            cb(json);
-        }).catch(function(ex) {
-            console.log('No HOST_INFO "' + ex + '"');
+            cb(null, json);
+        }).catch(function(err) {
+            cb('No HOST_INFO "' + err + '"', null);
         });
 }
 
@@ -19,11 +19,9 @@ function retrieveJson(url, cb) {
             return response.json();
         })
         .then(function(json) {
-            cb(json);
-        }).catch(function(ex) {
-            document.write('Failed to retrieve JSON, check console for ' +
-                           'error details');
-            throw ex;
+            cb(null, json);
+        }).catch(function(err) {
+            cb('Failed to retrieve JSON from "' + url + '"', null);
         });
 }
 

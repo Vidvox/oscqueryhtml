@@ -11,7 +11,7 @@ const toggleMinusBase64 = require("base64-image-loader!../assets/img/toggle-minu
 const togglePlusBase64 = require("base64-image-loader!../assets/img/toggle-plus.png");
 
 var g_allControlStruct = null;
-var g_hostInfo = null;
+var g_hostInfo = {};
 var g_extensions = null;
 var g_idGen = 0;
 var g_isListenEnabled = false;
@@ -620,7 +620,7 @@ function processCommandMessage(msg) {
             let numParts = pathParts.length - 1;
             let nodeName = pathParts[numParts];
             let nodeUrl = g_serverUrl + nodePath;
-            retrieve.retrieveJson(nodeUrl, (contents) => {
+            retrieve.retrieveJson(nodeUrl, (err, contents) => {
                 let targetPath = pathParts.slice(0, numParts).join('/');
                 let targetElem = document.querySelector(
                     '[data-dir-path="' + targetPath + '"]');
@@ -956,9 +956,18 @@ function addInputEventHandlers() {
 function createApp(serverUrl) {
     g_serverUrl = serverUrl;
     initWebSocket(serverUrl.replace("http", "ws"));
-    retrieve.retrieveHostInfo(serverUrl, (hostInfo) => {
-        storeHostInfo(hostInfo);
-        retrieve.retrieveJson(serverUrl, (result) => {
+    retrieve.retrieveHostInfo(serverUrl, (err, hostInfo) => {
+        if (hostInfo) {
+            storeHostInfo(hostInfo);
+        }
+        retrieve.retrieveJson(serverUrl, (err, result) => {
+            if (err) {
+                let mainContentsElem = $('#mainContents');
+                let errorElem = document.createElement('div');
+                errorElem.innerHTML = '<span class="error">' + err + '</span>';
+                mainContentsElem.appendChild(errorElem);
+                return;
+            }
             buildColorPicker();
             buildFromQueryResult(result);
             storeControlStructure(result);
