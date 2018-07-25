@@ -636,7 +636,30 @@ function processCommandMessage(msg) {
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {
         if (g_extensions.PATH_RENAMED) {
-            console.log('* RENAMED');
+            let oldPath = msg.DATA.OLD;
+            let newPath = msg.DATA.NEW;
+            let targetElem = document.querySelector(
+                '[data-dir-path="' + oldPath + '"]');
+            if (!targetElem) {
+                return;
+            }
+            targetElem.setAttribute('data-dir-path', newPath);
+            let controlDetail = targetElem.querySelector('.control-name');
+            if (controlDetail) {
+                let newParts = newPath.split('/');
+                let newName = newParts[newParts.length - 1];
+                controlDetail.textContent = newName;
+            }
+            let fullPathDetail = targetElem.querySelector('.full-path');
+            if (fullPathDetail) {
+                fullPathDetail.textContent = newPath;
+            }
+            targetElem = document.querySelector(
+                '[data-full-path="' + oldPath + '"]');
+            if (!targetElem) {
+                return;
+            }
+            targetElem.setAttribute('data-full-path', newPath);
         }
     } else if (msg.COMMAND == 'PATH_REMOVED') {
         if (g_extensions.PATH_REMOVED) {
