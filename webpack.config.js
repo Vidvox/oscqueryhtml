@@ -5,7 +5,7 @@ module.exports = {
   entry: ['whatwg-fetch', './src/index.js'],
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'output'),
     filename: 'bundle.js',
     library: 'oscQuery',
     libraryTarget: 'window',

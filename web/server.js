@@ -6,7 +6,7 @@ const PORT = 5050;
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static('../assets/'));
-app.use(express.static('../dist'));
+app.use(express.static('../output'));
 
 app.get('/', (req, res) => {
     const url = process.env['SERVER_URL'];

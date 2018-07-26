@@ -6,7 +6,7 @@ An HTML, Javascript, css application for retrieving OSCQuery responses (in json)
 
 See [https://github.com/mrRay/OSCQueryProposal](https://github.com/mrRay/OSCQueryProposal)
 
-### Usage
+### Static deployment
 
 1. Copy web/views/pages/index.ejs to index.html
 2. In index.html, replace `<%= host_url %>` with the OSCQuery server, which serves the json feed. (TODO: How to improve this?)
@@ -14,6 +14,26 @@ See [https://github.com/mrRay/OSCQueryProposal](https://github.com/mrRay/OSCQuer
 4. Serve dist/bundle.js at the path `/bundle.js`
 5. Serve assets/css/style.css at the path `/css/style.css`
 6. (No need to serve assets/img, the images get built into the bundle.js)
+
+### Building for development
+
+1. Install npm
+2. `npm install` - use npm to install dependencies
+3. `npm run build` - execute webpack to build output/bundle.js
+
+When development is complete, copy output/bundle.js to dist/bundle.js.
+
+### Running node.js development server
+
+1. `export SERVER_URL=http://192.168.1.42:2345` (OSCQuery Server)
+2. `cd web`
+3. `node server.js`
+
+Open your browser and go nativate to http://localhost:5050
+
+### Tests
+
+`npm run test`
 
 ### CORS Security
 
@@ -23,17 +43,3 @@ If the server does not set this header, as a temporary workaround, you can insta
 
 Otherwise, the json request will be blocked by Chrome's security policy.
 
-### Building
-
-1. Install npm
-2. `npm install` - use npm to install dependencies
-3. `npm run build` - execute webpack to build dist/bundle.js
-
-### TODO
-
-Missing features:
-
-1. HOST_INFO and EXTENSIONS
-2. ACCESS checking, handle 40x's
-3. longlong type
-4. searching for tags
