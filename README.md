@@ -25,7 +25,7 @@ When development is complete, copy output/bundle.js to dist/bundle.js.
 
 ### Running node.js development server
 
-1. `export SERVER_URL=http://192.168.1.42:2345` (OSCQuery Server)
+1. `export SERVER_URL=http://127.0.0.1:2345` (OSCQuery Server)
 2. `cd web`
 3. `node server.js`
 
