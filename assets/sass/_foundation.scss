@@ -1,12 +1,3 @@
-$base-font-family: 'bitstream_vera_sansroman', Arial, sans-serif;
 
-$background-color-dark: #002b36;
-$content-color-dark: #839496;
-$content-color-dark-emphasis: #93a1a1;
-
-$background-color-light: #eee8d5;
-$content-color-light: #657b83;
-$content-color-light-emphasis: #586e75;
-
-$yellow-color: #b58900;
-$magenta-color: #d33682;
+@import "foundation/global-variables";
+@import "foundation/buttons";

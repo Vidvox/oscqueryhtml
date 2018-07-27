@@ -1,3 +1,17 @@
+input[type=button], .button {
+  -webkit-appearance: none;
+  display: inline-block;
+  padding: 10px;
+  background-color: #00a896;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #ececec;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  font-size: 1em; }
+  body.light input[type=button], body.light .button {
+    background-color: #008f7f; }
+
 @font-face {
   font-family: 'bitstream_vera_sansroman';
   src: url("fonts/Vera-webfont.woff") format("woff"), url("fonts/Vera.ttf") format("truetype");
@@ -8,8 +22,20 @@ body {
 
 .node {
   display: flex; }
-  .node .control {
+  .node div {
+    display: flex;
     flex: 1; }
+    .node div .control {
+      padding: 10px;
+      box-sizing: border-box;
+      flex: 1;
+      display: flex;
+      border-radius: 10px;
+      margin: 20px; }
+      body.light .node div .control {
+        background-color: rgba(0, 0, 0, 0.5); }
+      .node div .control input[type="range"] {
+        flex: 1; }
 
 .dir-container {
   border: solid 2px black;
@@ -105,5 +131,5 @@ body.dark {
   color: #839496; }
 
 body.light {
-  background-color: #eee8d5;
+  background-color: #fffaf0;
   color: #657b83; }

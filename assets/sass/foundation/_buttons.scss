@@ -1,0 +1,23 @@
+$button-default-background-color: $teal-color;
+$button-default-text-color: $white-color;
+
+
+@mixin button-base-style {
+  -webkit-appearance: none;
+  display: inline-block;
+  padding: $unit;
+  background-color: $button-default-background-color;
+  border: none;
+  border-radius: $vv-inner-border-radius;
+  box-sizing: border-box;
+  color: $button-default-text-color;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+  font-size: 1em;
+  body.light & {
+    background-color: darken($button-default-background-color, 5%);
+  }
+}
+
+input[type=button], .button {
+  @include button-base-style;
+}
