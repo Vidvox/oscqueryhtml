@@ -15,24 +15,29 @@
   border: 1px solid $content-color-dark;
   padding: $unit /2;
   > div {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
-    justify-content: space-between;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    grid-template-rows: 50% 50%;
     .control {
-      flex: 1;
       display: flex;
-      align-self: flex-start;
-
+      flex-wrap: wrap;
+      flex: 1;
       input {
         flex: 1;
       }
     }
   }
   .dir-name {
-      
-  }
-  .full-path {
 
   }
+  .full-path {
+    grid-column-start: 3;
+    text-align: right;
+  }
+  .description {
+    grid-column-start: 3;
+    text-align: right;
+  }
+
 }

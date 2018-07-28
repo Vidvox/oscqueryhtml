@@ -43,26 +43,28 @@ body {
   border: 1px solid #839496;
   padding: 5px; }
   .node > div {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
-    justify-content: space-between; }
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    grid-template-rows: 50% 50%; }
     .node > div .control {
-      flex: 1;
       display: flex;
-      align-self: flex-start; }
+      flex-wrap: wrap;
+      flex: 1; }
       .node > div .control input {
         flex: 1; }
+  .node .full-path {
+    grid-column-start: 3;
+    text-align: right; }
+  .node .description {
+    grid-column-start: 3;
+    text-align: right; }
 
 .node .control {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 10px;
   margin: 20px; }
-.node .type_r {
-  max-width: 90px; }
-.node .type_F {
-  max-width: 200px; }
 
 body.dark, body {
   background-color: #0c1f2f;
