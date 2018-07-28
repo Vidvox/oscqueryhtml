@@ -2,15 +2,23 @@ input[type=button], .button {
   -webkit-appearance: none;
   display: inline-block;
   padding: 10px;
-  background-color: #00a896;
+  background-color: #666;
   border: none;
   border-radius: 5px;
   box-sizing: border-box;
   color: #ececec;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
   font-size: 1em; }
+  input[type=button]:active, .button:active {
+    background-color: #4d4d4d; }
   body.light input[type=button], body.light .button {
-    background-color: #008f7f; }
+    background-color: #00a896; }
+    body.light input[type=button]:active, body.light .button:active {
+      background-color: #00a896; }
+  body.dark input[type=button], body.dark .button {
+    background-color: #d29d00; }
+    body.dark input[type=button]:active, body.dark .button:active {
+      background-color: #00a896; }
 
 @font-face {
   font-family: 'bitstream_vera_sansroman';
@@ -19,6 +27,11 @@ input[type=button], .button {
   font-style: normal; }
 body {
   font-family: "bitstream_vera_sansroman", Arial, sans-serif; }
+
+.dir-container {
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 20px; }
 
 .node {
   display: flex; }
@@ -49,11 +62,6 @@ body {
 .dir-name {
   font-size: 140%;
   font-weight: bold; }
-
-.control {
-  border: solid 1px black;
-  padding: 2px;
-  margin: 3px; }
 
 .control-name {
   font-size: 120%;
@@ -134,7 +142,11 @@ img.toggle-show {
 body.dark {
   background-color: #002b36;
   color: #839496; }
+  body.dark * {
+    border-color: #93a1a1; }
 
 body.light {
   background-color: #fffaf0;
   color: #657b83; }
+  body.light * {
+    border-color: #586e75; }

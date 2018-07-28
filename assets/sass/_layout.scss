@@ -1,3 +1,9 @@
+.dir-container {
+  padding: $unit;
+  box-sizing: border-box;
+  border-radius: $unit * 2;
+}
+
 .node {
   display: flex;
   div {

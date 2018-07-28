@@ -1,9 +1,15 @@
 body.dark {
   background-color: $background-color-dark;
   color: $content-color-dark;
+  * {
+    border-color: $content-color-dark-emphasis;
+  }
 }
 
 body.light {
   background-color: $background-color-light;
   color: $content-color-light;
+  * {
+    border-color: $content-color-light-emphasis;
+  }
 }

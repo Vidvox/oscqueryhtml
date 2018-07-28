@@ -1,4 +1,6 @@
-$button-default-background-color: $teal-color;
+$button-default-background-color: #666;
+$button-light-background-color: $teal-color;
+$button-dark-background-color: $yellow-color;
 $button-default-text-color: $white-color;
 
 
@@ -13,8 +15,20 @@ $button-default-text-color: $white-color;
   color: $button-default-text-color;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
   font-size: 1em;
+  &:active {
+    background-color: darken($button-default-background-color, 10%);
+  }
   body.light & {
-    background-color: darken($button-default-background-color, 5%);
+    background-color: $button-light-background-color;
+    &:active {
+      background-color: saturate($button-light-background-color, 10%);
+    }
+  }
+  body.dark & {
+    background-color: $button-dark-background-color;
+    &:active {
+      background-color: saturate($button-light-background-color, 10%);
+    }
   }
 }
 
