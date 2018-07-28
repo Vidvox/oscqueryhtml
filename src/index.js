@@ -191,7 +191,7 @@ function buildControlElements(containerElem, name, details) {
                 var id = generateId();
                 let elem = document.createElement('div');
                 elem.id = 'control_body_' + id;
-                elem.className = 'control type_' + E(type[pos]);
+                elem.className = 'control type_' + typeToControlName(type[pos]);
                 elem.innerHTML = html;
                 containerElem.appendChild(elem);
             }
@@ -220,6 +220,38 @@ function applyPos(obj, pos) {
         return null;
     }
     return obj[pos];
+}
+
+function typeToControlName(type) {
+    if (type == 'c') {
+        return 'char';
+    } else if (type == 'r') {
+        return 'color';
+    } else if (type == 'd') {
+        return 'double';
+    } else if (type == 'F') {
+        return 'false';
+    } else if (type == 'f') {
+        return 'float';
+    } else if (type == 'I') {
+        return 'infinity';
+    } else if (type == 'i') {
+        return 'integer';
+    } else if (type == 'h') {
+        return 'longlong';
+    } else if (type == 'm') {
+        return 'midi';
+    } else if (type == 'N') {
+        return 'null';
+    } else if (type == 'a') {
+        return 'string';
+    } else if (type == 'T') {
+        return 'true';
+    } else if (type == 't') {
+        return 'timetag';
+    } else {
+        return 'unknown';
+    }
 }
 
 function E(text) {
@@ -687,7 +719,8 @@ function controlEvent(e) {
     let args = [];
     for (let i = 0; i < nodeElem.children.length; i++) {
         let c = nodeElem.children[i];
-        if (c.tagName.toLowerCase() == 'div' && c.className =='control') {
+        if (c.tagName.toLowerCase() == 'div' &&
+              c.classList.contains('control')) {
             args.push(getControlArg(c));
         }
     }
