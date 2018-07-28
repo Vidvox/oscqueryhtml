@@ -34,17 +34,24 @@ body {
   border-radius: 20px;
   margin-bottom: 10px;
   border: 2px solid; }
+  .dir-container span {
+    display: block; }
 
 .node {
-  display: flex; }
-  .node div {
+  display: flex;
+  margin: 10px;
+  border: 1px solid #839496;
+  padding: 5px; }
+  .node > div {
     display: flex;
     flex-wrap: wrap;
-    flex: 1; }
-    .node div .control {
+    flex: 1;
+    justify-content: space-between; }
+    .node > div .control {
       flex: 1;
-      display: flex; }
-      .node div .control input {
+      display: flex;
+      align-self: flex-start; }
+      .node > div .control input {
         flex: 1; }
 
 .node .control {
@@ -54,8 +61,8 @@ body {
   margin: 20px; }
 .node .type_r {
   max-width: 90px; }
-.node .type_ {
-  max-width: 90px; }
+.node .type_F {
+  max-width: 200px; }
 
 body.dark, body {
   background-color: #0c1f2f;

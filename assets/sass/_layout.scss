@@ -4,20 +4,35 @@
   border-radius: $unit * 2;
   margin-bottom: $unit;
   border: 2px solid;
+  span {
+    display: block;
+  }
 }
 
 .node {
   display: flex;
-  div {
+  margin: $unit;
+  border: 1px solid $content-color-dark;
+  padding: $unit /2;
+  > div {
     display: flex;
     flex-wrap: wrap;
     flex: 1;
+    justify-content: space-between;
     .control {
       flex: 1;
       display: flex;
+      align-self: flex-start;
+
       input {
         flex: 1;
       }
     }
+  }
+  .dir-name {
+      
+  }
+  .full-path {
+
   }
 }
