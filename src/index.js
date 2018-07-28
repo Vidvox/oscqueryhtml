@@ -719,7 +719,8 @@ function controlEvent(e) {
     let args = [];
     for (let i = 0; i < nodeElem.children.length; i++) {
         let c = nodeElem.children[i];
-        if (c.tagName.toLowerCase() == 'div' && c.className =='control') {
+        if (c.tagName.toLowerCase() == 'div' &&
+              c.classList.contains('control')) {
             args.push(getControlArg(c));
         }
     }
