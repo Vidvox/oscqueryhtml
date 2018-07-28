@@ -15,9 +15,9 @@ input[type=button], .button {
     background-color: #00a896; }
     body.light input[type=button]:active, body.light .button:active {
       background-color: #00a896; }
-  body.dark input[type=button], body.dark .button {
+  body.dark input[type=button], body input[type=button], body.dark .button, body .button {
     background-color: #d29d00; }
-    body.dark input[type=button]:active, body.dark .button:active {
+    body.dark input[type=button]:active, body input[type=button]:active, body.dark .button:active, body .button:active {
       background-color: #00a896; }
 
 @font-face {
@@ -31,7 +31,9 @@ body {
 .dir-container {
   padding: 10px;
   box-sizing: border-box;
-  border-radius: 20px; }
+  border-radius: 20px;
+  margin-bottom: 10px;
+  border: 2px solid; }
 
 .node {
   display: flex; }
@@ -50,14 +52,27 @@ body {
   box-sizing: border-box;
   border-radius: 10px;
   margin: 20px; }
-  body.light .node .control {
-    background-color: rgba(0, 0, 0, 0.3); }
-  body.dark .node .control {
-    background-color: rgba(255, 255, 255, 0.3); }
+.node .type_r {
+  max-width: 90px; }
+.node .type_ {
+  max-width: 90px; }
 
-.dir-container {
-  border: solid 2px black;
-  margin-bottom: 8px; }
+body.dark, body {
+  background-color: #0c1f2f;
+  color: #839496; }
+  body.dark *, body * {
+    border-color: #93a1a1; }
+
+body.light {
+  background-color: #fffaf0;
+  color: #657b83; }
+  body.light * {
+    border-color: #586e75; }
+
+body.light .node .control {
+  background-color: rgba(0, 0, 0, 0.3); }
+body.dark .node .control, body .node .control {
+  background-color: rgba(255, 255, 255, 0.3); }
 
 .dir-name {
   font-size: 140%;
@@ -139,14 +154,3 @@ img.toggle-show {
 @media screen and (max-width: 500px) {
   body {
     font-size: 140%; } }
-body.dark {
-  background-color: #002b36;
-  color: #839496; }
-  body.dark * {
-    border-color: #93a1a1; }
-
-body.light {
-  background-color: #fffaf0;
-  color: #657b83; }
-  body.light * {
-    border-color: #586e75; }

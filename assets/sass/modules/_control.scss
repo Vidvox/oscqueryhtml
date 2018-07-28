@@ -4,15 +4,12 @@
     box-sizing: border-box;
     border-radius: $vv-base-border-radius;
     margin: $unit * 2;
-    body.light & {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-    body.dark & {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
   }
-}
-
-.color-control {
-  
+  .type_r {
+    //this is the color picker control
+    max-width: 90px;
+  }
+  .type_ {
+    max-width: 90px;
+  }
 }

@@ -1,3 +1,5 @@
+//color variables are in foundation/global-variables
+
 body.dark {
   background-color: $background-color-dark;
   color: $content-color-dark;
@@ -12,4 +14,22 @@ body.light {
   * {
     border-color: $content-color-light-emphasis;
   }
+}
+
+
+
+
+.node .control {
+  body.light & {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  body.dark & {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+
+// Ok, let's just go ahead and turn on dark for now since there's not a toggle switch-
+body {
+  @extend body.dark;
 }
