@@ -24,18 +24,23 @@ body {
   display: flex; }
   .node div {
     display: flex;
+    flex-wrap: wrap;
     flex: 1; }
     .node div .control {
-      padding: 10px;
-      box-sizing: border-box;
       flex: 1;
-      display: flex;
-      border-radius: 10px;
-      margin: 20px; }
-      body.light .node div .control {
-        background-color: rgba(0, 0, 0, 0.5); }
-      .node div .control input[type="range"] {
+      display: flex; }
+      .node div .control input {
         flex: 1; }
+
+.node .control {
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 20px; }
+  body.light .node .control {
+    background-color: rgba(0, 0, 0, 0.3); }
+  body.dark .node .control {
+    background-color: rgba(255, 255, 255, 0.3); }
 
 .dir-container {
   border: solid 2px black;

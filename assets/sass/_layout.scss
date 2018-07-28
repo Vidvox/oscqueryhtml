@@ -2,18 +2,12 @@
   display: flex;
   div {
     display: flex;
+    flex-wrap: wrap;
     flex: 1;
     .control {
-      padding: $unit;
-      box-sizing: border-box;
       flex: 1;
       display: flex;
-      border-radius: $vv-base-border-radius;
-      margin: $unit * 2;
-      body.light & {
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-      input[type="range"] {
+      input {
         flex: 1;
       }
     }
