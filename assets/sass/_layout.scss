@@ -16,9 +16,6 @@
   padding: $unit /2;
   > div {
     width: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr 1fr;
-    grid-template-rows: 50% 50%;
     .control {
       display: flex;
       flex-wrap: wrap;
@@ -26,6 +23,11 @@
       input {
         flex: 1;
       }
+    }
+    @include media-query($on-palm) {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      grid-template-rows: 50% 50%;
     }
   }
   .dir-name {

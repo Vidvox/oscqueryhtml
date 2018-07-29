@@ -4,9 +4,15 @@
     box-sizing: border-box;
     border-radius: $vv-base-border-radius;
     margin: $unit * 2;
+    input[type="text"] {
+      font-size: 20px;
+      line-height: 26px;
+      padding: 5px;
+      box-sizing: border-box;
+    }
   }
   .type_r {
-    
+
   }
   // .type_ {
   //   max-width: 90px;

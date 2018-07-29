@@ -1,0 +1,11 @@
+$on-palm:          800px;
+$on-laptop:        1200px;
+$bigscreen:        1600px;
+
+
+
+@mixin media-query($device) {
+    @media screen and (min-width: $device) {
+        @content;
+    }
+}
