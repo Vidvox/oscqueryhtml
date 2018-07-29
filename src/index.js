@@ -191,7 +191,7 @@ function buildControlElements(containerElem, name, details) {
                 var id = generateId();
                 let elem = document.createElement('div');
                 elem.id = 'control_body_' + id;
-                elem.className = 'control type_' + typeToControlName(type[pos]);
+                elem.className = 'control type_' + typeToControlName(type);
                 elem.innerHTML = html;
                 containerElem.appendChild(elem);
             }
