@@ -21,10 +21,10 @@ body.light {
 
 .node .control {
   body.light & {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
   }
   body.dark & {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 

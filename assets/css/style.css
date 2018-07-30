@@ -45,7 +45,8 @@ body {
   .node > div {
     width: 100%; }
     .node > div .control {
-      display: flex; }
+      display: flex;
+      justify-content: center; }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 800px) {
@@ -70,9 +71,8 @@ body {
     line-height: 26px;
     padding: 5px;
     box-sizing: border-box; }
-.node .type_c {
-  max-width: 80px;
-  align-self: center; }
+.node .type_char, .node .type_color {
+  max-width: 80px; }
 
 #colorPicker {
   position: absolute;
@@ -100,13 +100,13 @@ body {
   clear: both; }
 
 .color-control {
-  width: 30px;
-  height: 20px;
+  width: 60px;
+  height: 40px;
   margin: 3px;
   border: solid 3px #ccc; }
 
 body.dark, body {
-  background-color: #0c1f2f;
+  background-color: #262626;
   color: #839496; }
   body.dark *, body * {
     border-color: #93a1a1; }
@@ -118,9 +118,9 @@ body.light {
     border-color: #586e75; }
 
 body.light .node .control {
-  background-color: rgba(0, 0, 0, 0.3); }
+  background-color: rgba(0, 0, 0, 0.2); }
 body.dark .node .control, body .node .control {
-  background-color: rgba(255, 255, 255, 0.3); }
+  background-color: rgba(255, 255, 255, 0.2); }
 
 .dir-name {
   font-size: 140%;
@@ -161,37 +161,6 @@ body.dark .node .control, body .node .control {
   color: #888;
   font-size: 80%;
   padding-bottom: 8px; }
-
-#colorPicker {
-  position: absolute;
-  display: none;
-  width: 200px;
-  background-color: #ccc;
-  padding: 8px; }
-
-#picker-wrapper {
-  position: relative;
-  float: left;
-  width: 160px; }
-
-#slider-wrapper {
-  position: relative;
-  float: left;
-  width: 20px;
-  margin-left: 12px; }
-
-.error {
-  color: red;
-  font-weight: bold; }
-
-#colorPicker-clear {
-  clear: both; }
-
-.color-control {
-  width: 30px;
-  height: 20px;
-  margin: 3px;
-  border: solid 3px #ccc; }
 
 img.toggle-hide {
   padding: 4px 2px; }
