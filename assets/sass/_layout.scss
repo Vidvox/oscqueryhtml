@@ -4,6 +4,16 @@
   border-radius: $unit * 2;
   margin-bottom: $unit;
   border: 2px solid;
+  font-size: 120%;
+  > div {
+      display: block;
+    @include media-query($on-palm) {
+      font-size: 80%;
+      display: grid;
+      grid-template-columns: auto auto;
+
+    }
+  }
   span {
     display: inline-block;
   }
@@ -12,8 +22,9 @@
 .node {
   display: flex;
   margin: $unit;
-  border: 1px solid $content-color-dark;
-  padding: $unit /2;
+  background-color: rgba(0,0,0,0.5);
+  padding: $unit;
+  border-radius: $unit;
   > div {
     width: 100%;
     .control {
@@ -25,8 +36,8 @@
     }
     @include media-query($on-palm) {
       display: grid;
-      grid-template-columns: auto 1fr 1fr;
-      grid-template-rows: 50% 50%;
+      grid-template-columns: auto auto auto;
+
     }
   }
   .dir-name {

@@ -25,23 +25,40 @@ input[type=button], .button {
   src: url("fonts/Vera-webfont.woff") format("woff"), url("fonts/Vera.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
+@font-face {
+  font-family: 'courier_prime_coderegular';
+  src: url("/fonts/courier_prime_code-webfont.woff2") format("woff2"), url("/fonts/courier_prime_code-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
 body {
   font-family: "bitstream_vera_sansroman", Arial, sans-serif; }
+
+input[type="text"] {
+  font-family: "courier_prime_coderegular", monospace; }
 
 .dir-container {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 10px;
-  border: 2px solid; }
+  border: 2px solid;
+  font-size: 120%; }
+  .dir-container > div {
+    display: block; }
+    @media screen and (min-width: 600px) {
+      .dir-container > div {
+        font-size: 80%;
+        display: grid;
+        grid-template-columns: auto auto; } }
   .dir-container span {
     display: inline-block; }
 
 .node {
   display: flex;
   margin: 10px;
-  border: 1px solid #839496;
-  padding: 5px; }
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px; }
   .node > div {
     width: 100%; }
     .node > div .control {
@@ -49,11 +66,10 @@ body {
       justify-content: center; }
       .node > div .control input {
         flex: 1; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 600px) {
       .node > div {
         display: grid;
-        grid-template-columns: auto 1fr 1fr;
-        grid-template-rows: 50% 50%; } }
+        grid-template-columns: auto auto auto; } }
   .node .full-path {
     grid-column-start: 3;
     text-align: right; }
@@ -65,7 +81,8 @@ body {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 10px;
-  margin: 20px; }
+  margin: 20px;
+  box-shadow: 0px 6px 0px 0px rgba(70, 75, 117, 0.7); }
   .node .control input[type="text"] {
     font-size: 20px;
     line-height: 26px;
@@ -73,6 +90,12 @@ body {
     box-sizing: border-box; }
 .node .type_char, .node .type_color {
   max-width: 80px; }
+
+.type_char input[type="text"] {
+  text-align: center; }
+
+select {
+  font-size: 20px; }
 
 #colorPicker {
   position: absolute;
@@ -167,7 +190,3 @@ img.toggle-hide {
 
 img.toggle-show {
   padding: 4px 2px; }
-
-@media screen and (max-width: 500px) {
-  body {
-    font-size: 140%; } }

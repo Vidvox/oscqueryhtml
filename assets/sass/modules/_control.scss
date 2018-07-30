@@ -1,9 +1,11 @@
 .node {
+
   .control {
     padding: $unit;
     box-sizing: border-box;
     border-radius: $vv-base-border-radius;
     margin: $unit * 2;
+    box-shadow: 0px 6px 0px 0px rgba(70,75,117,0.7);
     input[type="text"] {
       font-size: 20px;
       line-height: 26px;
@@ -14,4 +16,11 @@
   .type_char, .type_color{
     max-width: 80px;
   }
+}
+.type_char input[type="text"] {
+  text-align: center;
+}
+
+select {
+  font-size: 20px;
 }
