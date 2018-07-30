@@ -45,7 +45,7 @@ input[type="text"] {
   font-size: 120%; }
   .dir-container > div {
     display: block; }
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 866px) {
       .dir-container > div {
         font-size: 80%;
         display: grid;
@@ -66,7 +66,7 @@ input[type="text"] {
       justify-content: center; }
       .node > div .control input {
         flex: 1; }
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 866px) {
       .node > div {
         display: grid;
         grid-template-columns: auto auto auto; } }
