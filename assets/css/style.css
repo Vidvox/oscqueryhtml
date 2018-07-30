@@ -69,13 +69,20 @@ input[type="text"] {
     @media screen and (min-width: 866px) {
       .node > div {
         display: grid;
-        grid-template-columns: auto auto auto; } }
+        grid-template-areas: "name . path " " . . description" "control control control"; } }
+  .node .dir-name {
+    grid-area: name; }
   .node .full-path {
     grid-column-start: 3;
-    text-align: right; }
+    text-align: right;
+    grid-area: path; }
   .node .description {
     grid-column-start: 3;
-    text-align: right; }
+    text-align: right;
+    grid-area: description; }
+  .node .control {
+    grid-area: control;
+    display: flex; }
 
 .node .control {
   padding: 10px;

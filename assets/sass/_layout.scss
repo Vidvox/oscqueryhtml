@@ -36,19 +36,27 @@
     }
     @include media-query($on-palm) {
       display: grid;
-      grid-template-columns: auto auto auto;
+      grid-template-areas: "name . path "
+                          " . . description"
+                          "control control control"
 
     }
   }
   .dir-name {
+    grid-area: name;
   }
   .full-path {
     grid-column-start: 3;
     text-align: right;
+    grid-area: path;
   }
   .description {
     grid-column-start: 3;
     text-align: right;
+    grid-area: description;
   }
-
+  .control {
+    grid-area: control;
+    display: flex;
+  }
 }
