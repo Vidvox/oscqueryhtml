@@ -35,7 +35,7 @@ body {
   margin-bottom: 10px;
   border: 2px solid; }
   .dir-container span {
-    display: block; }
+    display: inline-block; }
 
 .node {
   display: flex;
@@ -45,9 +45,7 @@ body {
   .node > div {
     width: 100%; }
     .node > div .control {
-      display: flex;
-      flex-wrap: wrap;
-      flex: 1; }
+      display: flex; }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 800px) {
@@ -72,6 +70,40 @@ body {
     line-height: 26px;
     padding: 5px;
     box-sizing: border-box; }
+.node .type_c {
+  max-width: 80px;
+  align-self: center; }
+
+#colorPicker {
+  position: absolute;
+  display: none;
+  width: 200px;
+  background-color: #ccc;
+  padding: 8px; }
+
+#picker-wrapper {
+  position: relative;
+  float: left;
+  width: 160px; }
+
+#slider-wrapper {
+  position: relative;
+  float: left;
+  width: 20px;
+  margin-left: 12px; }
+
+.error {
+  color: red;
+  font-weight: bold; }
+
+#colorPicker-clear {
+  clear: both; }
+
+.color-control {
+  width: 30px;
+  height: 20px;
+  margin: 3px;
+  border: solid 3px #ccc; }
 
 body.dark, body {
   background-color: #0c1f2f;

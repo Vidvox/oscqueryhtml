@@ -1,0 +1,36 @@
+#colorPicker {
+  position: absolute;
+  display: none;
+  width: 200px;
+  background-color: #ccc;
+  padding: 8px;
+}
+
+#picker-wrapper {
+  position: relative;
+  float: left;
+  width: 160px;
+}
+
+#slider-wrapper {
+  position: relative;
+  float: left;
+  width: 20px;
+  margin-left: 12px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+#colorPicker-clear {
+  clear: both;
+}
+
+.color-control {
+  width: 30px;
+  height: 20px;
+  margin: 3px;
+  border: solid 3px #ccc;
+}
