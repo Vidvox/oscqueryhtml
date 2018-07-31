@@ -45,31 +45,40 @@ input[type="text"] {
   font-size: 120%; }
   .dir-container > div {
     display: block; }
+    .dir-container > div header {
+      grid-area: header; }
     @media screen and (min-width: 866px) {
       .dir-container > div {
         font-size: 80%;
         display: grid;
         grid-template-areas: "header header"; } }
+    @media screen and (min-width: 1600px) {
+      .dir-container > div {
+        font-size: 80%;
+        display: grid;
+        grid-template-areas: "header header header"; } }
   .dir-container span {
     display: inline-block; }
 
 .node {
   display: flex;
   margin: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 10px; }
   .node > div {
     width: 100%; }
     .node > div .control {
       display: flex;
-      justify-content: center; }
+      justify-content: center;
+      align-items: center; }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 866px) {
       .node > div {
         display: grid;
-        grid-template-areas: "name . path " " . . description" "control control control"; } }
+        grid-template-areas: "name . path " " . . description" "controls controls controls"; } }
+  .node .controls {
+    grid-area: controls; }
   .node .dir-name {
     grid-area: name; }
   .node .full-path {
@@ -81,7 +90,8 @@ input[type="text"] {
     text-align: right;
     grid-area: description; }
   .node .control {
-    grid-area: control;
+    grid-area: controls;
+    flex: 1;
     display: flex; }
 
 .node .control {
@@ -89,12 +99,15 @@ input[type="text"] {
   box-sizing: border-box;
   border-radius: 10px;
   margin: 20px;
-  box-shadow: 0px 6px 0px 0px rgba(70, 75, 117, 0.7); }
+  box-shadow: 0px 6px 0px 0px rgba(70, 75, 117, 0.7);
+  color: #fff; }
   .node .control input[type="text"] {
     font-size: 20px;
     line-height: 26px;
     padding: 5px;
     box-sizing: border-box; }
+  .node .control span.curr-val {
+    margin-left: 10px; }
 .node .type_char, .node .type_color {
   max-width: 80px; }
 
@@ -178,22 +191,18 @@ body.dark .node .control {
 .full-path {
   font-size: 80%;
   padding-left: 10px;
-  color: #666;
   display: block; }
 
 .description {
   font-size: 80%;
   padding-left: 10px;
-  color: #aaa;
   display: block; }
 
 .curr-val {
-  color: #888;
   font-size: 80%;
   padding-bottom: 8px; }
 
 .range-val {
-  color: #888;
   font-size: 80%;
   padding-bottom: 8px; }
 

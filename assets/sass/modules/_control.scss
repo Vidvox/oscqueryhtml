@@ -6,11 +6,15 @@
     border-radius: $vv-base-border-radius;
     margin: $unit * 2;
     box-shadow: 0px 6px 0px 0px rgba(70,75,117,0.7);
+    color: $control-data-text-color;
     input[type="text"] {
       font-size: 20px;
       line-height: 26px;
       padding: 5px;
       box-sizing: border-box;
+    }
+    span.curr-val {
+      margin-left: $unit;
     }
   }
   .type_char, .type_color{

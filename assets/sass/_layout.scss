@@ -7,10 +7,20 @@
   font-size: 120%;
   > div {
       display: block;
+      header {
+        grid-area: header;
+      }
     @include media-query($on-palm) {
       font-size: 80%;
       display: grid;
       grid-template-areas: "header header"
+
+    }
+    @include media-query($bigscreen) {
+      font-size: 80%;
+      display: grid;
+      grid-template-areas: "header header header"
+
     }
   }
   span {
@@ -21,7 +31,7 @@
 .node {
   display: flex;
   margin: $unit;
-  background-color: rgba(0,0,0,0.5);
+
   padding: $unit;
   border-radius: $unit;
 
@@ -30,6 +40,8 @@
     .control {
       display: flex;
       justify-content: center;
+      align-items: center;
+
       input {
         flex: 1;
       }
@@ -38,9 +50,12 @@
       display: grid;
       grid-template-areas: "name . path "
                           " . . description"
-                          "control control control"
+                          "controls controls controls"
 
     }
+  }
+  .controls {
+    grid-area: controls;
   }
   .dir-name {
     grid-area: name;
@@ -56,7 +71,8 @@
     grid-area: description;
   }
   .control {
-    grid-area: control;
+    grid-area: controls;
+    flex: 1;
     display: flex;
   }
 }
