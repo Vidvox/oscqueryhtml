@@ -10,8 +10,7 @@
     @include media-query($on-palm) {
       font-size: 80%;
       display: grid;
-      grid-template-columns: auto auto;
-
+      grid-template-areas: "header header"
     }
   }
   span {
@@ -25,6 +24,7 @@
   background-color: rgba(0,0,0,0.5);
   padding: $unit;
   border-radius: $unit;
+
   > div {
     width: 100%;
     .control {

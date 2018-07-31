@@ -22,7 +22,7 @@ input[type=button], .button {
 
 @font-face {
   font-family: 'bitstream_vera_sansroman';
-  src: url("fonts/Vera-webfont.woff") format("woff"), url("fonts/Vera.ttf") format("truetype");
+  src: url("/fonts/Vera-webfont.woff") format("woff"), url("/fonts/Vera.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 @font-face {
@@ -49,7 +49,7 @@ input[type="text"] {
       .dir-container > div {
         font-size: 80%;
         display: grid;
-        grid-template-columns: auto auto; } }
+        grid-template-areas: "header header"; } }
   .dir-container span {
     display: inline-block; }
 
