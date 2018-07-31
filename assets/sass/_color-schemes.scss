@@ -18,10 +18,10 @@ body.light {
 
 .node {
   body.light & {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: $node-background-color-light;
   }
   body.dark & {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $node-background-color-dark;
   }
 }
 
@@ -38,5 +38,5 @@ body.light {
 
 // Ok, let's just go ahead and turn on dark for now since there's not a toggle switch-
 body {
-  @extend body.dark;
+  @extend body.light;
 }

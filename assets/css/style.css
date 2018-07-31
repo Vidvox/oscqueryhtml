@@ -11,13 +11,13 @@ input[type=button], .button {
   font-size: 1em; }
   input[type=button]:active, .button:active {
     background-color: #4d4d4d; }
-  body.light input[type=button], body.light .button {
+  body.light input[type=button], body input[type=button], body.light .button, body .button {
     background-color: #00a896; }
-    body.light input[type=button]:active, body.light .button:active {
+    body.light input[type=button]:active, body input[type=button]:active, body.light .button:active, body .button:active {
       background-color: #00a896; }
-  body.dark input[type=button], body input[type=button], body.dark .button, body .button {
+  body.dark input[type=button], body.dark .button {
     background-color: #d29d00; }
-    body.dark input[type=button]:active, body input[type=button]:active, body.dark .button:active, body .button:active {
+    body.dark input[type=button]:active, body.dark .button:active {
       background-color: #00a896; }
 
 @font-face {
@@ -135,26 +135,26 @@ select {
   margin: 3px;
   border: solid 3px #ccc; }
 
-body.dark, body {
+body.dark {
   background-color: #262626;
   color: #839496; }
-  body.dark *, body * {
+  body.dark * {
     border-color: #93a1a1; }
 
-body.light {
-  background-color: #fffaf0;
+body.light, body {
+  background-color: #fffdf6;
   color: #657b83; }
-  body.light * {
+  body.light *, body * {
     border-color: #586e75; }
 
-body.light .node {
+body.light .node, body .node {
   background-color: rgba(0, 0, 0, 0.1); }
-body.dark .node, body .node {
+body.dark .node {
   background-color: rgba(255, 255, 255, 0.1); }
 
-body.light .node .control {
+body.light .node .control, body .node .control {
   background-color: rgba(0, 0, 0, 0.2); }
-body.dark .node .control, body .node .control {
+body.dark .node .control {
   background-color: rgba(255, 255, 255, 0.2); }
 
 .dir-name {

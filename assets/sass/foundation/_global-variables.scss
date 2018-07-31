@@ -2,10 +2,12 @@ $base-font-family: 'bitstream_vera_sansroman', Arial, sans-serif;
 $monospace-font-family: 'courier_prime_coderegular', monospace;
 
 $background-color-dark: #262626;
+$node-background-color-dark: rgba(255, 255, 255, 0.1);
 $content-color-dark: #839496;
 $content-color-dark-emphasis: #93a1a1;
 
-$background-color-light: #fffaf0;
+$background-color-light: #fffdf6;
+$node-background-color-light: rgba(0, 0, 0, 0.1);
 $content-color-light: #657b83;
 $content-color-light-emphasis: #586e75;
 
