@@ -872,6 +872,8 @@ function listenClick(e) {
     }
 }
 
+const TOGGLE_SHOW_DISPLAY = 'grid';
+
 function toggleHide(e) {
     let elem = e.target;
     for (let i = 0; i < 3; i++) {
@@ -883,7 +885,7 @@ function toggleHide(e) {
     let text = elem.id;
     let id = text.substr(12);
     $('#control_body_' + id).style.display = 'none';
-    $('#toggle_show_'  + id).style.display = 'block';
+    $('#toggle_show_'  + id).style.display = TOGGLE_SHOW_DISPLAY;
     $('#toggle_hide_'  + id).style.display = 'none';
     if (e.altKey) {
         let controlBody = $('#control_body_' + id);
@@ -908,9 +910,9 @@ function toggleShow(e) {
     }
     let text = elem.id;
     let id = text.substr(12);
-    $('#control_body_' + id).style.display = 'block';
+    $('#control_body_' + id).style.display = TOGGLE_SHOW_DISPLAY;
     $('#toggle_show_'  + id).style.display = 'none';
-    $('#toggle_hide_'  + id).style.display = 'block';
+    $('#toggle_hide_'  + id).style.display = TOGGLE_SHOW_DISPLAY;
     if (e.altKey) {
         let controlBody = $('#control_body_' + id);
         if (!controlBody) {
