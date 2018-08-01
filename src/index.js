@@ -190,10 +190,11 @@ function buildControlElements(containerElem, name, details) {
         } else {
             let html = buildSingleControl(details, type, selector, pos);
             if (html) {
-                var id = generateId();
+                let id = generateId();
+                let kind = extractControlKind(type, html);
                 let elem = document.createElement('div');
                 elem.id = 'control_body_' + id;
-                elem.className = 'control type_' + typeToControlName(type);
+                elem.className = 'control kind_' + kind;
                 elem.innerHTML = html;
                 groupElem.appendChild(elem);
             }
@@ -202,6 +203,40 @@ function buildControlElements(containerElem, name, details) {
         selector[selector.length - 1]++;
     }
     containerElem.appendChild(groupElem);
+}
+
+function extractControlKind(type, html) {
+    if (type == 'c') {
+        if (html.includes('<select>')) {
+            return 'dropdown';
+        } else {
+            return 'char';
+        }
+    } else if (type == 'r') {
+        return 'color';
+    } else if (type == 'd' || type == 'f' || type == 'i' || type == 'h') {
+        if (html.includes('<select>')) {
+            return 'dropdown';
+        } else if (html.includes('<input type="checkbox"')) {
+            return 'checkbox';
+        } else if (html.includes('<input type="button"')) {
+            return 'button';
+        } else {
+            return 'slider';
+        }
+    } else if (type == 's') {
+        if (html.includes('<select>')) {
+            return 'dropdown';
+        } else {
+            return 'text';
+        }
+    } else if (type == 'F' || type == 'I' || type == 'N' || type == 'T') {
+        return 'button';
+    } else if (type == 'm' || type == 't') {
+        return 'none';
+    } else {
+        return 'unknown';
+    }
 }
 
 function applySelector(obj, selector, key) {
