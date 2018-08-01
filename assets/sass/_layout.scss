@@ -5,11 +5,14 @@
   margin-bottom: $unit;
   border: 2px solid;
   font-size: 120%;
+  header {
+    grid-area: header;
+    span {
+      padding-left: $unit;
+    }
+  }
   > div {
       display: block;
-      header {
-        grid-area: header;
-      }
     @include media-query($on-palm) {
       font-size: 80%;
       display: grid;
@@ -40,7 +43,7 @@
     .control {
       display: flex;
       justify-content: center;
-      align-items: center;
+      //align-items: center;
 
       input {
         flex: 1;
@@ -56,6 +59,8 @@
   }
   .group {
     grid-area: controls;
+    display: flex;
+    flex-wrap: wrap;
   }
   .dir-name {
     grid-area: name;

@@ -36,7 +36,7 @@ body.light {
 }
 
 
-// Ok, let's just go ahead and turn on dark for now since there's not a toggle switch-
+// you can force a color scheme here
 body {
-  @extend body.light;
+  @extend body.dark;
 }

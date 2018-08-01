@@ -11,13 +11,13 @@ input[type=button], .button {
   font-size: 1em; }
   input[type=button]:active, .button:active {
     background-color: #4d4d4d; }
-  body.light input[type=button], body input[type=button], body.light .button, body .button {
+  body.light input[type=button], body.light .button {
     background-color: #00a896; }
-    body.light input[type=button]:active, body input[type=button]:active, body.light .button:active, body .button:active {
+    body.light input[type=button]:active, body.light .button:active {
       background-color: #00a896; }
-  body.dark input[type=button], body.dark .button {
+  body.dark input[type=button], body input[type=button], body.dark .button, body .button {
     background-color: #d29d00; }
-    body.dark input[type=button]:active, body.dark .button:active {
+    body.dark input[type=button]:active, body input[type=button]:active, body.dark .button:active, body .button:active {
       background-color: #00a896; }
 
 @font-face {
@@ -43,10 +43,12 @@ input[type="text"] {
   margin-bottom: 10px;
   border: 2px solid;
   font-size: 120%; }
+  .dir-container header {
+    grid-area: header; }
+    .dir-container header span {
+      padding-left: 10px; }
   .dir-container > div {
     display: block; }
-    .dir-container > div header {
-      grid-area: header; }
     @media screen and (min-width: 866px) {
       .dir-container > div {
         font-size: 80%;
@@ -69,8 +71,7 @@ input[type="text"] {
     width: 100%; }
     .node > div .control {
       display: flex;
-      justify-content: center;
-      align-items: center; }
+      justify-content: center; }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 866px) {
@@ -78,7 +79,9 @@ input[type="text"] {
         display: grid;
         grid-template-areas: "name . path " " . . description" "controls controls controls"; } }
   .node .group {
-    grid-area: controls; }
+    grid-area: controls;
+    display: flex;
+    flex-wrap: wrap; }
   .node .dir-name {
     grid-area: name; }
   .node .full-path {
@@ -109,11 +112,11 @@ input[type="text"] {
     margin-left: 10px; }
 .node .type_char, .node .type_color {
   max-width: 80px; }
-
-.type_char input[type="text"] {
+.node .type_char input[type="text"] {
   text-align: center; }
-
-select {
+.node .type_integer {
+  flex: none; }
+.node select {
   font-size: 20px; }
 
 #colorPicker {
@@ -147,26 +150,29 @@ select {
   margin: 3px;
   border: solid 3px #ccc; }
 
-body.dark {
+input[type="color"] {
+  height: 50px; }
+
+body.dark, body {
   background-color: #262626;
   color: #839496; }
-  body.dark * {
+  body.dark *, body * {
     border-color: #93a1a1; }
 
-body.light, body {
+body.light {
   background-color: #fffdf6;
   color: #657b83; }
-  body.light *, body * {
+  body.light * {
     border-color: #586e75; }
 
-body.light .node, body .node {
+body.light .node {
   background-color: rgba(0, 0, 0, 0.1); }
-body.dark .node {
+body.dark .node, body .node {
   background-color: rgba(255, 255, 255, 0.1); }
 
-body.light .node .control, body .node .control {
+body.light .node .control {
   background-color: rgba(0, 0, 0, 0.2); }
-body.dark .node .control {
+body.dark .node .control, body .node .control {
   background-color: rgba(255, 255, 255, 0.2); }
 
 .dir-name {

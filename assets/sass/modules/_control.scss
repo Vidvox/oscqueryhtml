@@ -20,11 +20,14 @@
   .type_char, .type_color{
     max-width: 80px;
   }
-}
-.type_char input[type="text"] {
-  text-align: center;
-}
+  .type_char input[type="text"] {
+    text-align: center;
+  }
 
-select {
-  font-size: 20px;
+  .type_integer {
+    flex: none;
+  }
+  select {
+    font-size: 20px;
+  }
 }
