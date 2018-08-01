@@ -17,15 +17,18 @@
       margin-left: $unit;
     }
   }
-  .type_char, .type_color{
-    max-width: 80px;
-  }
-  .type_char input[type="text"] {
-    text-align: center;
+  .kind_color, .kind_char {
+    flex: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .type_integer {
+  .kind_dropdown{
     flex: none;
+  }
+
+  .kind_slider {
+    flex: 1;
   }
   select {
     font-size: 20px;

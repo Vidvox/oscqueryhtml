@@ -110,12 +110,14 @@ input[type="text"] {
     box-sizing: border-box; }
   .node .control span.curr-val {
     margin-left: 10px; }
-.node .type_char, .node .type_color {
-  max-width: 80px; }
-.node .type_char input[type="text"] {
-  text-align: center; }
-.node .type_integer {
+.node .kind_color, .node .kind_char {
+  flex: none;
+  margin-left: auto;
+  margin-right: auto; }
+.node .kind_dropdown {
   flex: none; }
+.node .kind_slider {
+  flex: 1; }
 .node select {
   font-size: 20px; }
 
