@@ -634,7 +634,7 @@ function initWebSocket(url) {
                     }
                     return;
                 } else {
-                    runSetter(controlElem, setter.value, targetElem.value);
+                    runSetter(controlElem, setter.value, value);
                 }
             }
             targetElem.value = value;
