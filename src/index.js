@@ -114,8 +114,6 @@ function buildContentsAddToContainer(contents, parentContainer) {
         let dirObj = contents[dirNames[j]];
         // Container for this node.
         let directoryElem = document.createElement('div');
-        let html = '<header>';
-        let id = generateId();
         if (!dirObj.CONTENTS && !dirObj.TYPE) {
             directoryElem.innerHTML = (
                 '<span class="error">Invalid node: ' +
@@ -123,6 +121,8 @@ function buildContentsAddToContainer(contents, parentContainer) {
             parentContainer.appendChild(directoryElem);
             continue;
         }
+        let id = generateId();
+        let html = '<header>';
         // If this has CONTENTS, build a directory node.
         if (dirObj.CONTENTS) {
             // Toggle button when this is collapsed, will show the node.
@@ -137,8 +137,6 @@ function buildContentsAddToContainer(contents, parentContainer) {
             html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
             html += '</div>';
             directoryElem.className = 'dir-container';
-        //} else {
-        //    html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
         }
         html += '</header>';
         // Main body. This is the element that toggle shows or hides.
@@ -149,7 +147,7 @@ function buildContentsAddToContainer(contents, parentContainer) {
         let nodeContainer = directoryElem.querySelector('#control_body_' + id);
         // If this has TYPE, build control(s) from the details.
         if (dirObj.TYPE) {
-            directoryElem.className = directoryElem.className + ' node control';
+            directoryElem.classList.add('node');
             buildControlElements(nodeContainer, nodeName, dirObj);
         }
         // If this has CONTENTS, recursively handle the inner contents.
@@ -171,7 +169,8 @@ function createAppendElem(parentElem, tagName, className, text) {
 
 // Add control nodes. Iterate the type field, adding one node per kind of type.
 function buildControlElements(containerElem, name, details) {
-    let existingName = containerElem.querySelector('.dir-name');
+    // Handle the case where a directory is also a control.
+    let existingName = containerElem.parentNode.querySelector('.dir-name');
     if (!existingName) {
         createAppendElem(containerElem, 'span', 'control-name', name);
     }

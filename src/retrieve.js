@@ -21,7 +21,7 @@ function retrieveJson(url, cb) {
         .then(function(json) {
             cb(null, json);
         }).catch(function(err) {
-            cb('Failed to retrieve JSON from "' + url + '"', null);
+            cb('Failed to process JSON: ' + err, null);
         });
 }
 
