@@ -77,7 +77,7 @@ input[type="text"] {
       .node > div {
         display: grid;
         grid-template-areas: "name . path " " . . description" "controls controls controls"; } }
-  .node .controls {
+  .node .group {
     grid-area: controls; }
   .node .dir-name {
     grid-area: name; }
@@ -90,7 +90,6 @@ input[type="text"] {
     text-align: right;
     grid-area: description; }
   .node .control {
-    grid-area: controls;
     flex: 1;
     display: flex; }
 

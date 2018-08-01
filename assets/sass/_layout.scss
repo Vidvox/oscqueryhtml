@@ -54,7 +54,7 @@
 
     }
   }
-  .controls {
+  .group {
     grid-area: controls;
   }
   .dir-name {
@@ -71,7 +71,6 @@
     grid-area: description;
   }
   .control {
-    grid-area: controls;
     flex: 1;
     display: flex;
   }
