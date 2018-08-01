@@ -546,7 +546,8 @@ function extractControlPaths(obj) {
             let dirObj = obj.CONTENTS[dirNames[j]];
             paths = paths.concat(extractControlPaths(dirObj));
         }
-    } else if (obj.FULL_PATH) {
+    }
+    if (obj.TYPE && obj.FULL_PATH) {
         paths.push(obj.FULL_PATH);
     }
     return paths;
@@ -1016,4 +1017,5 @@ module.exports = {
     createApp: createApp,
     getDataEvent: getDataEvent,
     buildSingleControl: buildSingleControl,
+    extractControlPaths: extractControlPaths,
 };
