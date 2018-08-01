@@ -114,6 +114,7 @@ function buildContentsAddToContainer(contents, parentContainer) {
         let dirObj = contents[dirNames[j]];
         // Container for this node.
         let directoryElem = document.createElement('div');
+        let html = '<header>';
         let id = generateId();
         if (!dirObj.CONTENTS && !dirObj.TYPE) {
             directoryElem.innerHTML = (
@@ -124,7 +125,6 @@ function buildContentsAddToContainer(contents, parentContainer) {
         }
         // If this has CONTENTS, build a directory node.
         if (dirObj.CONTENTS) {
-            let html = directoryElem.innerHTML;
             // Toggle button when this is collapsed, will show the node.
             html += '<div class="toggle-show" id="toggle_show_' + id +
                 '" style="display:none">';
@@ -134,15 +134,16 @@ function buildContentsAddToContainer(contents, parentContainer) {
             // Toggle button when this is expanded, will hide the node.
             html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
             html += '<img class="toggle-hide" src="' + toggleMinusBase64 +'"/>';
+            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
             html += '</div>';
-            directoryElem.innerHTML = html;
             directoryElem.className = 'dir-container';
+        //} else {
+        //    html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
         }
+        html += '</header>';
         // Main body. This is the element that toggle shows or hides.
-        let html = directoryElem.innerHTML;
         html += '<div id="control_body_' + id +
             '" data-dir-path="' + dirObj.FULL_PATH + '">';
-        html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
         html += '</div>';
         directoryElem.innerHTML = html;
         let nodeContainer = directoryElem.querySelector('#control_body_' + id);
@@ -176,6 +177,8 @@ function buildControlElements(containerElem, name, details) {
     }
     createAppendElem(containerElem, 'span', 'full-path', details.FULL_PATH);
     createAppendElem(containerElem, 'span', 'description', details.DESCRIPTION);
+    let groupElem = document.createElement('div');
+    groupElem.className = 'group';
     let selector = [0];
     let pos = 0;
     for (let i = 0; i < details.TYPE.length; i++) {
@@ -193,12 +196,13 @@ function buildControlElements(containerElem, name, details) {
                 elem.id = 'control_body_' + id;
                 elem.className = 'control type_' + typeToControlName(type);
                 elem.innerHTML = html;
-                containerElem.appendChild(elem);
+                groupElem.appendChild(elem);
             }
             pos += 1;
         }
         selector[selector.length - 1]++;
     }
+    containerElem.appendChild(groupElem);
 }
 
 function applySelector(obj, selector, key) {
