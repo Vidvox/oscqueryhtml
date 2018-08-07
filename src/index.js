@@ -3,7 +3,7 @@ const oscTransports = require('osc-transports');
 const oscWebsocketClient = require('osc-websocket-client');
 
 const retrieve = require('./retrieve.js');
-const colorpicker = require('./colorpicker.js');
+const vanillaColorPicker = require('vanilla-picker');
 
 const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
@@ -45,23 +45,6 @@ function detectColorPicker() {
     input.setAttribute('type', 'color');
     input.setAttribute('value', '$');
     g_supportHtml5Color = (input.type == 'color' && input.value != '$');
-}
-
-// Create a singleton color picker, only if this browser does not support
-// the built-in html5 color picker element.
-function buildColorPicker() {
-    detectColorPicker();
-    if (g_supportHtml5Color) {
-        return;
-    }
-    let mainContentsElem = $('#mainContents');
-    let colorPickerElem = document.createElement('div');
-    colorPickerElem.id = 'colorPicker';
-    colorPickerElem.innerHTML = '<div id="picker-wrapper"><div id="picker"></div></div><div id="slider-wrapper"><div id="slider"></div></div>';
-    mainContentsElem.appendChild(colorPickerElem);
-    let pickerElem = $('#picker');
-    let sliderElem = $('#slider');
-    ColorPicker(sliderElem, pickerElem, colorControlPickedColor);
 }
 
 // Build all controls from json object, from the top-level.
@@ -178,6 +161,9 @@ function buildControlElements(containerElem, name, details) {
     createAppendElem(containerElem, 'span', 'description', details.DESCRIPTION);
     let groupElem = document.createElement('div');
     groupElem.className = 'group';
+    // Configuration for building.
+    let cfg = {supportHtml5Color: g_supportHtml5Color};
+    // Traverse the input.
     let selector = [0];
     let pos = 0;
     for (let i = 0; i < details.TYPE.length; i++) {
@@ -188,7 +174,7 @@ function buildControlElements(containerElem, name, details) {
         } else if (type == ']') {
             selector.pop();
         } else {
-            let html = buildSingleControl(details, type, selector, pos);
+            let html = buildSingleControl(details, type, selector, pos, cfg);
             if (html) {
                 let id = generateId();
                 let kind = extractControlKind(type, html);
@@ -303,10 +289,11 @@ function E(text) {
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildSingleControl(details, type, selector, pos) {
+function buildSingleControl(details, type, selector, pos, cfg) {
     var html = '';
     var getter = null;
     var setter = null;
+    cfg = cfg || {};
     if (type == 'c') {
         // Char
         if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
@@ -337,11 +324,10 @@ function buildSingleControl(details, type, selector, pos) {
         } else {
             value = DEFAULT_COLOR_ELEM_VALUE;
         }
-        if (g_supportHtml5Color) {
+        if (cfg.supportHtml5Color) {
             html += '<input type="color" value="' + value + '" />';
         } else {
-            html += '<div class="color-control" ';
-            html += 'style="background-color:' + value + '"></div>'
+            html += '<div class="color-control"></div>';
         }
         getter = 'color';
         setter = 'color';
@@ -961,28 +947,6 @@ function toggleShow(e) {
     }
 }
 
-function colorControlClick(e) {
-    colorPickerElem = $('#colorPicker');
-    colorPickerElem.style.display = 'inline';
-    let y = e.target.offsetTop + 10;
-    let x = e.target.offsetLeft + 20;
-    colorPickerElem.style.position = 'absolute';
-    colorPickerElem.style.top = y + 'px';
-    colorPickerElem.style.left = x + 'px';
-    colorPickerElem.controlTarget = e.target;
-}
-
-function colorControlPickedColor(hex, hsv, rgb) {
-    colorPickerElem = $('#colorPicker');
-    colorPickerElem.style.display = 'none';
-    let controlElem = colorPickerElem.controlTarget;
-    controlElem.style.backgroundColor = hex;
-    controlElem.value = hex;
-    controlEvent({
-        target: controlElem,
-    });
-}
-
 function addInputEventHandlers() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
@@ -1020,10 +984,26 @@ function addInputEventHandlers() {
         let elem = toggleShowElems[i];
         elem.addEventListener('click', toggleShow, false);
     }
-    let colorControlElems = document.getElementsByClassName('color-control');
-    for (let i = 0; i < colorControlElems.length; i++) {
-        let elem = colorControlElems[i];
-        elem.addEventListener('click', colorControlClick, false);
+}
+
+function addColorPickerPolyfills() {
+    // Iif this browser does not support the built-in html5 color picker
+    // element, create polyfill controls for each element.
+    if (g_supportHtml5Color) {
+        return;
+    }
+    let elemList = document.getElementsByClassName('color-control');
+    for (let i = 0; i < elemList.length; i++) {
+        let colorControlElem = elemList[i];
+        new vanillaColorPicker({
+            parent: colorControlElem,
+            popup: false,
+            alpha: false,
+            onChange: function(color) {
+                colorControlElem.value = color;
+                controlEvent({target: colorControlElem});
+            },
+        });
     }
 }
 
@@ -1042,10 +1022,11 @@ function createApp(serverUrl) {
                 mainContentsElem.appendChild(errorElem);
                 return;
             }
-            buildColorPicker();
+            detectColorPicker();
             buildFromQueryResult(result);
             storeControlStructure(result);
             addInputEventHandlers();
+            addColorPickerPolyfills();
         });
     });
 }

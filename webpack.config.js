@@ -17,6 +17,8 @@ module.exports = {
                                   'osc-transports.js'),
       'osc-websocket-client': path.join(__dirname, 'node_modules/osc/src/' +
                                         'platforms/osc-websocket-client.js'),
+      'vanilla-picker': path.join(__dirname, 'node_modules/vanilla-picker/' +
+                                  'dist/vanilla-picker.js'),
     }
   },
   node: {

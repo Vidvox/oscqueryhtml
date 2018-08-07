@@ -15,6 +15,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "osc": "^2.2.3",
+    "vanilla-picker": "^2.2.1",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {

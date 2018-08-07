@@ -12,6 +12,8 @@ describe('util', () => {
     });
 });
 
+var g_supportHtml5Color;
+
 describe('buildSingleControl', () => {
     describe('i', () => {
         it('returns int control', () => {
@@ -110,6 +112,29 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<span class="error">Invalid node: RANGE needs ' +
                          'MIN,MAX or VALS</span>');
+        });
+    });
+    describe('r creates colorPicker', () => {
+        it('returns an html5 color control', () => {
+            let cfg = {supportHtml5Color: true};
+            let data = {'TYPE': 'r', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
+                        'RANGE': []};
+            let html = index.buildSingleControl(data, 'r', [0], 0, cfg);
+            assert.equal(html,
+                         '<input type="color" value="#4466ff" />' +
+                         '<span class="details" data-full-path="/p" ' +
+                         'data-type="r" data-getter="color" ' +
+                         'data-setter="color" /></span>');
+        });
+        it('returns a third-party color control', () => {
+            let data = {'TYPE': 'r', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
+                        'RANGE': []};
+            let html = index.buildSingleControl(data, 'r', [0], 0);
+            assert.equal(html,
+                         '<div class="color-control"></div>' +
+                         '<span class="details" data-full-path="/p" ' +
+                         'data-type="r" data-getter="color" ' +
+                         'data-setter="color" /></span>');
         });
     });
 });
