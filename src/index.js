@@ -594,6 +594,8 @@ function convertOSCColorToHex(c) {
     return '#' + num2Hex(c[0]*255) + num2Hex(c[1]*255) + num2Hex(c[2]*255);
 }
 
+function nullFunction() {}
+
 var oscPort;
 var isOscReady = false;
 
@@ -641,7 +643,18 @@ function initWebSocket(url) {
                         g_numMessagePending--;
                         return;
                     }
-                    value = textToHexColor(value);
+                    if (!g_supportHtml5Color) {
+                        // Polyfill control, update the color.
+                        value = textToHexColor(value);
+                        let colorClass = '.color-control';
+                        targetElem = controlElem.querySelector(colorClass);
+                        // Change the picker's color, but don't send events.
+                        let picker = targetElem.picker;
+                        let preserveHandler = picker.onChange;
+                        picker.onChange = nullFunction;
+                        picker.setColor(value);
+                        picker.onChange = preserveHandler;
+                    }
                 } else if (setter.value == 'setCheckbox') {
                     // If the control is a checkbox, there should only be
                     // two possible values. Either check or uncheck the box,
@@ -995,7 +1008,7 @@ function addColorPickerPolyfills() {
     let elemList = document.getElementsByClassName('color-control');
     for (let i = 0; i < elemList.length; i++) {
         let colorControlElem = elemList[i];
-        new vanillaColorPicker({
+        colorControlElem.picker = new vanillaColorPicker({
             parent: colorControlElem,
             popup: false,
             alpha: false,
