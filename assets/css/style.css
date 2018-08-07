@@ -32,6 +32,9 @@ span.listen-button img, span.listen-button svg {
   body.dark .svg-show svg *, body .svg-show svg *, body.dark .svg-hide svg *, body .svg-hide svg * {
     stroke: #93a1a1; }
 
+#choice-dark-mode, #choice-light-mode {
+  float: right; }
+
 @font-face {
   font-family: 'bitstream_vera_sansroman';
   src: url("/fonts/Vera-webfont.woff") format("woff"), url("/fonts/Vera.ttf") format("truetype");
