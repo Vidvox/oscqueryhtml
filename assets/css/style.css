@@ -110,7 +110,7 @@ input[type="text"] {
     box-sizing: border-box; }
   .node .control span.curr-val {
     margin-left: 10px; }
-.node .kind_color, .node .kind_char {
+.node .kind_char {
   flex: none;
   margin-left: auto;
   margin-right: auto; }
@@ -120,40 +120,17 @@ input[type="text"] {
   flex: 1; }
 .node select {
   font-size: 20px; }
-
-#colorPicker {
-  position: absolute;
-  display: none;
-  width: 200px;
-  background-color: #ccc;
-  padding: 8px; }
-
-#picker-wrapper {
-  position: relative;
-  float: left;
-  width: 160px; }
-
-#slider-wrapper {
-  position: relative;
-  float: left;
-  width: 20px;
-  margin-left: 12px; }
-
-.error {
-  color: red;
-  font-weight: bold; }
-
-#colorPicker-clear {
-  clear: both; }
-
-.color-control {
-  width: 60px;
-  height: 40px;
-  margin: 3px;
-  border: solid 3px #ccc; }
-
-input[type="color"] {
-  height: 50px; }
+.node .kind_color {
+  flex: none;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto; }
+  .node .kind_color .layout_default.picker_wrapper {
+    width: 15em; }
+    .node .kind_color .layout_default.picker_wrapper .picker_sample {
+      order: 0; }
+    .node .kind_color .layout_default.picker_wrapper .picker_done {
+      display: none; }
 
 body.dark, body {
   background-color: #262626;

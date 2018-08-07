@@ -17,7 +17,7 @@
       margin-left: $unit;
     }
   }
-  .kind_color, .kind_char {
+ .kind_char {
     flex: none;
     margin-left: auto;
     margin-right: auto;
@@ -32,5 +32,22 @@
   }
   select {
     font-size: 20px;
+  }
+  .kind_color {
+    flex: none;
+
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    .layout_default.picker_wrapper {
+      width: 15em;
+      .picker_sample {
+        order: 0;
+      }
+      .picker_done {
+        display: none;
+      }
+    }
+
   }
 }
