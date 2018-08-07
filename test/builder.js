@@ -1,5 +1,6 @@
 const assert = require('assert');
 const index = require('../src/index.js');
+const builder = require('../src/builder.js');
 
 describe('util', () => {
     describe('getDataEvent', () => {
@@ -18,7 +19,7 @@ describe('buildSingleControl', () => {
     describe('i', () => {
         it('returns int control', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="range" value="0" />' +
                          '<span class="curr-val">0</span>' +
@@ -31,7 +32,7 @@ describe('buildSingleControl', () => {
         it('returns int control with min and max', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'MIN': 0, 'MAX': 10}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="range" min="0" max="10" value="0" />' +
                          '<span class="curr-val">0</span>' +
@@ -45,7 +46,7 @@ describe('buildSingleControl', () => {
         it('returns int control with values in a dropdown', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'VALS': [3,4,5,6]}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<select><option value="3" >3</option>' +
                          '<option value="4" >4</option>' +
@@ -60,7 +61,7 @@ describe('buildSingleControl', () => {
         it('returns int control with checkbox', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'MIN': 8, 'MAX': 9}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="checkbox" data-first="8" ' +
                          'data-second="9"/> 8, 9' +
@@ -73,7 +74,7 @@ describe('buildSingleControl', () => {
         it('returns int control with checkbox', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'VALS': [5, 10]}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="checkbox" data-first="5" ' +
                          'data-second="10"/> 5, 10' +
@@ -86,7 +87,7 @@ describe('buildSingleControl', () => {
         it('returns int control with button', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'MIN': 20, 'MAX': 20}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="button" value="20" data-first="20"/>' +
                          '<span class="details" data-full-path="/p" ' +
@@ -97,7 +98,7 @@ describe('buildSingleControl', () => {
         it('returns int control with button', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': [{'VALS': [32]}]};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="button" value="32" data-first="32"/>' +
                          '<span class="details" data-full-path="/p" ' +
@@ -108,7 +109,7 @@ describe('buildSingleControl', () => {
         it('returns a message about invalid node', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': []};
-            let html = index.buildSingleControl(data, 'i', [0], 0);
+            let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<span class="error">Invalid node: RANGE needs ' +
                          'MIN,MAX or VALS</span>');
@@ -119,7 +120,7 @@ describe('buildSingleControl', () => {
             let cfg = {supportHtml5Color: true};
             let data = {'TYPE': 'r', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': []};
-            let html = index.buildSingleControl(data, 'r', [0], 0, cfg);
+            let html = builder.buildSingleControl(data, 'r', [0], 0, cfg);
             assert.equal(html,
                          '<input type="color" value="#4466ff" />' +
                          '<span class="details" data-full-path="/p" ' +
@@ -129,7 +130,7 @@ describe('buildSingleControl', () => {
         it('returns a third-party color control', () => {
             let data = {'TYPE': 'r', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p',
                         'RANGE': []};
-            let html = index.buildSingleControl(data, 'r', [0], 0);
+            let html = builder.buildSingleControl(data, 'r', [0], 0);
             assert.equal(html,
                          '<div class="color-control"></div>' +
                          '<span class="details" data-full-path="/p" ' +
