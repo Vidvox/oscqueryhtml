@@ -84,8 +84,40 @@ function buildFromQueryResult(result) {
         listenSpanElem.appendChild(listenImgElem);
         mainContentsElem.appendChild(listenSpanElem);
     }
+    {
+        let styleDarkElem = document.createElement('div');
+        styleDarkElem.id = 'choice-dark-mode';
+        styleDarkElem.innerHTML = '<span class="curr_mode">dark</span> <span id="set_light">light</span>';
+        let styleLightElem = document.createElement('div');
+        styleLightElem.id = 'choice-light-mode';
+        styleLightElem.innerHTML = '<span id="set_dark">dark</span> <span class="curr_mode">light</span>';
+        styleLightElem.style.display = 'none';
+        mainContentsElem.appendChild(styleDarkElem);
+        mainContentsElem.appendChild(styleLightElem);
+        let styleElem = document.createElement('style');
+        styleElem.textContent = '.curr_mode { font-weight: bold; } #set_light {text-decoration: underline; cursor: pointer;} #set_dark {text-decoration: underline; cursor: pointer;}'
+        mainContentsElem.appendChild(styleElem);
+        let setLightLink = $('#set_light');
+        setLightLink.addEventListener('click',function(){setStyleMode('light')},
+                                      false);
+        let setDarkLink = $('#set_dark');
+        setDarkLink.addEventListener('click', function(){setStyleMode('dark')},
+                                     false);
+    }
     // Build contents for the main container.
     buildContentsAddToContainer(contents, mainContentsElem)
+}
+
+function setStyleMode(mode) {
+    if (mode == 'light') {
+        $('#choice-dark-mode').style.display = 'none';
+        $('#choice-light-mode').style.display = 'block';
+        $('body').classList.add('light');
+    } else if (mode == 'dark') {
+        $('#choice-light-mode').style.display = 'none';
+        $('#choice-dark-mode').style.display = 'block';
+        $('body').classList.remove('light');
+    }
 }
 
 // Build controls recursively based upon the json, and append to the parent.
