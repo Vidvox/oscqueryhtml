@@ -126,9 +126,12 @@ input[type="text"] {
   margin-left: auto;
   margin-right: auto; }
   .node .kind_color .layout_default.picker_wrapper {
-    width: 15em; }
-    .node .kind_color .layout_default.picker_wrapper .picker_sample {
-      order: 0; }
+    width: 18em; }
+    @media screen and (min-width: 866px) {
+      .node .kind_color .layout_default.picker_wrapper {
+        width: 15em; }
+        .node .kind_color .layout_default.picker_wrapper .picker_sample {
+          order: 0; } }
     .node .kind_color .layout_default.picker_wrapper .picker_done {
       display: none; }
 
