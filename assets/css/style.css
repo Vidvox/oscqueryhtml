@@ -20,11 +20,17 @@ input[type=button], .button {
     body.dark input[type=button]:active, body input[type=button]:active, body.dark .button:active, body .button:active {
       background-color: #00a896; }
 
-span.listen-button img {
+span.listen-button img, span.listen-button svg {
   height: 20px; }
+  body.dark span.listen-button img *, body span.listen-button img *, body.dark span.listen-button svg *, body span.listen-button svg * {
+    stroke: #93a1a1; }
 
-img.toggle-hide, img.toggle-show {
+.svg-show svg, .svg-hide svg {
   height: 20px; }
+  .svg-show svg *, .svg-hide svg * {
+    stroke: #586e75; }
+  body.dark .svg-show svg *, body .svg-show svg *, body.dark .svg-hide svg *, body .svg-hide svg * {
+    stroke: #93a1a1; }
 
 @font-face {
   font-family: 'bitstream_vera_sansroman';

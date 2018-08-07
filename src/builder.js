@@ -6,7 +6,7 @@ const types = require('./types.js');
 
 const DEFAULT_COLOR_ELEM_VALUE = '#4466ff';
 
-const useSvg = false;
+const useSvg = true;
 
 // Build controls recursively based upon the json, and append to the parent.
 function buildContentsAddToContainer(contents, parentContainer, cfg) {

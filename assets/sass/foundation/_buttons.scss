@@ -37,15 +37,26 @@ input[type=button], .button {
 }
 
 span.listen-button {
-  img {
+  img, svg {
     height: 20px;
 
     body.dark & {
-
+      * {
+        stroke: $content-color-dark-emphasis;
+      }
     }
   }
 }
-
-img.toggle-hide, img.toggle-show {
-  height: 20px;
+.svg-show, .svg-hide {
+  svg {
+    height: 20px;
+    * {
+      stroke: $content-color-light-emphasis;
+    }
+    body.dark & {
+      * {
+        stroke: $content-color-dark-emphasis;
+      }
+    }
+  }
 }
