@@ -35,3 +35,17 @@ $button-default-text-color: $white-color;
 input[type=button], .button {
   @include button-base-style;
 }
+
+span.listen-button {
+  img {
+    height: 20px;
+
+    body.dark & {
+
+    }
+  }
+}
+
+img.toggle-hide, img.toggle-show {
+  height: 20px;
+}

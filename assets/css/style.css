@@ -20,6 +20,12 @@ input[type=button], .button {
     body.dark input[type=button]:active, body input[type=button]:active, body.dark .button:active, body .button:active {
       background-color: #00a896; }
 
+span.listen-button img {
+  height: 20px; }
+
+img.toggle-hide, img.toggle-show {
+  height: 20px; }
+
 @font-face {
   font-family: 'bitstream_vera_sansroman';
   src: url("/fonts/Vera-webfont.woff") format("woff"), url("/fonts/Vera.ttf") format("truetype");

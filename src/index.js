@@ -5,10 +5,10 @@ const oscWebsocketClient = require('osc-websocket-client');
 const retrieve = require('./retrieve.js');
 const vanillaColorPicker = require('vanilla-picker');
 
-const listenBase64 = require("base64-image-loader!../assets/img/listen.png");
-const pressedBase64 = require("base64-image-loader!../assets/img/pressed.png");
-const toggleMinusBase64 = require("base64-image-loader!../assets/img/toggle-minus.png");
-const togglePlusBase64 = require("base64-image-loader!../assets/img/toggle-plus.png");
+const listenBase64 = require("base64-image-loader!../assets/img/listen.svg");
+const pressedBase64 = require("base64-image-loader!../assets/img/pressed.svg");
+const toggleMinusBase64 = require("base64-image-loader!../assets/img/toggle-minus.svg");
+const togglePlusBase64 = require("base64-image-loader!../assets/img/toggle-plus.svg");
 
 var g_allControlStruct = null;
 var g_hostInfo = {};
