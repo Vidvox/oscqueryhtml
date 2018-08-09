@@ -135,22 +135,6 @@ function storeControlStructure(data) {
     g_allControlStruct = extractControlPaths(data);
 }
 
-function textToHexColor(elem) {
-    return '#' + num2Hex(elem['r']) + num2Hex(elem['g']) + num2Hex(elem['b']);
-}
-
-function num2Hex(num) {
-    let hex = Number(Math.floor(num)).toString(16);
-    if (hex.length < 2) {
-        hex = '0' + hex;
-    }
-    return hex;
-}
-
-function convertOSCColorToHex(c) {
-    return '#' + num2Hex(c[0]*255) + num2Hex(c[1]*255) + num2Hex(c[2]*255);
-}
-
 function nullFunction() {}
 
 var oscPort;
@@ -202,7 +186,7 @@ function initWebSocket(url) {
                     }
                     if (!g_supportHtml5Color) {
                         // Polyfill control, update the color.
-                        value = textToHexColor(value);
+                        value = builder.textToHexColor(value);
                         let colorClass = '.color-control';
                         targetElem = controlElem.querySelector(colorClass);
                         // Change the picker's color, but don't send events.
