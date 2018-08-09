@@ -35,7 +35,8 @@ function detectColorPicker() {
     let input = document.createElement('input');
     input.setAttribute('type', 'color');
     input.setAttribute('value', '$');
-    g_supportHtml5Color = (input.type == 'color' && input.value != '$');
+    // Currently, always use third-party control.
+    g_supportHtml5Color = false;
 }
 
 // Build all controls from json object, from the top-level.
