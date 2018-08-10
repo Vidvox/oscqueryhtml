@@ -451,8 +451,8 @@ const TOGGLE_SHOW_DISPLAY = 'grid';
 
 function toggleHide(e) {
     let elem = e.target;
-    for (let i = 0; i < 3; i++) {
-        if (elem.id) {
+    for (let i = 0; i < 6; i++) {
+        if (elem.tagName.toLowerCase() == 'div' && elem.id) {
             break;
         }
         elem = elem.parentNode;
@@ -477,8 +477,8 @@ function toggleHide(e) {
 
 function toggleShow(e) {
     let elem = e.target;
-    for (let i = 0; i < 3; i++) {
-        if (elem.id) {
+    for (let i = 0; i < 6; i++) {
+        if (elem.tagName.toLowerCase() == 'div' && elem.id) {
             break;
         }
         elem = elem.parentNode;
