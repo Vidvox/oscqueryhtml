@@ -242,8 +242,8 @@ function processCommandMessage(msg) {
                 let holderElem = document.createElement('div');
                 holderElem.className = "node control";
                 holderElem.setAttribute('data-dir-path', nodePath);
-                buildControlElements(holderElem, nodeName, contents);
                 targetElem.appendChild(holderElem);
+                builder.buildControlElements(holderElem, nodeName, contents);
             });
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {

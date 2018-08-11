@@ -445,6 +445,7 @@ function E(text) {
 
 module.exports = {
     buildContentsAddToContainer: buildContentsAddToContainer,
+    buildControlElements: buildControlElements,
     buildSingleControl: buildSingleControl,
     textToHexColor: textToHexColor,
 }
