@@ -29,6 +29,12 @@
 
   .kind_slider {
     flex: 1;
+    min-width: 200px;
+  }
+  .rangeSlider__horizontal {
+    flex: 1;
+    flex-grow: 4;
+    align-self: center;
   }
   select {
     font-size: 20px;

@@ -132,7 +132,12 @@ input[type="text"] {
 .node .kind_dropdown {
   flex: none; }
 .node .kind_slider {
-  flex: 1; }
+  flex: 1;
+  min-width: 200px; }
+.node .rangeSlider__horizontal {
+  flex: 1;
+  flex-grow: 4;
+  align-self: center; }
 .node select {
   font-size: 20px; }
 .node .kind_color {
