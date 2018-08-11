@@ -8,8 +8,8 @@ const retrieve = require('./retrieve.js');
 const vanillaColorPicker = require('vanilla-picker');
 const rangeSlider = require('rangeslider-pure');
 
-const listenBase64 = require("base64-image-loader!../assets/img/listen.svg");
-const pressedBase64 = require("base64-image-loader!../assets/img/pressed.svg");
+const listenButtonSvg = require("svg-inline-loader?classPrefix=_listen!../assets/img/listen.svg");
+const ignoreButtonSvg = require("svg-inline-loader?classPrefix=_ignore!../assets/img/pressed.svg");
 
 var g_allControlStruct = null;
 var g_hostInfo = {};
@@ -69,13 +69,17 @@ function buildFromQueryResult(result) {
         labelDivElem.className = 'listen-label';
         labelDivElem.textContent = 'Listen for OSC: ';
         mainContentsElem.appendChild(labelDivElem);
-        // Listen button.
-        let listenImgElem = document.createElement('img');
-        listenImgElem.src = listenBase64;
+        // Listen and ignore buttons.
         let listenSpanElem = document.createElement('span');
-        listenSpanElem.className = 'listen-button';
-        listenSpanElem.appendChild(listenImgElem);
+        listenSpanElem.className = 'svg-listen';
+        listenSpanElem.style.display = 'block';
+        listenSpanElem.innerHTML = listenButtonSvg;
+        let ignoreSpanElem = document.createElement('span');
+        ignoreSpanElem.className = 'svg-ignore';
+        ignoreSpanElem.style.display = 'none';
+        ignoreSpanElem.innerHTML = ignoreButtonSvg;
         mainContentsElem.appendChild(listenSpanElem);
+        mainContentsElem.appendChild(ignoreSpanElem);
     }
     {
         let styleDarkElem = document.createElement('div');
@@ -419,22 +423,26 @@ function getDataEvent(element) {
 }
 
 function listenClick(e) {
-    var imgElem = e.target;
-    var spanElem = imgElem.parentNode;
-    var path = '/';
-    var command = null;
-    if (spanElem.className.indexOf('pressed') == -1) {
-        g_isListenEnabled = true;
-        imgElem.src = pressedBase64;
-        spanElem.className = 'listen-button pressed';
+    listenIgnoreChange(true);
+}
+
+function ignoreClick(e) {
+    listenIgnoreChange(false);
+}
+
+function listenIgnoreChange(state) {
+    g_isListenEnabled = state;
+    let command = null;
+    if (state) {
+        $('.svg-listen').style.display = 'none';
+        $('.svg-ignore').style.display = 'block';
         command = 'LISTEN';
     } else {
-        g_isListenEnabled = false;
-        imgElem.src = listenBase64;
-        spanElem.className = 'listen-button';
+        $('.svg-listen').style.display = 'block';
+        $('.svg-ignore').style.display = 'none';
         command = 'IGNORE';
     }
-    if (isOscReady && command) {
+    if (isOscReady) {
         for (let i = 0; i < g_allControlStruct.length; i++) {
             var path = g_allControlStruct[i];
             var msg = JSON.stringify(
@@ -447,6 +455,7 @@ function listenClick(e) {
         }
     }
 }
+
 
 const TOGGLE_SHOW_DISPLAY = 'grid';
 
@@ -524,10 +533,15 @@ function addInputEventHandlers() {
         let select = selects[i];
         select.addEventListener('change', controlEvent, false);
     }
-    let listenButtons = document.getElementsByClassName('listen-button');
+    let listenButtons = document.getElementsByClassName('svg-listen');
     for (let i = 0; i < listenButtons.length; i++) {
         let listenBtn = listenButtons[i];
         listenBtn.addEventListener('click', listenClick, false);
+    }
+    let ignoreButtons = document.getElementsByClassName('svg-ignore');
+    for (let i = 0; i < ignoreButtons.length; i++) {
+        let ignoreBtn = ignoreButtons[i];
+        ignoreBtn.addEventListener('click', ignoreClick, false);
     }
     let toggleHideElems = document.getElementsByClassName('toggle-hide');
     for (let i = 0; i < toggleHideElems.length; i++) {
