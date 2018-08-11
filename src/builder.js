@@ -6,8 +6,6 @@ const types = require('./types.js');
 
 const DEFAULT_COLOR_ELEM_VALUE = '#4466ff';
 
-const useSvg = true;
-
 // Build controls recursively based upon the json, and append to the parent.
 function buildContentsAddToContainer(contents, parentContainer, cfg) {
     let dirNames = Object.keys(contents);
@@ -31,22 +29,12 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
             // Toggle button when this is collapsed, will show the node.
             html += '<div class="toggle-show" id="toggle_show_' + id +
                 '" style="display:none">';
-            if (useSvg) {
-                html += '<span class="svg-show">' + togglePlusSvg + '</span>';
-            } else {
-                html += '<img class="toggle-show" src="' + togglePlusBase64 +
-                    '"/>';
-            }
+            html += '<span class="svg-show">' + togglePlusSvg + '</span>';
             html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
             html += '</div>';
             // Toggle button when this is expanded, will hide the node.
             html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
-            if (useSvg) {
-                html += '<span class="svg-hide">' + toggleMinusSvg + '</span>';
-            } else {
-                html += '<img class="toggle-hide" src="' + toggleMinusBase64 +
-                    '"/>';
-            }
+            html += '<span class="svg-hide">' + toggleMinusSvg + '</span>';
             html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
             html += '</div>';
             directoryElem.className = 'dir-container';
