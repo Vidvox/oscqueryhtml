@@ -6,6 +6,7 @@ const builder = require('./builder.js');
 const types = require('./types.js');
 const retrieve = require('./retrieve.js');
 const vanillaColorPicker = require('vanilla-picker');
+const rangeSlider = require('rangeslider-pure');
 
 const listenBase64 = require("base64-image-loader!../assets/img/listen.svg");
 const pressedBase64 = require("base64-image-loader!../assets/img/pressed.svg");
@@ -541,7 +542,7 @@ function addInputEventHandlers() {
 }
 
 function addColorPickerPolyfills() {
-    // Iif this browser does not support the built-in html5 color picker
+    // If this browser does not support the built-in html5 color picker
     // element, create polyfill controls for each element.
     if (g_supportHtml5Color) {
         return;
@@ -558,6 +559,21 @@ function addColorPickerPolyfills() {
                 controlEvent({target: colorControlElem});
             },
         });
+    }
+}
+
+function addRangeSliderPolyfills() {
+    let sliders = document.querySelectorAll('input[type="range"]');
+    for (let i = 0; i < sliders.length; i++) {
+        let elem = sliders[i];
+        let options = {polyfill: true};
+        if (elem.attributes.min) {
+            options.min = elem.attributes.min;
+        }
+        if (elem.attributes.max) {
+            options.max = elem.attributes.max;
+        }
+        rangeSlider.create(elem, options);
     }
 }
 
@@ -581,6 +597,7 @@ function createApp(serverUrl) {
             storeControlStructure(result);
             addInputEventHandlers();
             addColorPickerPolyfills();
+            addRangeSliderPolyfills();
         });
     });
 }
