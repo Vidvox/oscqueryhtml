@@ -32,6 +32,9 @@ span.listen-button img, span.listen-button svg {
   body.dark .svg-show svg *, body .svg-show svg *, body.dark .svg-hide svg *, body .svg-hide svg *, body.dark .svg-listen svg *, body .svg-listen svg *, body.dark .svg-ignore svg *, body .svg-ignore svg * {
     stroke: #93a1a1; }
 
+.svg-listen, .svg-ignore {
+  margin-left: 10px; }
+
 #choice-dark-mode, #choice-light-mode {
   float: right; }
 
