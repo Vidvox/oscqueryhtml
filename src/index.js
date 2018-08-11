@@ -573,6 +573,11 @@ function addRangeSliderPolyfills() {
         if (elem.attributes.max) {
             options.max = elem.attributes.max;
         }
+        if (elem.attributes.step && elem.attributes.step.value == 'any') {
+            options.step = 0.001;
+        } else if (elem.attributes.step) {
+            options.step = elem.attributes.step;
+        }
         rangeSlider.create(elem, options);
     }
 }
