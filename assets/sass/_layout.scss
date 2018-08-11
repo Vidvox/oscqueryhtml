@@ -1,8 +1,12 @@
+.logo {
+  max-width: 50px;
+}
+
 .dir-container {
   padding: $unit;
   box-sizing: border-box;
   border-radius: $unit * 2;
-  margin-bottom: $unit;
+  margin-top: $unit * 2;
   border: 2px solid;
   font-size: 120%;
   header {

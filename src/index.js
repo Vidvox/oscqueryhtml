@@ -72,7 +72,7 @@ function buildFromQueryResult(result) {
         // Listen and ignore buttons.
         let listenSpanElem = document.createElement('span');
         listenSpanElem.className = 'svg-listen';
-        listenSpanElem.style.display = 'block';
+        listenSpanElem.style.display = 'inline-block';
         listenSpanElem.innerHTML = listenButtonSvg;
         let ignoreSpanElem = document.createElement('span');
         ignoreSpanElem.className = 'svg-ignore';
@@ -435,10 +435,10 @@ function listenIgnoreChange(state) {
     let command = null;
     if (state) {
         $('.svg-listen').style.display = 'none';
-        $('.svg-ignore').style.display = 'block';
+        $('.svg-ignore').style.display = 'inline-block';
         command = 'LISTEN';
     } else {
-        $('.svg-listen').style.display = 'block';
+        $('.svg-listen').style.display = 'inline-block';
         $('.svg-ignore').style.display = 'none';
         command = 'IGNORE';
     }
