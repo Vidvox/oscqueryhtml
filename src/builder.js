@@ -1,7 +1,6 @@
-const toggleMinusBase64 = require("base64-image-loader!../assets/img/toggle-minus.svg");
-const togglePlusBase64 = require("base64-image-loader!../assets/img/toggle-plus.svg");
 const toggleMinusSvg = require("svg-inline-loader?classPrefix=_minus!../assets/img/toggle-minus.svg");
 const togglePlusSvg = require("svg-inline-loader?classPrefix=_plus!../assets/img/toggle-plus.svg");
+
 const types = require('./types.js');
 
 const DEFAULT_COLOR_ELEM_VALUE = '#4466ff';
