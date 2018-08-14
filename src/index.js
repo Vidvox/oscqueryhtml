@@ -340,7 +340,9 @@ function getControlArg(controlElem) {
     } else if (getter.value == 'parseInt64') {
         let num = parseInt(inputElem.value);
         let radix = 0x100000000;
-        return {type: dataType, value: {high: num / radix, low: num % radix}};
+        let high = Math.floor(num / radix);
+        let low = num % radix;
+        return {type: dataType, value: {high: high, low: low}};
     } else if (getter.value == 'parseFloat') {
         return {type: dataType, value: parseFloat(inputElem.value) };
     } else if (getter.value == 'sendSingle') {
@@ -370,10 +372,17 @@ function getControlArg(controlElem) {
 
 function runSetter(controlElem, type, value) {
     if (type == 'int') {
-        var currValElem = controlElem.querySelector('.curr-val');
+        let currValElem = controlElem.querySelector('.curr-val');
+        currValElem.textContent = value;
+    } else if (type == 'int64') {
+        let currValElem = controlElem.querySelector('.curr-val');
+        if (value.hasOwnProperty('high') && value.hasOwnProperty('low')) {
+            let radix = 0x100000000;
+            value = value.high * radix + value.low;
+        }
         currValElem.textContent = value;
     } else if (type == 'float') {
-        var currValElem = controlElem.querySelector('.curr-val');
+        let currValElem = controlElem.querySelector('.curr-val');
         currValElem.textContent = Math.round(value * 1000) / 1000;
     }
 }

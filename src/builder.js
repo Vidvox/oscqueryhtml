@@ -300,6 +300,7 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             }
             html += '</select>';
             getter = 'parseInt64';
+            setter = 'int64';
         } else if (details.RANGE) {
             var min = applySelector(details.RANGE, selector, 'MIN') || 0;
             var max = applySelector(details.RANGE, selector, 'MAX') || 1;
@@ -310,13 +311,13 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             html += '<span class="range-val"> (' + E(min) + '-' +
                 E(max) + ')</span>'
             getter = 'parseInt64';
-            setter = 'int';
+            setter = 'int64';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '"/>';
             html += '<span class="curr-val">' + E(value) + '</span>';
             getter = 'parseInt64';
-            setter = 'int';
+            setter = 'int64';
         }
     } else if (type == 'm') {
         // MIDI
