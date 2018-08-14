@@ -91,7 +91,8 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<input type="button" value="20" data-first="20"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendSingle" /></span>');
+                         'data-type="i" data-getter="sendSingle" ' +
+                         'data-setter="button" /></span>');
         });
     });
     describe('i with only 1 val', () => {
@@ -102,7 +103,8 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<input type="button" value="32" data-first="32"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendSingle" /></span>');
+                         'data-type="i" data-getter="sendSingle" ' +
+                         'data-setter="button" /></span>');
         });
     });
     describe('i with invalid size of RANGE', () => {
@@ -113,6 +115,28 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<span class="error">Invalid node: RANGE needs ' +
                          'MIN,MAX or VALS</span>');
+        });
+    });
+    describe('h', () => {
+        it('returns longlong control', () => {
+            let data = {'TYPE': 'h', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
+            let html = builder.buildSingleControl(data, 'h', [0], 0);
+            assert.equal(html,
+                         '<input type="range" value="0"/>' +
+                         '<span class="curr-val">0</span>' +
+                         '<span class="details" data-full-path="/p" ' +
+                         'data-type="h" data-getter="parseInt64" ' +
+                         'data-setter="int64" /></span>');
+        });
+    });
+    describe('F', () => {
+        it('returns false control', () => {
+            let data = {'TYPE': 'F', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
+            let html = builder.buildSingleControl(data, 'F', [0], 0);
+            assert.equal(html,
+                         '<input type="button" value=""/>' +
+                         '<span class="details" data-full-path="/p" ' +
+                         'data-type="F" data-setter="button" /></span>');
         });
     });
     describe('r creates colorPicker', () => {

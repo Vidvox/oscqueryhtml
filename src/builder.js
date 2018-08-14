@@ -81,6 +81,7 @@ function buildControlElements(containerElem, name, details, cfg) {
         } else if (type == ']') {
             selector.pop();
         } else {
+            details.name = name;
             let html = buildSingleControl(details, type, selector, pos, cfg);
             if (html) {
                 let id = generateId();
@@ -176,7 +177,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'F') {
         // False
-        html += '<input type="button" value="Send false"/>';
+        html += '<input type="button" value="' + E(details.name) + '"/>';
+        setter = 'button';
     } else if (type == 'f') {
         // Float
         if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
@@ -213,7 +215,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'I') {
         // Infinity
-        html += '<input type="button" value="Send infinity"/>';
+        html += '<input type="button" value="' + E(details.name) + '"/>';
+        setter = 'button';
     } else if (type == 'i') {
         // Integer
         if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
@@ -224,6 +227,7 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 html += '<input type="button" value="' + E(value) +
                     '" data-first="' + E(value) + '"/>';
                 getter = 'sendSingle';
+                setter = 'button';
             } else if (options.length == 2) {
                 html += '<input type="checkbox" data-first="' + E(options[0]) +
                     '" data-second="' + E(options[1]) + '"';
@@ -259,6 +263,7 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 html += '<input type="button" value="' + E(value) +
                     '" data-first="' + E(value) + '"/>';
                 getter = 'sendSingle';
+                setter = 'button';
             } else if (max - min == 1) {
                 html += '<input type="checkbox" data-first="' + E(min) +
                     '" data-second="' + E(max) + '"';
@@ -324,7 +329,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         return null;
     } else if (type == 'N') {
         // Null
-        html += '<input type="button" value="Send null"/>';
+        html += '<input type="button" value="' + E(details.name) + '"/>';
+        setter = 'button';
     } else if (type == 's') {
         // String
         if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
@@ -348,7 +354,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'T') {
         // True
-        html += '<input type="button" value="Send true"/>';
+        html += '<input type="button" value="' + E(details.name) + '"/>';
+        setter = 'button';
     } else if (type == 't') {
         // Timetag
         return null;

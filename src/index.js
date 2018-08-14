@@ -213,6 +213,9 @@ function initWebSocket(url) {
                         targetElem.checked = true;
                     }
                     return;
+                } else if (setter.value == 'button') {
+                    // do nothing
+                    return;
                 } else {
                     runSetter(controlElem, setter.value, value);
                 }
@@ -384,6 +387,8 @@ function runSetter(controlElem, type, value) {
     } else if (type == 'float') {
         let currValElem = controlElem.querySelector('.curr-val');
         currValElem.textContent = Math.round(value * 1000) / 1000;
+    } else if (type == 'button') {
+        // do nothing
     }
 }
 
