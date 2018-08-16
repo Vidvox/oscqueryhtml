@@ -578,6 +578,7 @@ function addColorPickerPolyfills() {
     let elemList = document.getElementsByClassName('color-control');
     for (let i = 0; i < elemList.length; i++) {
         let colorControlElem = elemList[i];
+        let initValue = colorControlElem.attributes['data-value'].value;
         colorControlElem.picker = new vanillaColorPicker({
             parent: colorControlElem,
             popup: false,
@@ -587,6 +588,7 @@ function addColorPickerPolyfills() {
                 controlEvent({target: colorControlElem});
             },
         });
+        colorControlElem.picker.setColor(initValue);
     }
 }
 

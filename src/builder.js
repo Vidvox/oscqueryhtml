@@ -129,7 +129,10 @@ function buildSingleControl(details, type, selector, pos, cfg) {
     } else if (type == 'r') {
         // Color
         var value = applyPos(details.VALUE, pos);
-        if (value) {
+        if (value && value[0] === '#') {
+            // Remove alpha channel to just get '#rrggbb'.
+            value = value.substr(0, 7);
+        } else if (value) {
             value = convertOSCColorToHex(value);
         } else {
             value = DEFAULT_COLOR_ELEM_VALUE;
@@ -137,7 +140,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         if (cfg.supportHtml5Color) {
             html += '<input type="color" value="' + value + '" />';
         } else {
-            html += '<div class="color-control"></div>';
+            html += ('<div class="color-control" data-value="' + value +
+                     '"></div>');
         }
         getter = 'color';
         setter = 'color';

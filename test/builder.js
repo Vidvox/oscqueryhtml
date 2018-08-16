@@ -156,7 +156,8 @@ describe('buildSingleControl', () => {
                         'RANGE': []};
             let html = builder.buildSingleControl(data, 'r', [0], 0);
             assert.equal(html,
-                         '<div class="color-control"></div>' +
+                         '<div class="color-control" data-value="#4466ff">' +
+                         '</div>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="r" data-getter="color" ' +
                          'data-setter="color" /></span>');
