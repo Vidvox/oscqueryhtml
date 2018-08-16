@@ -412,7 +412,10 @@ function applyPos(obj, pos) {
     if (!obj) {
         return null;
     }
-    return obj[pos];
+    if (Array.isArray(obj)) {
+        return obj[pos];
+    }
+    return obj;
 }
 
 function textToHexColor(elem) {
