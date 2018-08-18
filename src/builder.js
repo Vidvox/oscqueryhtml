@@ -398,6 +398,9 @@ function applySelector(obj, selector, key) {
     if (!obj) {
         return null;
     }
+    if (!Array.isArray(obj)) {
+        return obj[key];
+    }
     for (let n = 0; n < selector.length; n++) {
         let i = selector[n];
         obj = obj[i];
