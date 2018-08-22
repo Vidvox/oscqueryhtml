@@ -8,6 +8,7 @@ const retrieve = require('./retrieve.js');
 const vanillaColorPicker = require('vanilla-picker');
 const rangeSlider = require('rangeslider-pure');
 
+const logoBase64 = require("base64-image-loader!../assets/img/icon.png");
 const listenButtonSvg = require("svg-inline-loader?classPrefix=_listen!../assets/img/listen.svg");
 const ignoreButtonSvg = require("svg-inline-loader?classPrefix=_ignore!../assets/img/pressed.svg");
 
@@ -43,6 +44,14 @@ function detectColorPicker() {
 // Build all controls from json object, from the top-level.
 function buildFromQueryResult(result) {
     let mainContentsElem = $('#mainContents');
+    {
+        let logoHolderElem = document.createElement('div');
+        let logoElem = document.createElement('img');
+        logoElem.className = 'logo';
+        logoElem.src = logoBase64;
+        logoHolderElem.appendChild(logoElem);
+        mainContents.appendChild(logoHolderElem);
+    }
     {
         let refreshMessageElem = document.createElement('div');
         refreshMessageElem.id = 'refresh-butter';
