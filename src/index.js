@@ -193,6 +193,12 @@ function initWebSocket(url) {
             if (!targetElem) {
                 return;
             }
+            // Update position of slider polyfill. NOTE: Kind of a hack to
+            // put this code here, it's a one-off.
+            if (targetElem.attributes.type &&
+                targetElem.attributes.type.value == 'range') {
+                targetElem.rangeSlider.update({value: value}, false);
+            }
             var setter = detailsElem.attributes['data-setter'];
             if (setter) {
                 if (setter.value == 'color') {
