@@ -167,15 +167,13 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
-            html += '<span class="range-val"> (' + E(min) + '-' +
-                E(max) + ')</span>'
+            html += buildCurrRangeValue(value, min, max);
             getter = 'parseFloat';
             setter = 'float';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '" step="any"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += buildCurrRangeValue(value);
             getter = 'parseFloat';
             setter = 'float';
         }
@@ -205,15 +203,13 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
-            html += '<span class="range-val"> (' + E(min) + '-' +
-                E(max) + ')</span>'
+            html += buildCurrRangeValue(value, min, max);
             getter = 'parseFloat';
             setter = 'float';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '" step="any"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += buildCurrRangeValue(value);
             getter = 'parseFloat';
             setter = 'float';
         }
@@ -280,16 +276,14 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             } else {
                 html += '<input type="range" min="' + E(min) + '" max="' +
                     E(max) + '" value="' + E(value) + '" />';
-                html += '<span class="curr-val">' + E(value) + '</span>';
-                html += '<span class="range-val"> (' + E(min) + '-' +
-                    E(max) + ')</span>'
+                html += buildCurrRangeValue(value, min, max);
                 getter = 'parseInt';
                 setter = 'int';
             }
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '" />';
-            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += buildCurrRangeValue(value);
             getter = 'parseInt';
             setter = 'int';
         }
@@ -316,15 +310,13 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
-            html += '<span class="range-val"> (' + E(min) + '-' +
-                E(max) + ')</span>'
+            html += buildCurrRangeValue(value, min, max);
             getter = 'parseInt64';
             setter = 'int64';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
             html += '<input type="range" value="' + E(value) + '"/>';
-            html += '<span class="curr-val">' + E(value) + '</span>';
+            html += buildCurrRangeValue(value);
             getter = 'parseInt64';
             setter = 'int64';
         }
@@ -375,6 +367,19 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         html += 'data-setter="' + E(setter) + '" ';
     }
     html += '/></span>';
+    return html;
+}
+
+function buildCurrRangeValue(value, min, max) {
+    let html = '<span class="curr-range-val">';
+    if (min === undefined && max === undefined) {
+        html += '<span class="curr-val">' + E(value) + '</span>';
+    } else {
+        html += '<span class="curr-val">' + E(value) + '</span>';
+        html += '<span class="range-val"> (' + E(min) + '-' +
+            E(max) + ')</span>';
+    }
+    html += '</span>';
     return html;
 }
 

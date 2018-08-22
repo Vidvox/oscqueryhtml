@@ -22,7 +22,9 @@ describe('buildSingleControl', () => {
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="range" value="0" />' +
+                         '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
+                         '</span>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseInt" ' +
                          'data-setter="int" /></span>');
@@ -35,8 +37,10 @@ describe('buildSingleControl', () => {
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
                          '<input type="range" min="0" max="10" value="0" />' +
+                         '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
                          '<span class="range-val"> (0-10)</span>' +
+                         '</span>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseInt" ' +
                          'data-setter="int" /></span>');
@@ -123,7 +127,9 @@ describe('buildSingleControl', () => {
             let html = builder.buildSingleControl(data, 'h', [0], 0);
             assert.equal(html,
                          '<input type="range" value="0"/>' +
+                         '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
+                         '</span>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="h" data-getter="parseInt64" ' +
                          'data-setter="int64" /></span>');
