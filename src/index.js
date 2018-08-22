@@ -178,13 +178,21 @@ function initWebSocket(url) {
             var packet = osc.readPacket(new Uint8Array(e.data), {});
             console.log('***** Got packet <' + JSON.stringify(packet) + '>');
             var address = packet.address;
+            // TODO: Iterate over values to affect each element.
             var value = packet.args[0];
             // TODO: Validate address contains allowed characters.
             var query = '[data-full-path="' + address + '"]';
             var detailsElem = document.querySelector(query);
             // Apply OSC packet by setting control value, update UI.
             var controlElem = detailsElem.parentNode;
+            // Get input or select tag, which needs to have value changed.
             var targetElem = controlElem.querySelector('input');
+            if (!targetElem) {
+                targetElem = controlElem.querySelector('select');
+            }
+            if (!targetElem) {
+                return;
+            }
             var setter = detailsElem.attributes['data-setter'];
             if (setter) {
                 if (setter.value == 'color') {
