@@ -67,11 +67,11 @@ describe('buildSingleControl', () => {
                         'RANGE': [{'MIN': 8, 'MAX': 9}]};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="checkbox" data-first="8" ' +
-                         'data-second="9"/> 8, 9' +
+                         '<input type="button" value="8" data-first="8" ' +
+                         'data-second="9"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendCheckbox" ' +
-                         'data-setter="setCheckbox" /></span>');
+                         'data-type="i" data-getter="value" ' +
+                         'data-setter="setToggle" /></span>');
         });
     });
     describe('i with only 2 vals', () => {
@@ -80,11 +80,11 @@ describe('buildSingleControl', () => {
                         'RANGE': [{'VALS': [5, 10]}]};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="checkbox" data-first="5" ' +
-                         'data-second="10"/> 5, 10' +
+                         '<input type="button" value="5" data-first="5" ' +
+                         'data-second="10"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendCheckbox" ' +
-                         'data-setter="setCheckbox" /></span>');
+                         'data-type="i" data-getter="value" ' +
+                         'data-setter="setToggle" /></span>');
         });
     });
     describe('i with min,max exactly the same', () => {
@@ -95,7 +95,7 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<input type="button" value="20" data-first="20"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendSingle" ' +
+                         'data-type="i" data-getter="parseSingle" ' +
                          'data-setter="button" /></span>');
         });
     });
@@ -107,7 +107,7 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<input type="button" value="32" data-first="32"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="sendSingle" ' +
+                         'data-type="i" data-getter="parseSingle" ' +
                          'data-setter="button" /></span>');
         });
     });
@@ -140,9 +140,10 @@ describe('buildSingleControl', () => {
             let data = {'TYPE': 'F', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
             let html = builder.buildSingleControl(data, 'F', [0], 0);
             assert.equal(html,
-                         '<input type="button" value=""/>' +
+                         '<input type="button" value="false"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="F" data-setter="button" /></span>');
+                         'data-type="F" data-getter="bool" ' +
+                         'data-setter="setToggle" /></span>');
         });
     });
     describe('r creates colorPicker', () => {

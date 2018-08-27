@@ -236,6 +236,9 @@ function initWebSocket(url) {
                         targetElem.checked = true;
                     }
                     return;
+                } else if (setter.value == 'setToggle') {
+                    runSetter(controlElem, setter.value, value);
+                    return;
                 } else if (setter.value == 'button') {
                     // do nothing
                     return;
@@ -371,9 +374,12 @@ function getControlArg(controlElem) {
         return {type: dataType, value: {high: high, low: low}};
     } else if (getter.value == 'parseFloat') {
         return {type: dataType, value: parseFloat(inputElem.value) };
-    } else if (getter.value == 'sendSingle') {
+    } else if (getter.value == 'parseSingle') {
         let first = inputElem.attributes['data-first'].value;
         return {type: dataType, value: parseInt(first, 10) };
+    } else if (getter.value == 'bool') {
+        let value = inputElem.value;
+        return {type: dataType, value: value };
     } else if (getter.value == 'sendCheckbox') {
         let value;
         if (inputElem.checked) {
@@ -410,6 +416,10 @@ function runSetter(controlElem, type, value) {
     } else if (type == 'float') {
         let currValElem = controlElem.querySelector('.curr-val');
         currValElem.textContent = Math.round(value * 1000) / 1000;
+    } else if (type == 'setToggle') {
+        value = (value === false || value == 'false') ? 'true' : 'false';
+        let buttonElem = controlElem.querySelector('input');
+        buttonElem.value = value;
     } else if (type == 'button') {
         // do nothing
     }

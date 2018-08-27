@@ -179,8 +179,10 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'F') {
         // False
-        html += '<input type="button" value="' + E(details.name) + '"/>';
-        setter = 'button';
+        var value = applyPos(details.VALUE, pos) || false;
+        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        getter = 'bool';
+        setter = 'setToggle';
     } else if (type == 'f') {
         // Float
         if (details.RANGE && applySelector(details.RANGE, selector, 'VALS')) {
@@ -226,17 +228,16 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 value = options[0];
                 html += '<input type="button" value="' + E(value) +
                     '" data-first="' + E(value) + '"/>';
-                getter = 'sendSingle';
+                getter = 'parseSingle';
                 setter = 'button';
             } else if (options.length == 2) {
-                html += '<input type="checkbox" data-first="' + E(options[0]) +
-                    '" data-second="' + E(options[1]) + '"';
-                if (value == options[1]) {
-                    html += ' checked';
-                }
-                html += '/> ' + E(options[0]) + ', ' + E(options[1]);
-                getter = 'sendCheckbox';
-                setter = 'setCheckbox';
+                first = options[0];
+                second = options[1];
+                html += '<input type="button" value="' + E(first) +
+                    '" data-first="' + E(first) +
+                    '" data-second="' + E(second) + '"/>';
+                getter = 'value';
+                setter = 'setToggle';
             } else {
                 html += '<select>';
                 for (let i = 0; i < options.length; i++) {
@@ -262,17 +263,16 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 value = min;
                 html += '<input type="button" value="' + E(value) +
                     '" data-first="' + E(value) + '"/>';
-                getter = 'sendSingle';
+                getter = 'parseSingle';
                 setter = 'button';
             } else if (max - min == 1) {
-                html += '<input type="checkbox" data-first="' + E(min) +
-                    '" data-second="' + E(max) + '"';
-                if (value == max) {
-                    html += ' checked';
-                }
-                html += '/> ' + E(min) + ', ' + E(max);
-                getter = 'sendCheckbox';
-                setter = 'setCheckbox';
+                first = min;
+                second = max;
+                html += '<input type="button" value="' + E(first) +
+                    '" data-first="' + E(first) +
+                    '" data-second="' + E(second) + '"/>';
+                getter = 'value';
+                setter = 'setToggle';
             } else {
                 html += '<input type="range" min="' + E(min) + '" max="' +
                     E(max) + '" value="' + E(value) + '" />';
@@ -350,8 +350,10 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'T') {
         // True
-        html += '<input type="button" value="' + E(details.name) + '"/>';
-        setter = 'button';
+        var value = applyPos(details.VALUE, pos) || true;
+        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        getter = 'bool';
+        setter = 'setToggle';
     } else if (type == 't') {
         // Timetag
         return null;
@@ -451,6 +453,10 @@ function E(text) {
     }
     return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').
         replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function E_bool(bool) {
+    return bool ? "true" : "false";
 }
 
 module.exports = {
