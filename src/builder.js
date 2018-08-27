@@ -181,7 +181,7 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         // False
         var value = applyPos(details.VALUE, pos) || false;
         html += '<input type="button" value="' + E_bool(value) + '"/>';
-        getter = 'bool';
+        getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 'f') {
         // Float
@@ -352,7 +352,7 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         // True
         var value = applyPos(details.VALUE, pos) || true;
         html += '<input type="button" value="' + E_bool(value) + '"/>';
-        getter = 'bool';
+        getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 't') {
         // Timetag

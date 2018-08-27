@@ -142,7 +142,7 @@ describe('buildSingleControl', () => {
             assert.equal(html,
                          '<input type="button" value="false"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="F" data-getter="bool" ' +
+                         'data-type="F" data-getter="boolToggle" ' +
                          'data-setter="setToggle" /></span>');
         });
     });

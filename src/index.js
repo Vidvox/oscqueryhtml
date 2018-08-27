@@ -377,9 +377,9 @@ function getControlArg(controlElem) {
     } else if (getter.value == 'parseSingle') {
         let first = inputElem.attributes['data-first'].value;
         return {type: dataType, value: parseInt(first, 10) };
-    } else if (getter.value == 'bool') {
-        let value = inputElem.value;
-        return {type: dataType, value: value };
+    } else if (getter.value == 'boolToggle') {
+        let value = inputElem.value == 'true' ? false : true;
+        return {type: dataType, value: value};
     } else if (getter.value == 'sendCheckbox') {
         let value;
         if (inputElem.checked) {
