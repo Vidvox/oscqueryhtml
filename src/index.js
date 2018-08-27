@@ -380,6 +380,16 @@ function getControlArg(controlElem) {
     } else if (getter.value == 'boolToggle') {
         let value = inputElem.value == 'true' ? false : true;
         return {type: dataType, value: value};
+    } else if (getter.value == 'parseIntToggle') {
+        let value = null;
+        let dataFirst = inputElem.attributes['data-first']
+        let dataSecond = inputElem.attributes['data-second']
+        if (dataFirst.value == inputElem.value) {
+            value = dataSecond.value;
+        } else {
+            value = dataFirst.value;
+        }
+        return {type: dataType, value: parseInt(value, 10) };
     } else if (getter.value == 'sendCheckbox') {
         let value;
         if (inputElem.checked) {
@@ -417,8 +427,18 @@ function runSetter(controlElem, type, value) {
         let currValElem = controlElem.querySelector('.curr-val');
         currValElem.textContent = Math.round(value * 1000) / 1000;
     } else if (type == 'setToggle') {
-        value = (value === false || value == 'false') ? 'true' : 'false';
         let buttonElem = controlElem.querySelector('input');
+        let dataFirst = buttonElem.attributes['data-first']
+        let dataSecond = buttonElem.attributes['data-second']
+        if (dataFirst && dataSecond) {
+            if (dataFirst.value == value) {
+                value = dataSecond.value;
+            } else {
+                value = dataFirst.value;
+            }
+        } else {
+            value = (value === false || value == 'false') ? 'true' : 'false';
+        }
         buttonElem.value = value;
     } else if (type == 'button') {
         // do nothing

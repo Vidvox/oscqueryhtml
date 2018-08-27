@@ -70,7 +70,7 @@ describe('buildSingleControl', () => {
                          '<input type="button" value="8" data-first="8" ' +
                          'data-second="9"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="value" ' +
+                         'data-type="i" data-getter="parseIntToggle" ' +
                          'data-setter="setToggle" /></span>');
         });
     });
@@ -83,7 +83,7 @@ describe('buildSingleControl', () => {
                          '<input type="button" value="5" data-first="5" ' +
                          'data-second="10"/>' +
                          '<span class="details" data-full-path="/p" ' +
-                         'data-type="i" data-getter="value" ' +
+                         'data-type="i" data-getter="parseIntToggle" ' +
                          'data-setter="setToggle" /></span>');
         });
     });
