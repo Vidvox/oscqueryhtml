@@ -10,8 +10,8 @@ function extractControlKind(type, html) {
     } else if (type == 'd' || type == 'f' || type == 'i' || type == 'h') {
         if (html.includes('<select>')) {
             return 'dropdown';
-        } else if (html.includes('<input type="checkbox"')) {
-            return 'checkbox';
+        } else if (html.includes('<input type="button" data-toggle="yes"')) {
+            return 'toggle';
         } else if (html.includes('<input type="button"')) {
             return 'button';
         } else {
@@ -23,7 +23,9 @@ function extractControlKind(type, html) {
         } else {
             return 'text';
         }
-    } else if (type == 'F' || type == 'I' || type == 'N' || type == 'T') {
+    } else if (type == 'F' || type == 'T') {
+        return 'toggle';
+    } else if (type == 'I' || type == 'N') {
         return 'button';
     } else if (type == 'm' || type == 't') {
         return 'none';

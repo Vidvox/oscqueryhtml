@@ -67,8 +67,8 @@ describe('buildSingleControl', () => {
                         'RANGE': [{'MIN': 8, 'MAX': 9}]};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="button" value="8" data-first="8" ' +
-                         'data-second="9"/>' +
+                         '<input type="button" data-toggle="yes" value="8" ' +
+                         'data-first="8" data-second="9"/>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseIntToggle" ' +
                          'data-setter="setToggle" /></span>');
@@ -80,8 +80,8 @@ describe('buildSingleControl', () => {
                         'RANGE': [{'VALS': [5, 10]}]};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="button" value="5" data-first="5" ' +
-                         'data-second="10"/>' +
+                         '<input type="button" data-toggle="yes" value="5" ' +
+                         'data-first="5" data-second="10"/>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseIntToggle" ' +
                          'data-setter="setToggle" /></span>');

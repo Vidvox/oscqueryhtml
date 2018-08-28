@@ -232,7 +232,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 first = options[0];
                 second = options[1];
                 value = applyPos(details.VALUE, pos) || first;
-                html += '<input type="button" value="' + E(value) +
+                html += '<input type="button" data-toggle="yes"' +
+                    ' value="' + E(value) +
                     '" data-first="' + E(first) +
                     '" data-second="' + E(second) + '"/>';
                 getter = 'parseIntToggle';
@@ -266,7 +267,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 setter = 'button';
             } else if (max - min == 1) {
                 value = applyPos(details.VALUE, pos) || min;
-                html += '<input type="button" value="' + E(value) +
+                html += '<input type="button" data-toggle="yes"' +
+                    ' value="' + E(value) +
                     '" data-first="' + E(min) +
                     '" data-second="' + E(max) + '"/>';
                 getter = 'parseIntToggle';
