@@ -14,13 +14,6 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
         let dirObj = contents[dirNames[j]];
         // Container for this node.
         let directoryElem = document.createElement('div');
-        if (!dirObj.CONTENTS && !dirObj.TYPE) {
-            directoryElem.innerHTML = (
-                '<span class="error">Invalid node: ' +
-                'Needs either CONTENTS or TYPE or BOTH</span>');
-            parentContainer.appendChild(directoryElem);
-            continue;
-        }
         let id = generateId();
         let html = '<header>';
         // If this has CONTENTS, build a directory node.
@@ -36,6 +29,11 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
             html += '<span class="svg-hide">' + toggleMinusSvg + '</span>';
             html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
             html += '</div>';
+            directoryElem.className = 'dir-container';
+        }
+        if (!dirObj.CONTENTS && !dirObj.TYPE) {
+            // Empty directory, no toggle.
+            html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
             directoryElem.className = 'dir-container';
         }
         html += '</header>';
