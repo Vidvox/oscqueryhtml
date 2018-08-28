@@ -199,7 +199,12 @@ function initWebSocket(url) {
             // put this code here, it's a one-off.
             if (targetElem.attributes.type &&
                 targetElem.attributes.type.value == 'range') {
+                if (g_numRangeMessagePending > 0) {
+                    g_numRangeMessagePending--;
+                    return;
+                }
                 targetElem.rangeSlider.update({value: value}, false);
+                return;
             }
             var setter = detailsElem.attributes['data-setter'];
             if (setter) {
@@ -210,8 +215,8 @@ function initWebSocket(url) {
                     // the lightness due to rounding errors. So, while the
                     // control is being changed, wait a short amount of time
                     // before accepting new updates.
-                    if (g_numMessagePending > 0) {
-                        g_numMessagePending--;
+                    if (g_numColorMessagePending > 0) {
+                        g_numColorMessagePending--;
                         return;
                     }
                     if (!g_supportHtml5Color) {
@@ -465,7 +470,14 @@ function charKeyPressEvent(e) {
     controlEvent(e);
 }
 
+var g_numRangeMessagePending = 0;
+var g_lastRangeMessageSent = null;
+
 function rangeModifyEvent(e) {
+    if (g_isListenEnabled) {
+        g_numRangeMessagePending++;
+        g_lastRangeMessageSent = new Date();
+    }
     let value = e.target.value;
     // Cache value so that it won't send twice in a row.
     if (e.target.cacheValue === value) {
@@ -475,27 +487,32 @@ function rangeModifyEvent(e) {
     controlEvent(e);
 }
 
-var g_numMessagePending = 0;
-var g_lastMessageSent = null;
+var g_numColorMessagePending = 0;
+var g_lastColorMessageSent = null;
 
 function colorModifyEvent(e) {
     if (g_isListenEnabled) {
-        g_numMessagePending++;
-        g_lastMessageSent = new Date();
+        g_numColorMessagePending++;
+        g_lastColorMessageSent = new Date();
     }
     controlEvent(e);
 }
 
 setInterval(function() {
-    if (!g_lastMessageSent) {
-        return;
-    }
     let now = new Date();
-    if (now - g_lastMessageSent > 2000) {
-        g_numMessagePending = 0;
-        g_lastMessageSent = null;
+    if (g_lastRangeMessageSent) {
+        if (now - g_lastRangeMessageSent > 1000) {
+            g_numRangeMessagePending = 0;
+            g_lastRangeMessageSent = null;
+        }
     }
-}, 1000);
+    if (g_lastColorMessageSent) {
+        if (now - g_lastColorMessageSent > 1000) {
+            g_numColorMessagePending = 0;
+            g_lastColorMessageSent = null;
+        }
+    }
+}, 400);
 
 function getDataEvent(element) {
     if (element.attributes['data-event']) {
