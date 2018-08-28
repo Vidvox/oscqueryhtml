@@ -81,14 +81,16 @@ function buildFromQueryResult(result) {
         // Listen and ignore buttons.
         let listenSpanElem = document.createElement('span');
         listenSpanElem.className = 'svg-listen';
-        listenSpanElem.style.display = 'inline-block';
+        listenSpanElem.style.display = 'none';
         listenSpanElem.innerHTML = listenButtonSvg;
         let ignoreSpanElem = document.createElement('span');
         ignoreSpanElem.className = 'svg-ignore';
-        ignoreSpanElem.style.display = 'none';
+        ignoreSpanElem.style.display = 'inline-block';
         ignoreSpanElem.innerHTML = ignoreButtonSvg;
         mainContentsElem.appendChild(listenSpanElem);
         mainContentsElem.appendChild(ignoreSpanElem);
+        // Set listening state.
+        setTimeout(enableInitialListenState, 0);
     }
     {
         let styleDarkElem = document.createElement('div');
@@ -536,6 +538,14 @@ function listenIgnoreChange(state) {
     }
 }
 
+// If OSC is ready (connected), start listening, otherwise wait 10 ms.
+function enableInitialListenState() {
+    if (isOscReady) {
+        listenIgnoreChange(true);
+    } else {
+        setTimeout(enableInitialListenState, 10);
+    }
+}
 
 const TOGGLE_SHOW_DISPLAY = 'grid';
 
