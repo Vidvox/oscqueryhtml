@@ -378,8 +378,7 @@ function getControlArg(controlElem) {
         let first = inputElem.attributes['data-first'].value;
         return {type: dataType, value: parseInt(first, 10) };
     } else if (getter.value == 'boolToggle') {
-        let value = inputElem.value == 'true' ? false : true;
-        return {type: dataType, value: value};
+        return {type: inputElem.value == 'true' ? 'F' : 'T'};
     } else if (getter.value == 'parseIntToggle') {
         let value = null;
         let dataFirst = inputElem.attributes['data-first']
