@@ -430,16 +430,30 @@ function runSetter(controlElem, type, value) {
         let buttonElem = controlElem.querySelector('input');
         let dataFirst = buttonElem.attributes['data-first']
         let dataSecond = buttonElem.attributes['data-second']
+        let isEnabled;
         if (dataFirst && dataSecond) {
             if (dataFirst.value == value) {
                 value = dataSecond.value;
+                isEnabled = true;
             } else {
                 value = dataFirst.value;
+                isEnabled = false;
             }
         } else {
-            value = (value === false || value == 'false') ? 'true' : 'false';
+            if (value === false || value == 'false') {
+                value = 'true';
+                isEnabled = true;
+            } else {
+                value = 'false';
+                isEnabled = false;
+            }
         }
         buttonElem.value = value;
+        if (isEnabled) {
+            buttonElem.classList.add('enabled');
+        } else {
+            buttonElem.classList.remove('enabled');
+        }
     } else if (type == 'button') {
         // do nothing
     }
