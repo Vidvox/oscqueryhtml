@@ -2,7 +2,7 @@ $button-default-background-color: #666;
 $button-light-background-color: $teal-color;
 $button-dark-background-color: $yellow-color;
 $button-default-text-color: $white-color;
-
+$button-default-active-color: $teal-color;
 
 @mixin button-base-style {
   -webkit-appearance: none;
@@ -15,19 +15,22 @@ $button-default-text-color: $white-color;
   color: $button-default-text-color;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
   font-size: 1em;
-  &:active {
-    background-color: darken($button-default-background-color, 10%);
+  &:active &.enabled {
+    background-color: $button-default-active-color;
+    box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
   }
   body.light & {
-    background-color: $button-light-background-color;
-    &:active {
-      background-color: saturate($button-light-background-color, 10%);
+    background-color: desaturate($button-light-background-color, 25%);
+    &:active, &.enabled {
+      background-color: saturate($button-light-background-color, 25%);
+      box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
     }
   }
   body.dark & {
-    background-color: $button-dark-background-color;
-    &:active {
-      background-color: saturate($button-light-background-color, 10%);
+    background-color: desaturate($button-dark-background-color, 25%);
+    &:active, &.enabled {
+      background-color: saturate($button-dark-background-color, 25%);
+      box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
     }
   }
 }
