@@ -146,7 +146,8 @@ input[type="text"] {
 .node .rangeSlider__horizontal {
   flex: 1;
   flex-grow: 4;
-  align-self: center; }
+  align-self: center;
+  margin-right: 20px; }
 .node select {
   font-size: 20px; }
 .node .kind_color {
