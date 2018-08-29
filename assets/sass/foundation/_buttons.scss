@@ -17,20 +17,20 @@ $button-default-active-color: $teal-color;
   font-size: 1em;
   &:active &.enabled {
     background-color: $button-default-active-color;
-    box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
+    box-shadow: inset 0px 3px 2px 0px rgba(0,0,0,0.28);
   }
   body.light & {
     background-color: desaturate($button-light-background-color, 25%);
     &:active, &.enabled {
       background-color: saturate($button-light-background-color, 25%);
-      box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
+      box-shadow: inset 0px 3px 2px 0px rgba(0,0,0,0.28);
     }
   }
   body.dark & {
     background-color: desaturate($button-dark-background-color, 25%);
     &:active, &.enabled {
       background-color: saturate($button-dark-background-color, 25%);
-      box-shadow: inset 0px 3px 0px 0px rgba(0,0,0,0.28);
+      box-shadow: inset 0px 3px 2px 0px rgba(0,0,0,0.28);
     }
   }
 }
