@@ -90,7 +90,7 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(listenSpanElem);
         mainContentsElem.appendChild(ignoreSpanElem);
         // Set listening state.
-        setTimeout(enableInitialListenState, 0);
+        //setTimeout(enableInitialListenState, 0);
     }
     {
         let styleDarkElem = document.createElement('div');
@@ -453,10 +453,10 @@ function runSetter(controlElem, type, value) {
         if (dataFirst && dataSecond) {
             if (dataFirst.value == value) {
                 value = dataSecond.value;
-                isEnabled = true;
+                isEnabled = false;
             } else {
                 value = dataFirst.value;
-                isEnabled = false;
+                isEnabled = true;
             }
         } else {
             if (value === false || value == 'false') {
@@ -738,6 +738,8 @@ function createApp(serverUrl) {
                 return;
             }
             detectColorPicker();
+            console.log(JSON.stringify(result));
+
             buildFromQueryResult(result);
             storeControlStructure(result);
             addInputEventHandlers();
