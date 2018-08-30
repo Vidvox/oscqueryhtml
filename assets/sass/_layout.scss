@@ -56,10 +56,7 @@
       &.kind_slider {
         display: block;
         > * {
-          margin: 5px;
-        }
-        @include media-query($on-palm) {
-          display: flex;
+          margin-top: 20px;
         }
       }
       //align-items: center;

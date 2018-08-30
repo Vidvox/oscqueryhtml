@@ -106,10 +106,7 @@ input[type="text"] {
       .node > div .control.kind_slider {
         display: block; }
         .node > div .control.kind_slider > * {
-          margin: 5px; }
-        @media screen and (min-width: 866px) {
-          .node > div .control.kind_slider {
-            display: flex; } }
+          margin-top: 20px; }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 866px) {
