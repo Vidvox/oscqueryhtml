@@ -2,8 +2,12 @@
   max-width: 50px;
 }
 
+
 .dir-container {
-  padding: $unit;
+  padding: 4px;
+  @include media-query($on-palm) {
+    padding: $unit;
+  }
   box-sizing: border-box;
   border-radius: $unit * 2;
   margin-top: $unit * 2;
@@ -37,16 +41,27 @@
 
 .node {
   display: flex;
-  margin: $unit;
-
-  padding: $unit;
+  margin: 4px;
+  padding: 4px;
   border-radius: $unit;
-
+  @include media-query($on-palm) {
+    margin: $unit;
+    padding: $unit;
+  }
   > div {
     width: 100%;
     .control {
       display: flex;
       justify-content: center;
+      &.kind_slider {
+        display: block;
+        > * {
+          margin: 5px;
+        }
+        @include media-query($on-palm) {
+          display: flex;
+        }
+      }
       //align-items: center;
 
       input {

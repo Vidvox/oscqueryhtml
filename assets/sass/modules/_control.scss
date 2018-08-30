@@ -1,10 +1,18 @@
 .node {
-
+  .control-name, .full-path, .description {
+    font-size: 12px;
+    @include media-query($on-palm) {
+      font-size: 16px;
+    }
+  }
   .control {
     padding: $unit;
     box-sizing: border-box;
     border-radius: $vv-base-border-radius;
-    margin: $unit * 2;
+    margin: 4px;
+    @include media-query($on-palm) {
+      margin: $unit * 2;
+    }
     box-shadow: 0px 6px 0px 0px rgba(70,75,117,0.7);
     color: $control-data-text-color;
     input[type="text"] {
@@ -12,6 +20,10 @@
       line-height: 26px;
       padding: 5px;
       box-sizing: border-box;
+    }
+    .curr-range-val {
+      font-size: 10px;
+      align-self: center;
     }
     span.curr-val {
       margin-left: $unit;

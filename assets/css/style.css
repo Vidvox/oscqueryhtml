@@ -61,12 +61,15 @@ input[type="text"] {
   max-width: 50px; }
 
 .dir-container {
-  padding: 10px;
+  padding: 4px;
   box-sizing: border-box;
   border-radius: 20px;
   margin-top: 20px;
   border: 2px solid;
   font-size: 120%; }
+  @media screen and (min-width: 866px) {
+    .dir-container {
+      padding: 10px; } }
   .dir-container header {
     grid-area: header; }
     .dir-container header span {
@@ -88,14 +91,25 @@ input[type="text"] {
 
 .node {
   display: flex;
-  margin: 10px;
-  padding: 10px;
+  margin: 4px;
+  padding: 4px;
   border-radius: 10px; }
+  @media screen and (min-width: 866px) {
+    .node {
+      margin: 10px;
+      padding: 10px; } }
   .node > div {
     width: 100%; }
     .node > div .control {
       display: flex;
       justify-content: center; }
+      .node > div .control.kind_slider {
+        display: block; }
+        .node > div .control.kind_slider > * {
+          margin: 5px; }
+        @media screen and (min-width: 866px) {
+          .node > div .control.kind_slider {
+            display: flex; } }
       .node > div .control input {
         flex: 1; }
     @media screen and (min-width: 866px) {
@@ -120,18 +134,29 @@ input[type="text"] {
     flex: 1;
     display: flex; }
 
+.node .control-name, .node .full-path, .node .description {
+  font-size: 12px; }
+  @media screen and (min-width: 866px) {
+    .node .control-name, .node .full-path, .node .description {
+      font-size: 16px; } }
 .node .control {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 10px;
-  margin: 20px;
+  margin: 4px;
   box-shadow: 0px 6px 0px 0px rgba(70, 75, 117, 0.7);
   color: #fff; }
+  @media screen and (min-width: 866px) {
+    .node .control {
+      margin: 20px; } }
   .node .control input[type="text"] {
     font-size: 20px;
     line-height: 26px;
     padding: 5px;
     box-sizing: border-box; }
+  .node .control .curr-range-val {
+    font-size: 10px;
+    align-self: center; }
   .node .control span.curr-val {
     margin-left: 10px; }
 .node .kind_char {
@@ -186,45 +211,3 @@ body.light .node .control {
   background-color: rgba(0, 0, 0, 0.2); }
 body.dark .node .control, body .node .control {
   background-color: rgba(255, 255, 255, 0.2); }
-
-.dir-name {
-  font-size: 140%;
-  font-weight: bold; }
-
-.control-name {
-  font-size: 120%;
-  display: block;
-  font-weight: bold; }
-
-.listen-label {
-  position: relative;
-  margin-top: 4px;
-  float: left; }
-
-.listen-button {
-  padding-left: 10px;
-  cursor: pointer; }
-
-.full-path {
-  font-size: 80%;
-  padding-left: 10px;
-  display: block; }
-
-.description {
-  font-size: 80%;
-  padding-left: 10px;
-  display: block; }
-
-.curr-val {
-  font-size: 80%;
-  padding-bottom: 8px; }
-
-.range-val {
-  font-size: 80%;
-  padding-bottom: 8px; }
-
-img.toggle-hide {
-  padding: 4px 2px; }
-
-img.toggle-show {
-  padding: 4px 2px; }
