@@ -90,7 +90,7 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(listenSpanElem);
         mainContentsElem.appendChild(ignoreSpanElem);
         // Set listening state.
-        setTimeout(enableInitialListenState, 0);
+        //setTimeout(enableInitialListenState, 0);
     }
     {
         let styleDarkElem = document.createElement('div');
@@ -328,6 +328,19 @@ function processCommandMessage(msg) {
     }
 }
 
+function toggleEvent(e) {
+    // Control that was modified.
+    let controlElem = e.target.parentNode;
+    let detailsElem = controlElem.querySelector('.details');
+    let setter = detailsElem.attributes['data-setter'];
+    // Special hook for toggles because we need to modify the value before
+    // calling `getControlArg` in the main `controlEvent` handler.
+    if (setter) {
+        runSetter(controlElem, 'setToggleBeforeGetControlArg', e.target.value);
+    }
+    controlEvent(e);
+}
+
 function controlEvent(e) {
     // Control that was modified.
     let controlElem = e.target.parentNode;
@@ -385,15 +398,15 @@ function getControlArg(controlElem) {
         let first = inputElem.attributes['data-first'].value;
         return {type: dataType, value: parseInt(first, 10) };
     } else if (getter.value == 'boolToggle') {
-        return {type: inputElem.value == 'true' ? 'F' : 'T'};
+        return {type: inputElem.value == 'true' ? 'T' : 'F'};
     } else if (getter.value == 'parseIntToggle') {
         let value = null;
         let dataFirst = inputElem.attributes['data-first']
         let dataSecond = inputElem.attributes['data-second']
         if (dataFirst.value == inputElem.value) {
-            value = dataSecond.value;
-        } else {
             value = dataFirst.value;
+        } else {
+            value = dataSecond.value;
         }
         return {type: dataType, value: parseInt(value, 10) };
     } else if (getter.value == 'sendCheckbox') {
@@ -432,7 +445,7 @@ function runSetter(controlElem, type, value) {
     } else if (type == 'float') {
         let currValElem = controlElem.querySelector('.curr-val');
         currValElem.textContent = Math.round(value * 1000) / 1000;
-    } else if (type == 'setToggle') {
+    } else if (type == 'setToggleBeforeGetControlArg') {
         let buttonElem = controlElem.querySelector('input');
         let dataFirst = buttonElem.attributes['data-first']
         let dataSecond = buttonElem.attributes['data-second']
@@ -440,10 +453,10 @@ function runSetter(controlElem, type, value) {
         if (dataFirst && dataSecond) {
             if (dataFirst.value == value) {
                 value = dataSecond.value;
-                isEnabled = true;
+                isEnabled = false;
             } else {
                 value = dataFirst.value;
-                isEnabled = false;
+                isEnabled = true;
             }
         } else {
             if (value === false || value == 'false') {
@@ -460,6 +473,8 @@ function runSetter(controlElem, type, value) {
         } else {
             buttonElem.classList.remove('enabled');
         }
+    } else if (type == 'setToggle') {
+        // do nothing
     } else if (type == 'button') {
         // do nothing
     }
@@ -624,6 +639,8 @@ function addInputEventHandlers() {
         let input = inputs[i];
         if (getDataEvent(input) == 'keypress') {
             input.addEventListener('keypress', charKeyPressEvent, false);
+        } else if (input.type == "button" && input.attributes['data-toggle']) {
+            input.addEventListener('click', toggleEvent, false);
         } else if (input.type == "button") {
             input.addEventListener('click', controlEvent, false);
         } else if (input.type == "range") {
@@ -721,6 +738,8 @@ function createApp(serverUrl) {
                 return;
             }
             detectColorPicker();
+            console.log(JSON.stringify(result));
+
             buildFromQueryResult(result);
             storeControlStructure(result);
             addInputEventHandlers();

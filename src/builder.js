@@ -178,7 +178,12 @@ function buildSingleControl(details, type, selector, pos, cfg) {
     } else if (type == 'F') {
         // False
         var value = applyPos(details.VALUE, pos) || false;
-        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        html += '<input type="button" data-toggle="yes"' +
+            ' value="' + E_bool(value) + '"';
+        if (value) {
+            html += ' class="enabled"';
+        }
+        html += '/>';
         getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 'f') {
@@ -232,8 +237,11 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 first = options[0];
                 second = options[1];
                 value = applyPos(details.VALUE, pos) || first;
-                html += '<input type="button" data-toggle="yes"' +
-                    ' value="' + E(value) +
+                html += '<input type="button" data-toggle="yes"';
+                if (value == second) {
+                    html += ' class="enabled"';
+                }
+                html += ' value="' + E(value) +
                     '" data-first="' + E(first) +
                     '" data-second="' + E(second) + '"/>';
                 getter = 'parseIntToggle';
@@ -267,8 +275,11 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 setter = 'button';
             } else if (max - min == 1) {
                 value = applyPos(details.VALUE, pos) || min;
-                html += '<input type="button" data-toggle="yes"' +
-                    ' value="' + E(value) +
+                html += '<input type="button" data-toggle="yes"';
+                if (value == max) {
+                    html += ' class="enabled"';
+                }
+                html += ' value="' + E(value) +
                     '" data-first="' + E(min) +
                     '" data-second="' + E(max) + '"/>';
                 getter = 'parseIntToggle';
@@ -350,8 +361,15 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'T') {
         // True
-        var value = applyPos(details.VALUE, pos) || true;
-        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        var value = applyPos(details.VALUE, pos);
+        // NOTE: Can't use `func() || true` because `false` is possible value.
+        if (value === null) { value = true; }
+        html += '<input type="button" data-toggle="yes"' +
+            ' value="' + E_bool(value) + '"'
+        if (value) {
+            html += ' class="enabled"';
+        }
+        html += '/>';
         getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 't') {

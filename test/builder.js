@@ -135,12 +135,25 @@ describe('buildSingleControl', () => {
                          'data-setter="int64" /></span>');
         });
     });
+    describe('T', () => {
+        it('returns true control', () => {
+            let data = {'TYPE': 'T', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
+            let html = builder.buildSingleControl(data, 'T', [0], 0);
+            assert.equal(html,
+                         '<input type="button" data-toggle="yes" ' +
+                         'value="true" class="enabled"/>' +
+                         '<span class="details" data-full-path="/p" ' +
+                         'data-type="T" data-getter="boolToggle" ' +
+                         'data-setter="setToggle" /></span>');
+        });
+    });
     describe('F', () => {
         it('returns false control', () => {
             let data = {'TYPE': 'F', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
             let html = builder.buildSingleControl(data, 'F', [0], 0);
             assert.equal(html,
-                         '<input type="button" value="false"/>' +
+                         '<input type="button" data-toggle="yes" ' +
+                         'value="false"/>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="F" data-getter="boolToggle" ' +
                          'data-setter="setToggle" /></span>');
