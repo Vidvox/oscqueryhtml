@@ -140,7 +140,8 @@ describe('buildSingleControl', () => {
             let data = {'TYPE': 'F', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
             let html = builder.buildSingleControl(data, 'F', [0], 0);
             assert.equal(html,
-                         '<input type="button" value="false"/>' +
+                         '<input type="button" data-toggle="yes" ' +
+                         'value="false"/>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="F" data-getter="boolToggle" ' +
                          'data-setter="setToggle" /></span>');

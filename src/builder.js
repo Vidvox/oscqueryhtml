@@ -178,7 +178,8 @@ function buildSingleControl(details, type, selector, pos, cfg) {
     } else if (type == 'F') {
         // False
         var value = applyPos(details.VALUE, pos) || false;
-        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        html += '<input type="button" data-toggle="yes"' +
+            ' value="' + E_bool(value) + '"/>';
         getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 'f') {
@@ -350,8 +351,11 @@ function buildSingleControl(details, type, selector, pos, cfg) {
         }
     } else if (type == 'T') {
         // True
-        var value = applyPos(details.VALUE, pos) || true;
-        html += '<input type="button" value="' + E_bool(value) + '"/>';
+        var value = applyPos(details.VALUE, pos);
+        // NOTE: Can't use `func() || true` because `false` is possible value.
+        if (value === null) { value = true; }
+        html += '<input type="button" data-toggle="yes"' +
+            ' value="' + E_bool(value) + '"/>';
         getter = 'boolToggle';
         setter = 'setToggle';
     } else if (type == 't') {
