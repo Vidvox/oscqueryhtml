@@ -90,7 +90,7 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(listenSpanElem);
         mainContentsElem.appendChild(ignoreSpanElem);
         // Set listening state.
-        //setTimeout(enableInitialListenState, 0);
+        setTimeout(enableInitialListenState, 0);
     }
     {
         let styleDarkElem = document.createElement('div');
