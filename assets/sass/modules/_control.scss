@@ -20,6 +20,10 @@
       line-height: 26px;
       padding: 5px;
       box-sizing: border-box;
+      max-width: 220px;
+      @include media-query($on-palm) {
+        max-width: none;
+      }
     }
     .curr-range-val {
       font-size: 10px;
