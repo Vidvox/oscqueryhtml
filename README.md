@@ -43,3 +43,6 @@ If the server does not set this header, as a temporary workaround, you can insta
 
 Otherwise, the json request will be blocked by Chrome's security policy.
 
+### License
+
+This project is licensed under the MIT License and is free to use. See the included license document for more information.
