@@ -13,12 +13,12 @@ input[type=button], .button {
     background-color: #00a896;
     box-shadow: inset 0px 3px 2px 0px rgba(0, 0, 0, 0.28); }
   body.light input[type=button], body.light .button {
-    background-color: #159386; }
+    background-color: #7f8c8d; }
     body.light input[type=button]:active, body.light input[type=button].enabled, body.light .button:active, body.light .button.enabled {
       background-color: #00a896;
       box-shadow: inset 0px 3px 2px 0px rgba(0, 0, 0, 0.28); }
   body.dark input[type=button], body input[type=button], body.dark .button, body .button {
-    background-color: #b8901a; }
+    background-color: #7f8c8d; }
     body.dark input[type=button]:active, body input[type=button]:active, body.dark input[type=button].enabled, body input[type=button].enabled, body.dark .button:active, body .button:active, body.dark .button.enabled, body .button.enabled {
       background-color: #d29d00;
       box-shadow: inset 0px 3px 2px 0px rgba(0, 0, 0, 0.28); }
