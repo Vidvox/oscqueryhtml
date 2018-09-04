@@ -3,20 +3,26 @@ const oscTransports = require('osc-transports');
 const oscWebsocketClient = require('osc-websocket-client');
 
 const builder = require('./builder.js');
+const controls = require('./controls.js');
+const settings = require('./settings.js');
+const userinput = require('./userinput.js');
 const types = require('./types.js');
 const retrieve = require('./retrieve.js');
+
+// Polyfilled controls.
 const vanillaColorPicker = require('vanilla-picker');
 const rangeSlider = require('rangeslider-pure');
 
+// Image assets.
 const logoBase64 = require("base64-image-loader!../assets/img/icon.png");
 const listenButtonSvg = require("svg-inline-loader?classPrefix=_listen!../assets/img/listen.svg");
 const ignoreButtonSvg = require("svg-inline-loader?classPrefix=_ignore!../assets/img/pressed.svg");
 
-var g_allControlStruct = null;
-var g_hostInfo = {};
-var g_extensions = null;
-var g_isListenEnabled = false;
-var g_serverUrl = null;
+global.g_allControlStruct = null;
+global.g_hostInfo = {};
+global.g_extensions = null;
+global.g_isListenEnabled = false;
+global.g_serverUrl = null;
 
 function $(selector) {
     return document.querySelector(selector);
@@ -27,8 +33,8 @@ function objectGetValue(obj, i) {
 }
 
 function storeHostInfo(hostInfo) {
-    g_hostInfo = hostInfo;
-    g_extensions = hostInfo.EXTENSIONS;
+    global.g_hostInfo = hostInfo;
+    global.g_extensions = hostInfo.EXTENSIONS;
 }
 
 var g_supportHtml5Color = false;
@@ -72,7 +78,7 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(noControlsElem);
         return;
     }
-    if (g_extensions.LISTEN) {
+    if (global.g_extensions.LISTEN) {
         // Label for listen button.
         let labelDivElem = document.createElement('div');
         labelDivElem.className = 'listen-label';
@@ -90,7 +96,7 @@ function buildFromQueryResult(result) {
         mainContentsElem.appendChild(listenSpanElem);
         mainContentsElem.appendChild(ignoreSpanElem);
         // Set listening state.
-        setTimeout(enableInitialListenState, 0);
+        setTimeout(settings.enableInitialListenState, 0);
     }
     {
         let styleDarkElem = document.createElement('div');
@@ -106,28 +112,18 @@ function buildFromQueryResult(result) {
         styleElem.textContent = '.curr_mode { font-weight: bold; } #set_light {text-decoration: underline; cursor: pointer;} #set_dark {text-decoration: underline; cursor: pointer;}'
         mainContentsElem.appendChild(styleElem);
         let setLightLink = $('#set_light');
-        setLightLink.addEventListener('click',function(){setStyleMode('light')},
-                                      false);
+        setLightLink.addEventListener('click', function() {
+            settings.setStyleMode('light');
+        }, false);
         let setDarkLink = $('#set_dark');
-        setDarkLink.addEventListener('click', function(){setStyleMode('dark')},
-                                     false);
+        setDarkLink.addEventListener('click', function() {
+            settings.setStyleMode('dark');
+        }, false);
     }
     // Configuration for building.
     let cfg = {supportHtml5Color: g_supportHtml5Color};
     // Build contents for the main container.
     builder.buildContentsAddToContainer(contents, mainContentsElem, cfg)
-}
-
-function setStyleMode(mode) {
-    if (mode == 'light') {
-        $('#choice-dark-mode').style.display = 'none';
-        $('#choice-light-mode').style.display = 'block';
-        $('body').classList.add('light');
-    } else if (mode == 'dark') {
-        $('#choice-light-mode').style.display = 'none';
-        $('#choice-dark-mode').style.display = 'block';
-        $('body').classList.remove('light');
-    }
 }
 
 function extractControlPaths(obj) {
@@ -153,18 +149,18 @@ function storeControlStructure(data) {
 
 function nullFunction() {}
 
-var oscPort;
-var isOscReady = false;
+global.isOscReady = false;
+global.oscPort = null;
 
 function initWebSocket(url) {
-    oscPort = new osc.WebSocketPort({
+    global.oscPort = new osc.WebSocketPort({
         url: url,
         metadata: true
     });
-    oscPort.open();
+    global.oscPort.open();
     oscPort.on('ready', function() {
-        isOscReady = true;
-        oscPort.socket.onmessage = function(e) {
+        global.isOscReady = true;
+        global.oscPort.socket.onmessage = function(e) {
             // Check if message was a JSON command.
             var msg = null;
             try {
@@ -199,8 +195,8 @@ function initWebSocket(url) {
             // put this code here, it's a one-off.
             if (targetElem.attributes.type &&
                 targetElem.attributes.type.value == 'range') {
-                if (g_numRangeMessagePending > 0) {
-                    g_numRangeMessagePending--;
+                if (global.g_numRangeMessagePending > 0) {
+                    global.g_numRangeMessagePending--;
                     return;
                 }
                 targetElem.rangeSlider.update({value: value}, false);
@@ -215,11 +211,11 @@ function initWebSocket(url) {
                     // the lightness due to rounding errors. So, while the
                     // control is being changed, wait a short amount of time
                     // before accepting new updates.
-                    if (g_numColorMessagePending > 0) {
-                        g_numColorMessagePending--;
+                    if (global.g_numColorMessagePending > 0) {
+                        global.g_numColorMessagePending--;
                         return;
                     }
-                    if (!g_supportHtml5Color) {
+                    if (!global.g_supportHtml5Color) {
                         // Polyfill control, update the color.
                         value = builder.textToHexColor(value);
                         let colorClass = '.color-control';
@@ -244,13 +240,13 @@ function initWebSocket(url) {
                     }
                     return;
                 } else if (setter.value == 'setToggle') {
-                    runSetter(controlElem, setter.value, value);
+                    controls.runSetter(controlElem, setter.value, value);
                     return;
                 } else if (setter.value == 'button') {
                     // do nothing
                     return;
                 } else {
-                    runSetter(controlElem, setter.value, value);
+                    controls.runSetter(controlElem, setter.value, value);
                 }
             }
             targetElem.value = value;
@@ -260,18 +256,18 @@ function initWebSocket(url) {
 
 function processCommandMessage(msg) {
     if (msg.COMMAND == 'PATH_CHANGED') {
-        if (g_extensions.PATH_CHANGED) {
+        if (global.g_extensions.PATH_CHANGED) {
             let refreshElem = document.getElementById('refresh-butter');
             refreshElem.style.display = 'inline';
-            window.location.reload(true);
+            global.location.reload(true);
         }
     } else if (msg.COMMAND == 'PATH_ADDED') {
-        if (g_extensions.PATH_ADDED) {
+        if (global.g_extensions.PATH_ADDED) {
             let nodePath = msg.DATA;
             let pathParts = nodePath.split('/');
             let numParts = pathParts.length - 1;
             let nodeName = pathParts[numParts];
-            let nodeUrl = g_serverUrl + nodePath;
+            let nodeUrl = global.g_serverUrl + nodePath;
             retrieve.retrieveJson(nodeUrl, (err, contents) => {
                 let targetPath = pathParts.slice(0, numParts).join('/');
                 let targetElem = document.querySelector(
@@ -287,7 +283,7 @@ function processCommandMessage(msg) {
             });
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {
-        if (g_extensions.PATH_RENAMED) {
+        if (global.g_extensions.PATH_RENAMED) {
             let oldPath = msg.DATA.OLD;
             let newPath = msg.DATA.NEW;
             let targetElem = document.querySelector(
@@ -314,7 +310,7 @@ function processCommandMessage(msg) {
             targetElem.setAttribute('data-full-path', newPath);
         }
     } else if (msg.COMMAND == 'PATH_REMOVED') {
-        if (g_extensions.PATH_REMOVED) {
+        if (global.g_extensions.PATH_REMOVED) {
             let nodePath = msg.DATA;
             let targetElem = document.querySelector(
                 '[data-dir-path="' + nodePath + '"]');
@@ -328,206 +324,8 @@ function processCommandMessage(msg) {
     }
 }
 
-function toggleEvent(e) {
-    // Control that was modified.
-    let controlElem = e.target.parentNode;
-    let detailsElem = controlElem.querySelector('.details');
-    let setter = detailsElem.attributes['data-setter'];
-    // Special hook for toggles because we need to modify the value before
-    // calling `getControlArg` in the main `controlEvent` handler.
-    if (setter) {
-        runSetter(controlElem, 'setToggleBeforeGetControlArg', e.target.value);
-    }
-    controlEvent(e);
-}
 
-function controlEvent(e) {
-    // Control that was modified.
-    let controlElem = e.target.parentNode;
-    let detailsElem = controlElem.querySelector('.details');
-    let fullPath = detailsElem.attributes['data-full-path'].value;
-    let setter = detailsElem.attributes['data-setter'];
-    // Node that contains this control (in case the node has multiple types).
-    let nodeElem = controlElem.parentNode;
-    let args = [];
-    for (let i = 0; i < nodeElem.children.length; i++) {
-        let c = nodeElem.children[i];
-        if (c.tagName.toLowerCase() == 'div' &&
-              c.classList.contains('control')) {
-            args.push(getControlArg(c));
-        }
-    }
-    if (setter) {
-        runSetter(controlElem, setter.value, e.target.value);
-    }
-    var message = {
-        address: fullPath,
-        args: args,
-    };
-    console.log('***** Sending value: ' + JSON.stringify(message));
-    if (isOscReady) {
-        oscPort.send(message);
-    }
-}
 
-function getControlArg(controlElem) {
-    let inputElem = controlElem.querySelector('input');
-    if (!inputElem) {
-        inputElem = controlElem.querySelector('select');
-    }
-    let detailsElem = controlElem.querySelector('.details');
-    let fullPath = detailsElem.attributes['data-full-path'].value;
-    let dataType = detailsElem.attributes['data-type'].value;
-    let getter = detailsElem.attributes['data-getter'];
-    let arg = null;
-    if (!getter) {
-        return {type: dataType};
-    } else if (getter.value == 'value') {
-        return {type: dataType, value: inputElem.value };
-    } else if (getter.value == 'parseInt') {
-        return {type: dataType, value: parseInt(inputElem.value, 10) };
-    } else if (getter.value == 'parseInt64') {
-        let num = parseInt(inputElem.value);
-        let radix = 0x100000000;
-        let high = Math.floor(num / radix);
-        let low = num % radix;
-        return {type: dataType, value: {high: high, low: low}};
-    } else if (getter.value == 'parseFloat') {
-        return {type: dataType, value: parseFloat(inputElem.value) };
-    } else if (getter.value == 'parseSingle') {
-        let first = inputElem.attributes['data-first'].value;
-        return {type: dataType, value: parseInt(first, 10) };
-    } else if (getter.value == 'boolToggle') {
-        return {type: inputElem.value == 'true' ? 'T' : 'F'};
-    } else if (getter.value == 'parseIntToggle') {
-        let value = null;
-        let dataFirst = inputElem.attributes['data-first']
-        let dataSecond = inputElem.attributes['data-second']
-        if (dataFirst.value == inputElem.value) {
-            value = dataFirst.value;
-        } else {
-            value = dataSecond.value;
-        }
-        return {type: dataType, value: parseInt(value, 10) };
-    } else if (getter.value == 'sendCheckbox') {
-        let value;
-        if (inputElem.checked) {
-            value = parseInt(inputElem.attributes['data-second'].value, 10);
-        } else {
-            value = parseInt(inputElem.attributes['data-first'].value, 10);
-        }
-        return {type: dataType, value: value};
-    } else if (getter.value == 'color') {
-        if (!inputElem) {
-            // Only for color elements in browsers that don't support the
-            // html5 color input.
-            inputElem = controlElem.querySelector('.color-control');
-        }
-        var color = inputElem.value;
-        var r = parseInt(color.substr(1, 2), 16);
-        var g = parseInt(color.substr(3, 2), 16);
-        var b = parseInt(color.substr(5, 2), 16);
-        return {type: dataType, value: {r:r, g:g, b:b, a:1} };
-    }
-}
-
-function runSetter(controlElem, type, value) {
-    if (type == 'int') {
-        let currValElem = controlElem.querySelector('.curr-val');
-        currValElem.textContent = value;
-    } else if (type == 'int64') {
-        let currValElem = controlElem.querySelector('.curr-val');
-        if (value.hasOwnProperty('high') && value.hasOwnProperty('low')) {
-            let radix = 0x100000000;
-            value = value.high * radix + value.low;
-        }
-        currValElem.textContent = value;
-    } else if (type == 'float') {
-        let currValElem = controlElem.querySelector('.curr-val');
-        currValElem.textContent = Math.round(value * 1000) / 1000;
-    } else if (type == 'setToggleBeforeGetControlArg') {
-        let buttonElem = controlElem.querySelector('input');
-        let dataFirst = buttonElem.attributes['data-first']
-        let dataSecond = buttonElem.attributes['data-second']
-        let isEnabled;
-        if (dataFirst && dataSecond) {
-            if (dataFirst.value == value) {
-                value = dataSecond.value;
-                isEnabled = false;
-            } else {
-                value = dataFirst.value;
-                isEnabled = true;
-            }
-        } else {
-            if (value === false || value == 'false') {
-                value = 'true';
-                isEnabled = true;
-            } else {
-                value = 'false';
-                isEnabled = false;
-            }
-        }
-        buttonElem.value = value;
-        if (isEnabled) {
-            buttonElem.classList.add('enabled');
-        } else {
-            buttonElem.classList.remove('enabled');
-        }
-    } else if (type == 'setToggle') {
-        // do nothing
-    } else if (type == 'button') {
-        // do nothing
-    }
-}
-
-function charKeyPressEvent(e) {
-    e.target.value = String.fromCharCode(e.keyCode);
-    controlEvent(e);
-}
-
-var g_numRangeMessagePending = 0;
-var g_lastRangeMessageSent = null;
-
-function rangeModifyEvent(e) {
-    if (g_isListenEnabled) {
-        g_numRangeMessagePending++;
-        g_lastRangeMessageSent = new Date();
-    }
-    let value = e.target.value;
-    // Cache value so that it won't send twice in a row.
-    if (e.target.cacheValue === value) {
-        return;
-    }
-    e.target.cacheValue = value
-    controlEvent(e);
-}
-
-var g_numColorMessagePending = 0;
-var g_lastColorMessageSent = null;
-
-function colorModifyEvent(e) {
-    if (g_isListenEnabled) {
-        g_numColorMessagePending++;
-        g_lastColorMessageSent = new Date();
-    }
-    controlEvent(e);
-}
-
-setInterval(function() {
-    let now = new Date();
-    if (g_lastRangeMessageSent) {
-        if (now - g_lastRangeMessageSent > 1000) {
-            g_numRangeMessagePending = 0;
-            g_lastRangeMessageSent = null;
-        }
-    }
-    if (g_lastColorMessageSent) {
-        if (now - g_lastColorMessageSent > 1000) {
-            g_numColorMessagePending = 0;
-            g_lastColorMessageSent = null;
-        }
-    }
-}, 400);
 
 function getDataEvent(element) {
     if (element.attributes['data-event']) {
@@ -536,153 +334,57 @@ function getDataEvent(element) {
     return null;
 }
 
-function listenClick(e) {
-    listenIgnoreChange(true);
-}
-
-function ignoreClick(e) {
-    listenIgnoreChange(false);
-}
-
-function listenIgnoreChange(state) {
-    g_isListenEnabled = state;
-    let command = null;
-    if (state) {
-        $('.svg-listen').style.display = 'none';
-        $('.svg-ignore').style.display = 'inline-block';
-        command = 'LISTEN';
-    } else {
-        $('.svg-listen').style.display = 'inline-block';
-        $('.svg-ignore').style.display = 'none';
-        command = 'IGNORE';
-    }
-    if (isOscReady) {
-        for (let i = 0; i < g_allControlStruct.length; i++) {
-            var path = g_allControlStruct[i];
-            var msg = JSON.stringify(
-{
-    'COMMAND': command,
-    'DATA': path
-});
-            console.log('***** Sending WS: ' + msg);
-            oscPort.socket.send(msg);
-        }
-    }
-}
-
-// If OSC is ready (connected), start listening, otherwise wait 10 ms.
-function enableInitialListenState() {
-    if (isOscReady) {
-        listenIgnoreChange(true);
-    } else {
-        setTimeout(enableInitialListenState, 10);
-    }
-}
-
-const TOGGLE_SHOW_DISPLAY = 'grid';
-
-function toggleHide(e) {
-    let elem = e.target;
-    for (let i = 0; i < 6; i++) {
-        if (elem.tagName.toLowerCase() == 'div' && elem.id) {
-            break;
-        }
-        elem = elem.parentNode;
-    }
-    let text = elem.id;
-    let id = text.substr(12);
-    $('#control_body_' + id).style.display = 'none';
-    $('#toggle_show_'  + id).style.display = TOGGLE_SHOW_DISPLAY;
-    $('#toggle_hide_'  + id).style.display = 'none';
-    if (e.altKey) {
-        let controlBody = $('#control_body_' + id);
-        if (!controlBody) {
-            return;
-        }
-        let dirContainerElems = controlBody.querySelectorAll('.dir-container');
-        for (let i = 0; i < dirContainerElems.length; i++) {
-            let toggleElem = dirContainerElems[i].querySelector('.toggle-hide');
-            toggleHide({target: toggleElem, altKey: true});
-        }
-    }
-}
-
-function toggleShow(e) {
-    let elem = e.target;
-    for (let i = 0; i < 6; i++) {
-        if (elem.tagName.toLowerCase() == 'div' && elem.id) {
-            break;
-        }
-        elem = elem.parentNode;
-    }
-    let text = elem.id;
-    let id = text.substr(12);
-    $('#control_body_' + id).style.display = TOGGLE_SHOW_DISPLAY;
-    $('#toggle_show_'  + id).style.display = 'none';
-    $('#toggle_hide_'  + id).style.display = TOGGLE_SHOW_DISPLAY;
-    if (e.altKey) {
-        let controlBody = $('#control_body_' + id);
-        if (!controlBody) {
-            return;
-        }
-        let dirContainerElems = controlBody.querySelectorAll('.dir-container');
-        for (let i = 0; i < dirContainerElems.length; i++) {
-            let toggleElem = dirContainerElems[i].querySelector('.toggle-show');
-            toggleShow({target: toggleElem, altKey: true});
-        }
-    }
-}
-
 function addInputEventHandlers() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
         if (getDataEvent(input) == 'keypress') {
-            input.addEventListener('keypress', charKeyPressEvent, false);
+            input.addEventListener('keypress',
+                                   userinput.charKeyPressEvent, false);
         } else if (input.type == "button" && input.attributes['data-toggle']) {
-            input.addEventListener('click', toggleEvent, false);
+            input.addEventListener('click', userinput.toggleEvent, false);
         } else if (input.type == "button") {
-            input.addEventListener('click', controlEvent, false);
+            input.addEventListener('click', userinput.controlEvent, false);
         } else if (input.type == "range") {
-            input.addEventListener('input', rangeModifyEvent, false);
-            input.addEventListener('change', rangeModifyEvent, false);
+            input.addEventListener('input', userinput.rangeModifyEvent, false);
+            input.addEventListener('change', userinput.rangeModifyEvent, false);
         } else if (input.type == "color") {
-            input.addEventListener('change', colorModifyEvent, false);
+            input.addEventListener('change', userinput.colorModifyEvent, false);
         } else {
-            input.addEventListener('change', controlEvent, false);
+            input.addEventListener('change', userinput.controlEvent, false);
         }
     }
     let selects = document.getElementsByTagName("select");
     for (let i = 0; i < selects.length; i++) {
         let select = selects[i];
-        select.addEventListener('change', controlEvent, false);
+        select.addEventListener('change', userinput.controlEvent, false);
     }
     let listenButtons = document.getElementsByClassName('svg-listen');
     for (let i = 0; i < listenButtons.length; i++) {
         let listenBtn = listenButtons[i];
-        listenBtn.addEventListener('click', listenClick, false);
+        listenBtn.addEventListener('click', settings.listenClick, false);
     }
     let ignoreButtons = document.getElementsByClassName('svg-ignore');
     for (let i = 0; i < ignoreButtons.length; i++) {
         let ignoreBtn = ignoreButtons[i];
-        ignoreBtn.addEventListener('click', ignoreClick, false);
+        ignoreBtn.addEventListener('click', settings.ignoreClick, false);
     }
     let toggleHideElems = document.getElementsByClassName('toggle-hide');
     for (let i = 0; i < toggleHideElems.length; i++) {
         let elem = toggleHideElems[i];
-        elem.addEventListener('click', toggleHide, false);
+        elem.addEventListener('click', settings.toggleHide, false);
     }
     let toggleShowElems = document.getElementsByClassName('toggle-show');
     for (let i = 0; i < toggleShowElems.length; i++) {
         let elem = toggleShowElems[i];
-        elem.addEventListener('click', toggleShow, false);
+        elem.addEventListener('click', settings.toggleShow, false);
     }
 }
 
 function addColorPickerPolyfills() {
     // If this browser does not support the built-in html5 color picker
     // element, create polyfill controls for each element.
-    if (g_supportHtml5Color) {
+    if (global.g_supportHtml5Color) {
         return;
     }
     let elemList = document.getElementsByClassName('color-control');
@@ -695,7 +397,7 @@ function addColorPickerPolyfills() {
             alpha: false,
             onChange: function(color) {
                 colorControlElem.value = color;
-                controlEvent({target: colorControlElem});
+                userinput.controlEvent({target: colorControlElem});
             },
         });
         colorControlElem.picker.setColor(initValue);
@@ -723,7 +425,7 @@ function addRangeSliderPolyfills() {
 }
 
 function createApp(serverUrl) {
-    g_serverUrl = serverUrl;
+    global.g_serverUrl = serverUrl;
     initWebSocket(serverUrl.replace("http", "ws"));
     retrieve.retrieveHostInfo(serverUrl, (err, hostInfo) => {
         if (hostInfo) {
@@ -738,8 +440,6 @@ function createApp(serverUrl) {
                 return;
             }
             detectColorPicker();
-            console.log(JSON.stringify(result));
-
             buildFromQueryResult(result);
             storeControlStructure(result);
             addInputEventHandlers();
