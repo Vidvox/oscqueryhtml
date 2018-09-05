@@ -162,7 +162,7 @@ function initWebSocket(url) {
         global.isOscReady = true;
         global.oscPort.socket.onmessage = function(e) {
             // Check if message was a JSON command.
-            var msg = null;
+            let msg = null;
             try {
                 msg = JSON.parse(e.data);
             } catch (e) {
@@ -173,85 +173,92 @@ function initWebSocket(url) {
                 return;
             }
             // Non-JSON data, assume it's a binary OSC packet.
-            var packet = osc.readPacket(new Uint8Array(e.data), {});
+            let packet = osc.readPacket(new Uint8Array(e.data), {});
             console.log('***** Got packet <' + JSON.stringify(packet) + '>');
-            var address = packet.address;
-            // TODO: Iterate over values to affect each element.
-            var value = packet.args[0];
+            let address = packet.address;
             // TODO: Validate address contains allowed characters.
-            var query = '[data-full-path="' + address + '"]';
-            var detailsElem = document.querySelector(query);
-            // Apply OSC packet by setting control value, update UI.
-            var controlElem = detailsElem.parentNode;
-            // Get input or select tag, which needs to have value changed.
-            var targetElem = controlElem.querySelector('input');
-            if (!targetElem) {
-                targetElem = controlElem.querySelector('select');
+            let query = '[data-full-path="' + address + '"]';
+            let detailsElem = document.querySelector(query);
+            let groupElem = detailsElem.parentNode.parentNode;
+            for (let i = 0; i < packet.args.length; i++) {
+                let value = packet.args[i];
+                let controlElem = groupElem.children[i];
+                applyOSCMessageValue(controlElem, value);
             }
-            if (!targetElem) {
-                return;
-            }
-            // Update position of slider polyfill. NOTE: Kind of a hack to
-            // put this code here, it's a one-off.
-            if (targetElem.attributes.type &&
-                targetElem.attributes.type.value == 'range') {
-                if (global.g_numRangeMessagePending > 0) {
-                    global.g_numRangeMessagePending--;
-                    return;
-                }
-                targetElem.rangeSlider.update({value: value}, false);
-                return;
-            }
-            var setter = detailsElem.attributes['data-setter'];
-            if (setter) {
-                if (setter.value == 'color') {
-                    // If the html5 color control is being dragged around,
-                    // and LISTEN is enabled, the messages sent from this
-                    // control will be routed back to it, and subtly decrease
-                    // the lightness due to rounding errors. So, while the
-                    // control is being changed, wait a short amount of time
-                    // before accepting new updates.
-                    if (global.g_numColorMessagePending > 0) {
-                        global.g_numColorMessagePending--;
-                        return;
-                    }
-                    if (!global.g_supportHtml5Color) {
-                        // Polyfill control, update the color.
-                        value = builder.textToHexColor(value);
-                        let colorClass = '.color-control';
-                        targetElem = controlElem.querySelector(colorClass);
-                        // Change the picker's color, but don't send events.
-                        let picker = targetElem.picker;
-                        let preserveHandler = picker.onChange;
-                        picker.onChange = nullFunction;
-                        picker.setColor(value);
-                        picker.onChange = preserveHandler;
-                    }
-                } else if (setter.value == 'setCheckbox') {
-                    // If the control is a checkbox, there should only be
-                    // two possible values. Either check or uncheck the box,
-                    // but only if it matches one of the two known values.
-                    let first = targetElem.attributes['data-first'].value;
-                    let second = targetElem.attributes['data-second'].value;
-                    if (value == first) {
-                        targetElem.checked = false;
-                    } else if (value == second) {
-                        targetElem.checked = true;
-                    }
-                    return;
-                } else if (setter.value == 'setToggle') {
-                    controls.runSetter(controlElem, setter.value, value);
-                    return;
-                } else if (setter.value == 'button') {
-                    // do nothing
-                    return;
-                } else {
-                    controls.runSetter(controlElem, setter.value, value);
-                }
-            }
-            targetElem.value = value;
         }
     });
+}
+
+// Apply OSC packet's single value by setting control state, update UI.
+function applyOSCMessageValue(controlElem, value) {
+    // Get input or select tag, which needs to have value changed.
+    let targetElem = controlElem.querySelector('input');
+    if (!targetElem) {
+        targetElem = controlElem.querySelector('select');
+    }
+    if (!targetElem) {
+        return;
+    }
+    // Update position of slider polyfill. NOTE: Kind of a hack to
+    // put this code here, it's a one-off.
+    if (targetElem.attributes.type &&
+        targetElem.attributes.type.value == 'range') {
+        if (global.g_numRangeMessagePending > 0) {
+            global.g_numRangeMessagePending--;
+            return;
+        }
+        targetElem.rangeSlider.update({value: value}, false);
+        return;
+    }
+    let detailsElem = controlElem.querySelector('[class="details"]');
+    let setter = detailsElem.attributes['data-setter'];
+    if (setter) {
+        if (setter.value == 'color') {
+            // If the html5 color control is being dragged around,
+            // and LISTEN is enabled, the messages sent from this
+            // control will be routed back to it, and subtly decrease
+            // the lightness due to rounding errors. So, while the
+            // control is being changed, wait a short amount of time
+            // before accepting new updates.
+            if (global.g_numColorMessagePending > 0) {
+                global.g_numColorMessagePending--;
+                return;
+            }
+            if (!global.g_supportHtml5Color) {
+                // Polyfill control, update the color.
+                value = builder.textToHexColor(value);
+                let colorClass = '.color-control';
+                targetElem = controlElem.querySelector(colorClass);
+                // Change the picker's color, but don't send events.
+                let picker = targetElem.picker;
+                let preserveHandler = picker.onChange;
+                picker.onChange = nullFunction;
+                picker.setColor(value);
+                picker.onChange = preserveHandler;
+            }
+        } else if (setter.value == 'setCheckbox') {
+            // If the control is a checkbox, there should only be
+            // two possible values. Either check or uncheck the box,
+            // but only if it matches one of the two known values.
+            let first = targetElem.attributes['data-first'].value;
+            let second = targetElem.attributes['data-second'].value;
+            if (value == first) {
+                targetElem.checked = false;
+            } else if (value == second) {
+                targetElem.checked = true;
+            }
+            return;
+        } else if (setter.value == 'setToggle') {
+            controls.runSetter(controlElem, setter.value, value);
+            return;
+        } else if (setter.value == 'button') {
+            // do nothing
+            return;
+        } else {
+            controls.runSetter(controlElem, setter.value, value);
+        }
+    }
+    targetElem.value = value;
 }
 
 function processCommandMessage(msg) {
@@ -323,9 +330,6 @@ function processCommandMessage(msg) {
         console.log('Unknown message: ' + e.data);
     }
 }
-
-
-
 
 function getDataEvent(element) {
     if (element.attributes['data-event']) {

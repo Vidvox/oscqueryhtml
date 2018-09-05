@@ -21,11 +21,11 @@ function controlEvent(e) {
     let detailsElem = controlElem.querySelector('.details');
     let fullPath = detailsElem.attributes['data-full-path'].value;
     let setter = detailsElem.attributes['data-setter'];
-    // Node that contains this control (in case the node has multiple types).
-    let nodeElem = controlElem.parentNode;
+    // Group that contains this control (in case the node has multiple types).
+    let groupElem = controlElem.parentNode;
     let args = [];
-    for (let i = 0; i < nodeElem.children.length; i++) {
-        let c = nodeElem.children[i];
+    for (let i = 0; i < groupElem.children.length; i++) {
+        let c = groupElem.children[i];
         if (c.tagName.toLowerCase() == 'div' &&
               c.classList.contains('control')) {
             args.push(controls.getControlArg(c));
