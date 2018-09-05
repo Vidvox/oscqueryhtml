@@ -99,6 +99,7 @@ function buildFromQueryResult(result) {
         setTimeout(settings.enableInitialListenState, 0);
     }
     {
+        // Create style links, dark and light.
         let styleDarkElem = document.createElement('div');
         styleDarkElem.id = 'choice-dark-mode';
         styleDarkElem.innerHTML = '<span class="curr_mode">dark</span> <span id="set_light">light</span>';
@@ -108,6 +109,7 @@ function buildFromQueryResult(result) {
         styleLightElem.style.display = 'none';
         mainContentsElem.appendChild(styleDarkElem);
         mainContentsElem.appendChild(styleLightElem);
+        // Create css to bold the in-use style, underline the unused style.
         let styleElem = document.createElement('style');
         styleElem.textContent = '.curr_mode { font-weight: bold; } #set_light {text-decoration: underline; cursor: pointer;} #set_dark {text-decoration: underline; cursor: pointer;}'
         mainContentsElem.appendChild(styleElem);
@@ -119,6 +121,10 @@ function buildFromQueryResult(result) {
         setDarkLink.addEventListener('click', function() {
             settings.setStyleMode('dark');
         }, false);
+        // Set beginning style based upon the user's cookie.
+        if (document.cookie.includes('style=light')) {
+            settings.setStyleMode('light');
+        }
     }
     // Configuration for building.
     let cfg = {supportHtml5Color: g_supportHtml5Color};

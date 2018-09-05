@@ -111,10 +111,12 @@ function setStyleMode(mode) {
         $('#choice-dark-mode').style.display = 'none';
         $('#choice-light-mode').style.display = 'block';
         $('body').classList.add('light');
+        document.cookie = 'style=light';
     } else if (mode == 'dark') {
         $('#choice-light-mode').style.display = 'none';
         $('#choice-dark-mode').style.display = 'block';
         $('body').classList.remove('light');
+        document.cookie = 'style=dark';
     }
 }
 
