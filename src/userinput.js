@@ -11,9 +11,10 @@ function toggleEvent(e) {
         controls.runSetter(controlElem, 'setToggleBeforeGetControlArg',
                            e.target.value);
     }
-    controlEvent(e);
+    return controlEvent(e);
 }
 
+// Handle an event on a control, return whether an OSC message was sent.
 function controlEvent(e) {
     // Control that was modified.
     let controlElem = e.target.parentNode;
@@ -40,54 +41,58 @@ function controlEvent(e) {
     console.log('***** Sending value: ' + JSON.stringify(message));
     if (window.isOscReady) {
         oscPort.send(message);
+        return true;
     }
+    return false;
 }
 
 function charKeyPressEvent(e) {
     e.target.value = String.fromCharCode(e.keyCode);
-    controlEvent(e);
+    return controlEvent(e);
 }
 
 global.g_numRangeMessagePending = 0;
 global.g_lastRangeMessageSent = null;
 
 function rangeModifyEvent(e) {
-    if (g_isListenEnabled) {
-        g_numRangeMessagePending++;
-        g_lastRangeMessageSent = new Date();
-    }
     let value = e.target.value;
     // Cache value so that it won't send twice in a row.
     if (e.target.cacheValue === value) {
         return;
     }
     e.target.cacheValue = value
-    controlEvent(e);
+    if (controlEvent(e)) {
+        if (global.g_isListenEnabled) {
+            global.g_numRangeMessagePending++;
+            global.g_lastRangeMessageSent = new Date();
+        }
+    }
 }
 
-var g_numColorMessagePending = 0;
-var g_lastColorMessageSent = null;
+global.g_numColorMessagePending = 0;
+global.g_lastColorMessageSent = null;
 
 function colorModifyEvent(e) {
-    if (g_isListenEnabled) {
-        g_numColorMessagePending++;
-        g_lastColorMessageSent = new Date();
+    if (controlEvent(e)) {
+        if (global.g_isListenEnabled) {
+            global.g_numColorMessagePending++;
+            global.g_lastColorMessageSent = new Date();
+        }
     }
-    controlEvent(e);
 }
 
 setInterval(function() {
     let now = new Date();
-    if (g_lastRangeMessageSent) {
-        if (now - g_lastRangeMessageSent > 1000) {
-            g_numRangeMessagePending = 0;
-            g_lastRangeMessageSent = null;
+    if (global.g_lastRangeMessageSent) {
+        if (now - global.g_lastRangeMessageSent > 1000) {
+            global.g_numRangeMessagePending = 0;
+            global.g_lastRangeMessageSent = null;
         }
     }
-    if (g_lastColorMessageSent) {
-        if (now - g_lastColorMessageSent > 1000) {
-            g_numColorMessagePending = 0;
-            g_lastColorMessageSent = null;
+    if (global.g_lastColorMessageSent) {
+        if (now - global.g_lastColorMessageSent > 1000) {
+            global.g_numColorMessagePending = 0;
+            global.g_lastColorMessageSent = null;
         }
     }
 }, 400);
