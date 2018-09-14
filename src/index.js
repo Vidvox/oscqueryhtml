@@ -286,17 +286,14 @@ function processCommandMessage(msg) {
                 // node should go, creating new elements as needed.
                 let targetElem = getOrMakeDirNode(pathParts.slice(0, numParts));
                 // Node container for the new element.
-                let containerElem = targetElem.querySelector('[class="node"]');
-                if (!containerElem) {
-                    containerElem = document.createElement('div')
-                    containerElem.className = 'node';
-                    let headerElem = document.createElement('header');
-                    containerElem.appendChild(headerElem);
-                    targetElem.appendChild(containerElem);
-                }
+                let containerElem = document.createElement('div')
+                containerElem.className = 'node';
+                let headerElem = document.createElement('header');
+                containerElem.appendChild(headerElem);
+                targetElem.appendChild(containerElem);
                 // Build the new node control, insert it into the container.
                 let newElem = document.createElement('div');
-                newElem.id = builder.generateId();
+                newElem.id = 'control_body_' + builder.generateId();
                 newElem.setAttribute('data-dir-path', nodePath);
                 containerElem.appendChild(newElem);
                 builder.buildControlElements(newElem, nodeName, contents);
@@ -352,7 +349,7 @@ function getOrMakeDirNode(pathParts) {
         let elem = result.querySelector(
             '[data-dir-path="' + path + '"]');
         if (!elem) {
-            let id = builder.generateId();
+            let id = 'control_body_' + builder.generateId();
             elem = document.createElement('div');
             elem.id = 'control_body_' + id;
             elem.setAttribute('data-dir-path', path);
