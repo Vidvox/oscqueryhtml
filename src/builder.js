@@ -16,19 +16,9 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
         let directoryElem = document.createElement('div');
         let id = generateId();
         let html = '<header>';
-        // If this has CONTENTS, build a directory node.
+        // If this has CONTENTS, build a directory node with toggle controls.
         if (dirObj.CONTENTS) {
-            // Toggle button when this is collapsed, will show the node.
-            html += '<div class="toggle-show" id="toggle_show_' + id +
-                '" style="display:none">';
-            html += '<span class="svg-show">' + togglePlusSvg + '</span>';
-            html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
-            html += '</div>';
-            // Toggle button when this is expanded, will hide the node.
-            html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
-            html += '<span class="svg-hide">' + toggleMinusSvg + '</span>';
-            html += '<span class="dir-name">' + E(dirNames[j]) + '</span>';
-            html += '</div>';
+            html += createTogglerHtml(id, dirNames[j]);
             directoryElem.className = 'dir-container';
         }
         if (!dirObj.CONTENTS && !dirObj.TYPE) {
@@ -55,6 +45,23 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
         }
         parentContainer.appendChild(directoryElem);
     }
+}
+
+// Create html for toggle controls that show and hide directory contents.
+function createTogglerHtml(id, name) {
+    let html = '';
+    // Toggle button when this is collapsed, will show the node.
+    html += '<div class="toggle-show" id="toggle_show_' + id +
+        '" style="display:none">';
+    html += '<span class="svg-show">' + togglePlusSvg + '</span>';
+    html += '<span class="dir-name"> ' + E(name) + '</span>';
+    html += '</div>';
+    // Toggle button when this is expanded, will hide the node.
+    html += '<div class="toggle-hide" id="toggle_hide_' + id + '">';
+    html += '<span class="svg-hide">' + toggleMinusSvg + '</span>';
+    html += '<span class="dir-name">' + E(name) + '</span>';
+    html += '</div>';
+    return html;
 }
 
 // Add control nodes. Iterate the type field, adding one node per kind of type.
@@ -482,5 +489,6 @@ module.exports = {
     buildControlElements: buildControlElements,
     buildSingleControl: buildSingleControl,
     textToHexColor: textToHexColor,
+    createTogglerHtml: createTogglerHtml,
     generateId: generateId,
 }

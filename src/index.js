@@ -357,10 +357,15 @@ function getOrMakeDirNode(pathParts) {
             elem = document.createElement('div');
             elem.id = 'control_body_' + id;
             elem.setAttribute('data-dir-path', path);
+            // Directory container for the new element.
             let containerElem = document.createElement('div')
             containerElem.className = 'dir-container';
-            result.appendChild(containerElem);
+            let headerElem = document.createElement('header');
+            headerElem.innerHTML = builder.createTogglerHtml(id, pathParts[i]);
+            containerElem.appendChild(headerElem);
+            // Add the container to the parent.
             containerElem.appendChild(elem);
+            result.appendChild(containerElem);
         }
         result = elem;
     }
