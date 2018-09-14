@@ -17,13 +17,9 @@ function buildContentsAddToContainer(contents, parentContainer, cfg) {
         let id = generateId();
         let html = '<header>';
         // If this has CONTENTS, build a directory node with toggle controls.
-        if (dirObj.CONTENTS) {
+        // If it has neither CONTENTS nor TYPE, treat it as an empty directory.
+        if (dirObj.CONTENTS || (!dirObj.CONTENTS && !dirObj.TYPE)) {
             html += createTogglerHtml(id, dirNames[j]);
-            directoryElem.className = 'dir-container';
-        }
-        if (!dirObj.CONTENTS && !dirObj.TYPE) {
-            // Empty directory, no toggle.
-            html += '<span class="dir-name"> ' + E(dirNames[j]) + '</span>';
             directoryElem.className = 'dir-container';
         }
         html += '</header>';
