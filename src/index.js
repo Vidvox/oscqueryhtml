@@ -128,8 +128,13 @@ function buildFromQueryResult(result) {
     }
     // Configuration for building.
     let cfg = {supportHtml5Color: g_supportHtml5Color};
+    // Root node.
+    let rootElem = document.createElement('div');
+    rootElem.id = 'control_body_' + builder.generateId();
+    rootElem.setAttribute('data-dir-path', '/');
+    mainContentsElem.appendChild(rootElem);
     // Build contents for the main container.
-    builder.buildContentsAddToContainer(contents, mainContentsElem, cfg)
+    builder.buildContentsAddToContainer(contents, rootElem, cfg)
 }
 
 function extractControlPaths(obj) {
@@ -342,8 +347,7 @@ function processCommandMessage(msg) {
 }
 
 function getOrMakeDirNode(pathParts) {
-    // TODO: Fix the case of the root node.
-    let result = document;
+    let result = document.querySelector('[data-dir-path="/"]');
     for (let i = 1; i < pathParts.length; i++) {
         let path = pathParts.slice(0, i + 1).join('/');
         let elem = result.querySelector(
