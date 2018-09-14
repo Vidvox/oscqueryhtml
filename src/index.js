@@ -357,12 +357,9 @@ function getOrMakeDirNode(pathParts) {
             elem = document.createElement('div');
             elem.id = 'control_body_' + id;
             elem.setAttribute('data-dir-path', path);
-            let containerElem = result.querySelector('[class="dir-container"]');
-            if (!containerElem) {
-                containerElem = document.createElement('div')
-                containerElem.className = 'dir-container';
-                result.appendChild(containerElem);
-            }
+            let containerElem = document.createElement('div')
+            containerElem.className = 'dir-container';
+            result.appendChild(containerElem);
             containerElem.appendChild(elem);
         }
         result = elem;
