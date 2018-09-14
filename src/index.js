@@ -338,8 +338,9 @@ function processCommandMessage(msg) {
             let nodePath = msg.DATA;
             let targetElem = document.querySelector(
                 '[data-dir-path="' + nodePath + '"]');
-            if (targetElem) {
-                targetElem.parentNode.removeChild(targetElem);
+            let removeElem = targetElem.parentNode;
+            if (removeElem) {
+                removeElem.parentNode.removeChild(removeElem);
             }
         }
     } else {
