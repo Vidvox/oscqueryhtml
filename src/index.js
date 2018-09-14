@@ -304,6 +304,7 @@ function processCommandMessage(msg) {
                 builder.buildControlElements(newElem, nodeName, contents);
                 // Add event listeners to new elements.
                 addToggleEventHandlers();
+                maybeAddPolyfill(newElem);
             });
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {
@@ -440,47 +441,71 @@ function addToggleEventHandlers() {
     }
 }
 
+function maybeAddPolyfill(elem) {
+    // Check if the added node needs a color polyfill.
+    let colorElem = elem.querySelector('[class="color-control"]');
+    if (colorElem) {
+        createRangeSliderPolyfill(colorElem);
+        colorElem.addEventListener('change', userinput.colorModifyEvent, false);
+        return;
+    }
+    // Check if the added node needs a range-slider polyfill.
+    let rangeElem = elem.querySelector('input[type="range"]');
+    if (rangeElem) {
+        createRangeSliderPolyfill(rangeElem);
+        rangeElem.addEventListener('input', userinput.rangeModifyEvent, false);
+        rangeElem.addEventListener('change', userinput.rangeModifyEvent, false);
+        return;
+    }
+}
+
 function addColorPickerPolyfills() {
     // If this browser does not support the built-in html5 color picker
     // element, create polyfill controls for each element.
     if (global.g_supportHtml5Color) {
         return;
     }
-    let elemList = document.getElementsByClassName('color-control');
-    for (let i = 0; i < elemList.length; i++) {
-        let colorControlElem = elemList[i];
-        let initValue = colorControlElem.attributes['data-value'].value;
-        colorControlElem.picker = new vanillaColorPicker({
-            parent: colorControlElem,
-            popup: false,
-            alpha: false,
-            onChange: function(color) {
-                colorControlElem.value = color;
-                userinput.controlEvent({target: colorControlElem});
-            },
-        });
-        colorControlElem.picker.setColor(initValue);
+    let colorElems = document.getElementsByClassName('color-control');
+    for (let i = 0; i < colorElems.length; i++) {
+        createColorPickerPolyfill(colorElems[i]);
     }
 }
 
+function createColorPickerPolyfill(colorElem) {
+    let initValue = colorElem.attributes['data-value'].value;
+    colorElem.picker = new vanillaColorPicker({
+        parent: colorElem,
+        popup: false,
+        alpha: false,
+        onChange: function(color) {
+            colorElem.value = color;
+            userinput.controlEvent({target: colorElem});
+        },
+    });
+    colorEhlem.picker.setColor(initValue);
+}
+
 function addRangeSliderPolyfills() {
-    let sliders = document.querySelectorAll('input[type="range"]');
-    for (let i = 0; i < sliders.length; i++) {
-        let elem = sliders[i];
-        let options = {polyfill: true};
-        if (elem.attributes.min) {
-            options.min = elem.attributes.min;
-        }
-        if (elem.attributes.max) {
-            options.max = elem.attributes.max;
-        }
-        if (elem.attributes.step && elem.attributes.step.value == 'any') {
-            options.step = 0.001;
-        } else if (elem.attributes.step) {
-            options.step = elem.attributes.step;
-        }
-        rangeSlider.create(elem, options);
+    let sliderList = document.querySelectorAll('input[type="range"]');
+    for (let i = 0; i < sliderList.length; i++) {
+        createRangeSliderPolyfill(sliderList[i]);
     }
+}
+
+function createRangeSliderPolyfill(rangeElem) {
+    let options = {polyfill: true};
+    if (rangeElem.attributes.min) {
+        options.min = rangeElem.attributes.min;
+    }
+    if (rangeElem.attributes.max) {
+        options.max = rangeElem.attributes.max;
+    }
+    if (rangeElem.attributes.step && rangeElem.attributes.step.value == 'any') {
+        options.step = 0.001;
+    } else if (rangeElem.attributes.step) {
+        options.step = rangeElem.attributes.step;
+    }
+    rangeSlider.create(rangeElem, options);
 }
 
 function createApp(serverUrl) {
