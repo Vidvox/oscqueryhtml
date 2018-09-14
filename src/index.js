@@ -320,11 +320,11 @@ function processCommandMessage(msg) {
             if (controlDetail) {
                 let newParts = newPath.split('/');
                 let newName = newParts[newParts.length - 1];
-                controlDetail.textContent = newName;
+                controlDetail.textContent = builder.shortDisplay(newName);
             }
             let fullPathDetail = targetElem.querySelector('.full-path');
             if (fullPathDetail) {
-                fullPathDetail.textContent = newPath;
+                fullPathDetail.textContent = builder.shortDisplay(newPath);
             }
             targetElem = document.querySelector(
                 '[data-full-path="' + oldPath + '"]');

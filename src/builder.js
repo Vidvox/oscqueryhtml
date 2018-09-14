@@ -60,14 +60,24 @@ function createTogglerHtml(id, name) {
     return html;
 }
 
+function shortDisplay(text) {
+    if (text.length > 28) {
+        return (text.substring(0, 20) + '...' +
+                text.substring(text.length - 6, text.length));
+    }
+    return text;
+}
+
 // Add control nodes. Iterate the type field, adding one node per kind of type.
 function buildControlElements(containerElem, name, details, cfg) {
     // Handle the case where a directory is also a control.
     let existingName = containerElem.parentNode.querySelector('.dir-name');
     if (!existingName) {
-        createAppendElem(containerElem, 'span', 'control-name', name);
+        createAppendElem(containerElem, 'span', 'control-name',
+                         shortDisplay(name));
     }
-    createAppendElem(containerElem, 'span', 'full-path', details.FULL_PATH);
+    createAppendElem(containerElem, 'span', 'full-path',
+                     shortDisplay(details.FULL_PATH));
     createAppendElem(containerElem, 'span', 'description', details.DESCRIPTION);
     let groupElem = document.createElement('div');
     groupElem.className = 'group';
@@ -486,5 +496,6 @@ module.exports = {
     buildSingleControl: buildSingleControl,
     textToHexColor: textToHexColor,
     createTogglerHtml: createTogglerHtml,
+    shortDisplay: shortDisplay,
     generateId: generateId,
 }
