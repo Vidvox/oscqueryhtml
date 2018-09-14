@@ -302,6 +302,8 @@ function processCommandMessage(msg) {
                 newElem.setAttribute('data-dir-path', nodePath);
                 containerElem.appendChild(newElem);
                 builder.buildControlElements(newElem, nodeName, contents);
+                // Add event listeners to new elements.
+                addToggleEventHandlers();
             });
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {
@@ -414,15 +416,25 @@ function addInputEventHandlers() {
         let ignoreBtn = ignoreButtons[i];
         ignoreBtn.addEventListener('click', settings.ignoreClick, false);
     }
+    addToggleEventHandlers();
+}
+
+function addToggleEventHandlers() {
     let toggleHideElems = document.getElementsByClassName('toggle-hide');
     for (let i = 0; i < toggleHideElems.length; i++) {
         let elem = toggleHideElems[i];
-        elem.addEventListener('click', settings.toggleHide, false);
+        if (!elem.hasListener) {
+            elem.addEventListener('click', settings.toggleHide, false);
+            elem.hasListener = true;
+        }
     }
     let toggleShowElems = document.getElementsByClassName('toggle-show');
     for (let i = 0; i < toggleShowElems.length; i++) {
         let elem = toggleShowElems[i];
-        elem.addEventListener('click', settings.toggleShow, false);
+        if (!elem.hasListener) {
+            elem.addEventListener('click', settings.toggleShow, false);
+            elem.hasListener = true;
+        }
     }
 }
 

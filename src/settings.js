@@ -53,6 +53,7 @@ const TOGGLE_SHOW_DISPLAY = 'grid';
 
 // Hide some directory.
 function toggleHide(e) {
+    e.preventDefault();
     let elem = e.target;
     for (let i = 0; i < 6; i++) {
         if (elem.tagName.toLowerCase() == 'div' && elem.id) {
@@ -80,6 +81,7 @@ function toggleHide(e) {
 
 // Show some directory.
 function toggleShow(e) {
+    e.preventDefault();
     let elem = e.target;
     for (let i = 0; i < 6; i++) {
         if (elem.tagName.toLowerCase() == 'div' && elem.id) {
