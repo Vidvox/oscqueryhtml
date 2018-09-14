@@ -338,6 +338,7 @@ function processCommandMessage(msg) {
             let nodePath = msg.DATA;
             let targetElem = document.querySelector(
                 '[data-dir-path="' + nodePath + '"]');
+            // Remove the parent, with either class "dir-container" or "node".
             let removeElem = targetElem.parentNode;
             if (removeElem) {
                 removeElem.parentNode.removeChild(removeElem);
