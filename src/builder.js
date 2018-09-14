@@ -482,4 +482,5 @@ module.exports = {
     buildControlElements: buildControlElements,
     buildSingleControl: buildSingleControl,
     textToHexColor: textToHexColor,
+    generateId: generateId,
 }

@@ -282,17 +282,24 @@ function processCommandMessage(msg) {
             let nodeName = pathParts[numParts];
             let nodeUrl = global.g_serverUrl + nodePath;
             retrieve.retrieveJson(nodeUrl, (err, contents) => {
-                let targetPath = pathParts.slice(0, numParts).join('/');
-                let targetElem = document.querySelector(
-                    '[data-dir-path="' + targetPath + '"]');
-                if (!targetElem) {
-                    return;
+                // Get the directory container for where the newly created
+                // node should go, creating new elements as needed.
+                let targetElem = getOrMakeDirNode(pathParts.slice(0, numParts));
+                // Node container for the new element.
+                let containerElem = targetElem.querySelector('[class="node"]');
+                if (!containerElem) {
+                    containerElem = document.createElement('div')
+                    containerElem.className = 'node';
+                    let headerElem = document.createElement('header');
+                    containerElem.appendChild(headerElem);
+                    targetElem.appendChild(containerElem);
                 }
-                let holderElem = document.createElement('div');
-                holderElem.className = "node control";
-                holderElem.setAttribute('data-dir-path', nodePath);
-                targetElem.appendChild(holderElem);
-                builder.buildControlElements(holderElem, nodeName, contents);
+                // Build the new node control, insert it into the container.
+                let newElem = document.createElement('div');
+                newElem.id = builder.generateId();
+                newElem.setAttribute('data-dir-path', nodePath);
+                containerElem.appendChild(newElem);
+                builder.buildControlElements(newElem, nodeName, contents);
             });
         }
     } else if (msg.COMMAND == 'PATH_RENAMED') {
@@ -335,6 +342,31 @@ function processCommandMessage(msg) {
         console.log('??????????');
         console.log('Unknown message: ' + e.data);
     }
+}
+
+function getOrMakeDirNode(pathParts) {
+    // TODO: Fix the case of the root node.
+    let result = document;
+    for (let i = 1; i < pathParts.length; i++) {
+        let path = pathParts.slice(0, i + 1).join('/');
+        let elem = result.querySelector(
+            '[data-dir-path="' + path + '"]');
+        if (!elem) {
+            let id = builder.generateId();
+            elem = document.createElement('div');
+            elem.id = 'control_body_' + id;
+            elem.setAttribute('data-dir-path', path);
+            let containerElem = result.querySelector('[class="dir-container"]');
+            if (!containerElem) {
+                containerElem = document.createElement('div')
+                containerElem.className = 'dir-container';
+                result.appendChild(containerElem);
+            }
+            containerElem.appendChild(elem);
+        }
+        result = elem;
+    }
+    return result;
 }
 
 function getDataEvent(element) {
