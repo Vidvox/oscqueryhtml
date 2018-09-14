@@ -163,15 +163,15 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var min = applySelector(details.RANGE, selector, 'MIN') || 0;
             var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
+            html += buildCurrRangeValue(value, min, max);
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
-            html += buildCurrRangeValue(value, min, max);
             getter = 'parseFloat';
             setter = 'float';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" value="' + E(value) + '" step="any"/>';
             html += buildCurrRangeValue(value);
+            html += '<input type="range" value="' + E(value) + '" step="any"/>';
             getter = 'parseFloat';
             setter = 'float';
         }
@@ -206,15 +206,15 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var min = applySelector(details.RANGE, selector, 'MIN') || 0;
             var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
+            html += buildCurrRangeValue(value, min, max);
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '" step="any"/>';
-            html += buildCurrRangeValue(value, min, max);
             getter = 'parseFloat';
             setter = 'float';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" value="' + E(value) + '" step="any"/>';
             html += buildCurrRangeValue(value);
+            html += '<input type="range" value="' + E(value) + '" step="any"/>';
             getter = 'parseFloat';
             setter = 'float';
         }
@@ -285,16 +285,16 @@ function buildSingleControl(details, type, selector, pos, cfg) {
                 getter = 'parseIntToggle';
                 setter = 'setToggle';
             } else {
+                html += buildCurrRangeValue(value, min, max);
                 html += '<input type="range" min="' + E(min) + '" max="' +
                     E(max) + '" value="' + E(value) + '" />';
-                html += buildCurrRangeValue(value, min, max);
                 getter = 'parseInt';
                 setter = 'int';
             }
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" value="' + E(value) + '" />';
             html += buildCurrRangeValue(value);
+            html += '<input type="range" value="' + E(value) + '" />';
             getter = 'parseInt';
             setter = 'int';
         }
@@ -319,15 +319,15 @@ function buildSingleControl(details, type, selector, pos, cfg) {
             var min = applySelector(details.RANGE, selector, 'MIN') || 0;
             var max = applySelector(details.RANGE, selector, 'MAX') || 1;
             var value = applyPos(details.VALUE, pos) || 0;
+            html += buildCurrRangeValue(value, min, max);
             html += '<input type="range" min="' + E(min) + '" max="' +
                 E(max) + '" value="' + E(value) + '"/>';
-            html += buildCurrRangeValue(value, min, max);
             getter = 'parseInt64';
             setter = 'int64';
         } else {
             var value = applyPos(details.VALUE, pos) || 0;
-            html += '<input type="range" value="' + E(value) + '"/>';
             html += buildCurrRangeValue(value);
+            html += '<input type="range" value="' + E(value) + '"/>';
             getter = 'parseInt64';
             setter = 'int64';
         }
