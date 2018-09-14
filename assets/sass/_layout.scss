@@ -55,7 +55,7 @@
       justify-content: center;
       &.kind_slider {
         display: block;
-        > * {
+        .rangeSlider__horizontal {
           margin-top: 20px;
         }
       }
