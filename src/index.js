@@ -353,7 +353,7 @@ function getOrMakeDirNode(pathParts) {
         let elem = result.querySelector(
             '[data-dir-path="' + path + '"]');
         if (!elem) {
-            let id = 'control_body_' + builder.generateId();
+            let id = builder.generateId();
             elem = document.createElement('div');
             elem.id = 'control_body_' + id;
             elem.setAttribute('data-dir-path', path);
