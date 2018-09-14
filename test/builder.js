@@ -21,10 +21,10 @@ describe('buildSingleControl', () => {
             let data = {'TYPE': 'i', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="range" value="0" />' +
                          '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
                          '</span>' +
+                         '<input type="range" value="0" />' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseInt" ' +
                          'data-setter="int" /></span>');
@@ -36,11 +36,11 @@ describe('buildSingleControl', () => {
                         'RANGE': [{'MIN': 0, 'MAX': 10}]};
             let html = builder.buildSingleControl(data, 'i', [0], 0);
             assert.equal(html,
-                         '<input type="range" min="0" max="10" value="0" />' +
                          '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
                          '<span class="range-val"> (0-10)</span>' +
                          '</span>' +
+                         '<input type="range" min="0" max="10" value="0" />' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="i" data-getter="parseInt" ' +
                          'data-setter="int" /></span>');
@@ -126,10 +126,10 @@ describe('buildSingleControl', () => {
             let data = {'TYPE': 'h', 'DESCRIPTION': 'desc', 'FULL_PATH': '/p'};
             let html = builder.buildSingleControl(data, 'h', [0], 0);
             assert.equal(html,
-                         '<input type="range" value="0"/>' +
                          '<span class="curr-range-val">' +
                          '<span class="curr-val">0</span>' +
                          '</span>' +
+                         '<input type="range" value="0"/>' +
                          '<span class="details" data-full-path="/p" ' +
                          'data-type="h" data-getter="parseInt64" ' +
                          'data-setter="int64" /></span>');
