@@ -482,7 +482,7 @@ function createColorPickerPolyfill(colorElem) {
             userinput.controlEvent({target: colorElem});
         },
     });
-    colorEhlem.picker.setColor(initValue);
+    colorElem.picker.setColor(initValue);
 }
 
 function addRangeSliderPolyfills() {
@@ -519,8 +519,10 @@ function createApp(serverUrl) {
             if (err) {
                 let mainContentsElem = $('#mainContents');
                 let errorElem = document.createElement('div');
-                errorElem.innerHTML = '<span class="error">' + err + '</span>';
-                mainContentsElem.appendChild(errorElem);
+                errorElem.innerHTML = '<span class="error" ' +
+                    'style="color:red">' + err + '</span>';
+                let firstElem = mainContentsElem.children[0];
+                mainContentsElem.insertBefore(errorElem, firstElem);
                 return;
             }
             detectColorPicker();
